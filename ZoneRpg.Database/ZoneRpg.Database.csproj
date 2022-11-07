@@ -12,4 +12,8 @@
     <PackageReference Include="MySqlConnector" Version="2.1.13" />
   </ItemGroup>
 
+  <ItemGroup>
+    <ProjectReference Include="..\ZoneRpg.Shared\ZoneRpg.Shared.csproj" />
+  </ItemGroup>
+
 </Project>
