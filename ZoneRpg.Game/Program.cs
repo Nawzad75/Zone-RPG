@@ -1,12 +1,19 @@
 ﻿using ZoneRpg.Database;
 using ZoneRpg.Ui;
 
-internal class Program
+namespace ZoneRpg.Game
 {
-    private static void Main(string[] args)
+    internal class Program
     {
-        DatabaseManager db = new DatabaseManager();
-        Class1 class1 = new Class1(db);
+        private static void Main(string[] args)
+        {
+            DatabaseManager db = new DatabaseManager();
+            Class1 class1 = new Class1(db);
 
+
+
+
+
+        }
     }
 }
