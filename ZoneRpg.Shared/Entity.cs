@@ -1,4 +1,4 @@
-namespace ZoneRpg
+namespace ZoneRpg.Shared
 {
     class Entity
     {
