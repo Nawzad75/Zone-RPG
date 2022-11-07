@@ -8,4 +8,10 @@
     <Nullable>enable</Nullable>
   </PropertyGroup>
 
+  <ItemGroup>
+    <ProjectReference Include="..\ZoneRpg.Database\ZoneRpg.Database.csproj" />
+    <ProjectReference Include="..\ZoneRpg.Ui\ZoneRpg.Ui.csproj" />
+  </ItemGroup>
+
+
 </Project>
