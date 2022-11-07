@@ -5,7 +5,7 @@ namespace ZoneRpg.Shared
         
         public int X { get; set; }
         public int Y { get; set; }
-        public string CharSymbol { get; set; }
+        public char Symbol { get; set; }
 
         public int Hp { get; set; }
 
@@ -13,7 +13,7 @@ namespace ZoneRpg.Shared
         {
             X = x;
             Y = y;
-            CharSymbol = charSymbol;
+           Symbol = Symbol;
             Hp = hp;
         }
 
