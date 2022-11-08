@@ -5,58 +5,21 @@ namespace ZoneRpg.Ui;
 public class UiManager
 {
     private DatabaseManager _db;
-
     public UiManager(DatabaseManager db)
     {
         Console.Clear();
         _db = db;
     }
-    public void DrawZone(Zone zone)
-    {
-        Console.Clear();
 
-        for (int i = 0; i < zone.Width; i++)
-        {
-            Console.Write("-");
-        }
-        Console.WriteLine("");
-
-        for (int i = 0; i < zone.Height + 1; i++)
-        {
-            Console.Write("|");
-            for (int j = 0; j < zone.Width - 2; j++)
-            {
-                Console.Write(" ");
-            }
-            Console.WriteLine("|");
-        }
-        for (int i = 0; i < zone.Width; i++)
-        {
-            Console.Write("-");
-
-        }
-        Console.WriteLine();
-        Console.WriteLine("                Zone: " + zone.Name);
-    }
-    public void DrawEntity(Zone zone)
-    {
-        foreach (var item in zone.Entities)
-        {
-            Console.SetCursorPosition(item.X, item.Y);
-            Console.WriteLine(item.Symbol);
-
-        }
-    }
+    //
+    // Run!
+    //
     public void Run()
     {
         Zone zone = _db.GetZone();
         zone.Player= CreatePlayer();
 
-        _db.InsertPlayer(zone.Player);
-
-
-
-        
+        _db.InsertPlayer(zone.Player);      
         while (true)
         {
             DrawZone(zone);
@@ -83,11 +46,55 @@ public class UiManager
             {
                 zone.Player.Entity.X++;
             }
-
         }
-
     }
 
+    //
+    // Draws a Zone in the console
+    //
+    public void DrawZone(Zone zone)
+    {
+        Console.Clear();
+        for (int i = 0; i < zone.Width; i++)
+        {
+            Console.Write("-");
+        }
+        Console.WriteLine("");
+
+        for (int i = 0; i < zone.Height + 1; i++)
+        {
+            Console.Write("|");
+            for (int j = 0; j < zone.Width - 2; j++)
+            {
+                Console.Write(" ");
+            }
+            Console.WriteLine("|");
+        }
+        for (int i = 0; i < zone.Width; i++)
+        {
+            Console.Write("-");
+
+        }
+        Console.WriteLine();
+        Console.WriteLine("                Zone: " + zone.Name);
+    }
+
+    //
+    // Draws all entities in the zone
+    //
+    public void DrawEntity(Zone zone)
+    {
+        foreach (var item in zone.Entities)
+        {
+            Console.SetCursorPosition(item.X, item.Y);
+            Console.WriteLine(item.Symbol);
+
+        }
+    }
+
+    //
+    // Create a player
+    //
     public Player CreatePlayer()
     {
         Menu menu = new Menu("Choose class", new string[] { "Warrior", "Mage", "Rogue" });
@@ -103,6 +110,10 @@ public class UiManager
 
         return player;
     }
+
+    //
+    // Draw the player
+    //
     public void DrawPlayer(Zone zone)
     {
         Console.SetCursorPosition(zone.Player.Entity.X, zone.Player.Entity.Y);
