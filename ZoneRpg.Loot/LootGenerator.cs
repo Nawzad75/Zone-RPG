@@ -7,15 +7,13 @@ namespace ZoneRpg.Loot
     public class LootGenerator
     {
         private DatabaseManager _db;
-
-
-        //constructor
         public LootGenerator(DatabaseManager db)
         {
             _db = db;
         }
 
-
+        //
+        // Generate loot
         //
         public List<Item> GenerateLoot(int rarity = 0)
         {
