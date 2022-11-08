@@ -7,7 +7,7 @@ namespace ZoneRpg.Game
 {
     internal class Program
     {
-     
+
 
         private static void Main(string[] args)
 
@@ -32,11 +32,12 @@ namespace ZoneRpg.Game
             Menu mainMenu = new Menu(prompt, options);
             mainMenu.DisplayOptions();
             Console.ReadKey(true);
-
+            
             StartGame startGame = new StartGame();
             startGame.RunMainMenu();
 
             UiManager uiManager = new UiManager(db);
+            uiManager.Run();
 
 
 
@@ -47,8 +48,12 @@ namespace ZoneRpg.Game
             uiManager.DrawEntity(zone);
 
             Console.ReadLine();
-
+            
+            Player player = new Player();
+            
         }
+
+
 
     }
 }

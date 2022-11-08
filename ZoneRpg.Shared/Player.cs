@@ -11,29 +11,26 @@ namespace ZoneRpg.Shared
         public int health { get; set; }
 
 
-        Player player = new Player();
+
+
 
         public Player()
         {
 
-            name = "Player";
-            xp = 0;
-            level = 1;
-            skill = 0;
-            CharacterClass = "Warrior";
-            attack = 0;
-            health = 0;
             SetPlayer();
 
         }
         // här sätter jag spelarens stats (attack och health) beroende på vilken klass spelaren har valt
         public void SetPlayer()
         {
+            
+            name = name;
             level = level;
             skill = skill;
             CharacterClass = CharacterClass;
             attack = level * 2;
             health = level * 5;
+
         }
         public void CharacterClassSet()
         {

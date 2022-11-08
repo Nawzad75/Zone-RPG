@@ -31,7 +31,6 @@ namespace ZoneRpg.Game
                     prefix = ">";
                     Console.ForegroundColor = ConsoleColor.Red;
                     Console.BackgroundColor = ConsoleColor.Black;
-
                 }
                 else
                 {
@@ -40,10 +39,7 @@ namespace ZoneRpg.Game
                     Console.BackgroundColor = ConsoleColor.Black;
                 }
                 Console.WriteLine(prefix + currentOption);
-                
-
             }
-
             Console.ResetColor();
         }
 
