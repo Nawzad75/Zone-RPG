@@ -13,8 +13,7 @@ public class UiManager
     public void DrawZone(Zone zone)
     {
         Console.Clear();
-        Console.WriteLine();
-        Console.WriteLine("                Zone: "+zone.Name);
+       
         for (int i = 0; i < zone.Width; i++)
         {
             Console.Write("-");
@@ -35,6 +34,8 @@ public class UiManager
             Console.Write("-");
 
         }
+        Console.WriteLine();
+        Console.WriteLine("                Zone: " + zone.Name);
     }
     public void DrawEntity(Zone zone)
     {
