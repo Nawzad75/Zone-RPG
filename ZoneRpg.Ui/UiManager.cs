@@ -22,7 +22,7 @@ public class UiManager
             Console.Write("-");
 
         }
-        Console.Write("-");
+        Console.WriteLine("");
 
         for (int i = 0; i < zone.Height+1; i++)
         {
