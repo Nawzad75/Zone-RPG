@@ -11,7 +11,7 @@ namespace ZoneRpg.Database
         MySqlConnection _connection;
 
         //
-        // Konstruktor
+        // Connect and store away the connection for later use
         //
         public DatabaseManager()
         {
@@ -35,7 +35,7 @@ namespace ZoneRpg.Database
         }
 
         //
-        //
+        // Get's all "ItemInfo's" from the database
         //
         public List<ItemInfo> GetAllItemInfos()
         {
@@ -43,6 +43,7 @@ namespace ZoneRpg.Database
             List<ItemInfo> itemInfos = _connection.Query<ItemInfo>(sql).ToList();
             return itemInfos;
         }
+
 
         //
         // Seedar databasen (och skapar vissa tabller på nytt)
@@ -73,21 +74,30 @@ namespace ZoneRpg.Database
 
             _connection.Execute(sql, data.GetValues());
         }
+
+        //
+        // Gets a zone from the database
+        //
         public Zone GetZone()
         {
             string sql = "SELECT * FROM zone";
-
             Zone zone = _connection.Query<Zone>(sql).First();
-            // zone.Height=12;
-            // zone.Width= 45;
             return zone;
         }
+
+        //
+        // Gets all entities from the database
+        //
         public List<Entity> GetEntities()
         {
             string sql = "SELECT * FROM entity";
             List<Entity> entities = _connection.Query<Entity>(sql).ToList();
             return entities;
         }
+
+        //
+        // Gets a player from the database
+        //
         public Player GetPlayer()
         {
             string sql = "SELECT * FROM player";
@@ -95,16 +105,14 @@ namespace ZoneRpg.Database
             return player;
 
         }
-        public void InsertPlayer(Player player)
 
+        //
+        // Inserts a player into the database
+        // 
+        public void InsertPlayer(Player player)
         {
             var sql = @"INSERT INTO player (name, xp, is_mob, skill_id, characterclass_id, entity_id)
              VALUES (@name, @xp, @is_mob, @skill, @characterclass_id, @entity_id)";
-             
-
-            Console.WriteLine("player.Name: " + player.Name);
-            Console.WriteLine("player.isMob: " + player.IsMob);
-            Console.WriteLine("player.CharacterClass: " + (int)player.CharacterClass);
 
             var parameters = new
             {
@@ -115,8 +123,6 @@ namespace ZoneRpg.Database
                 characterclass_id = (int)player.CharacterClass,
                 entity_id = player.Entity.Id
             };
-
-            Console.WriteLine("parameter.characterclass_id: " + parameters.characterclass_id);
 
             _connection.Execute(sql, parameters);
         }
