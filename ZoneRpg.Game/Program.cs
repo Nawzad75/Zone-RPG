@@ -10,9 +10,16 @@ namespace ZoneRpg.Game
         {
             DatabaseManager db = new DatabaseManager();
             UiManager uiManager = new UiManager(db);
-            uiManager.Draw(new Zone(12,45,"Borås"));
            
            
+           
+            var pos = Console.GetCursorPosition();
+            Zone zone = new Zone("Borås");
+            uiManager.Draw(zone);
+            zone.entities.Add(new Entity(pos.Left+3,pos.Top+ 5,'M',10));
+            uiManager.DrawEntity(zone);
+           
+           Console.ReadLine();
 
         }
         

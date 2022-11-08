@@ -5,13 +5,13 @@ namespace ZoneRpg.Shared
         public int Height { get; set; }
         public int Width { get; set; }
         public string Name { get; set; }
-        public Zone(int height, int width, string name)
+        public Zone( string name)
         {
-            Height = height;
-            Width = width;
+            Height = 12;
+            Width = 45;
             Name = name;
         }
-
+        public List<Entity>entities=new();
     }
 
 }
