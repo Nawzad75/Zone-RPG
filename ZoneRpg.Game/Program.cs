@@ -41,10 +41,11 @@ namespace ZoneRpg.Game
 
 
 
-            var pos = Console.GetCursorPosition();
-            Zone zone = new Zone("Borås");
-            uiManager.Draw(zone);
-            zone.entities.Add(new Entity(pos.Left + 3, pos.Top + 5, 'M', 10));
+            
+            
+            Zone zone = db.GetZone();
+            uiManager.DrawZone(zone);
+            zone.entities= db.GetEntities();
             uiManager.DrawEntity(zone);
 
             Console.ReadLine();

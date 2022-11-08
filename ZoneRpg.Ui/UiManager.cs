@@ -5,13 +5,14 @@ namespace ZoneRpg.Ui;
 public class UiManager
 {
     private DatabaseManager _db;
-
+   
     public UiManager(DatabaseManager db)
     {
         _db = db;
     }
-    public void Draw(Zone zone)
+    public void DrawZone(Zone zone)
     {
+        Console.Clear();
         Console.WriteLine();
         Console.WriteLine("                Zone: " + zone.Name);
         for (int i = 0; i < zone.Width; i++)
@@ -41,6 +42,7 @@ public class UiManager
         {
             Console.SetCursorPosition(item.X, item.Y);
             Console.WriteLine(item.Symbol);
+            
         }
     }
     public void Run()
