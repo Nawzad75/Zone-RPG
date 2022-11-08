@@ -1,4 +1,5 @@
 ﻿using ZoneRpg.Database;
+using ZoneRpg.Shared;
 using ZoneRpg.Ui;
 
 namespace ZoneRpg.Game
@@ -8,12 +9,12 @@ namespace ZoneRpg.Game
         private static void Main(string[] args)
         {
             DatabaseManager db = new DatabaseManager();
-            Class1 class1 = new Class1(db);
-
-
-
-
+            UiManager uiManager = new UiManager(db);
+            uiManager.Draw(new Zone(12,45,"Borås"));
+           
+           
 
         }
+        
     }
 }
