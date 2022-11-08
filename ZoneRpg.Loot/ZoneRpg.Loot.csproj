@@ -1,19 +1,14 @@
 <Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
-    <OutputType>Exe</OutputType>
     <TargetFramework>net6.0</TargetFramework>
-    <RootNamespace>Zone_RPG</RootNamespace>
     <ImplicitUsings>enable</ImplicitUsings>
     <Nullable>enable</Nullable>
   </PropertyGroup>
 
   <ItemGroup>
     <ProjectReference Include="..\ZoneRpg.Database\ZoneRpg.Database.csproj" />
-    <ProjectReference Include="..\ZoneRpg.Ui\ZoneRpg.Ui.csproj" />
     <ProjectReference Include="..\ZoneRpg.Shared\ZoneRpg.Shared.csproj" />
-    <ProjectReference Include="..\ZoneRpg.Loot\ZoneRpg.Loot.csproj" />
   </ItemGroup>
-
 
 </Project>

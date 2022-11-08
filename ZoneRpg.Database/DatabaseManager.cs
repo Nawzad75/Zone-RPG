@@ -1,13 +1,18 @@
 ﻿using Dapper;
 using MySqlConnector;
 using dotenv.net;
+using ZoneRpg.Shared;
 
 namespace ZoneRpg.Database
 {
     public class DatabaseManager
     {
+        // Database connection
         MySqlConnection _connection;
 
+        //
+        // Konstruktor
+        //
         public DatabaseManager()
         {
             // Läs in dovenv filen med databas connection string
@@ -17,8 +22,7 @@ namespace ZoneRpg.Database
             // anslut till databasen
             _connection = new MySqlConnection(envVars["DB_CONNECTION_STRING"]);
 
-            // Om det blir ett mysql-fel, skrivas det inte ut i konsolen, 
-            // så vi skriver ut det själva och throwar igen (så )
+            // Om det blir ett mysql-fel, skrivs det inte ut i konsolen automatiskt
             try
             {
                 _connection.Open();
@@ -26,8 +30,51 @@ namespace ZoneRpg.Database
             catch (Exception e)
             {
                 Console.WriteLine(e);
-                throw e;
             }
+
         }
+
+        //
+        //
+        //
+        public List<ItemInfo> GetAllItemInfos()
+        {
+            string sql = "SELECT * FROM item_info";
+            List<ItemInfo> itemInfos = _connection.Query<ItemInfo>(sql).ToList();
+            return itemInfos;
+        }
+
+        //
+        // Seedar databasen (och skapar vissa tabller på nytt)
+        //
+        public void SeedDatabase()
+        {
+            DatabaseSeeder seeder = new DatabaseSeeder(_connection);
+            seeder.SeedItemType();
+            seeder.SeedItemInfo();
+        }
+
+
+        //
+        // Generisk insert-metod
+        //
+        public void Insert<T>(T data) where T : IDbTable
+        {
+            // T.ex. "item_info"
+            string table = data.GetTableName();
+
+            // T.ex. "name, item_type_id, rarity, description"
+            string columns = string.Join(", ", data.GetColumns());
+
+            // T.ex:  "@name, @item_type_id, @rarity, @description"
+            string anonymousColumns = string.Join(", ", data.GetColumns().Select(x => "@" + x));
+
+            string sql = $"INSERT INTO {table} ({columns}) VALUES ({anonymousColumns})";
+
+            _connection.Execute(sql, data.GetValues());
+        }
+
     }
+
+
 }
