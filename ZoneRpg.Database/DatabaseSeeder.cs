@@ -16,6 +16,22 @@ namespace ZoneRpg.Database
         //
         // Recreates the item_type table and inserts data
         //
+        public void SeedPlayer()
+        {
+             
+             
+           /*  _connection.Execute("DROP TABLE IF EXISTS player");
+            _connection.Execute(@"CREATE TABLE player (id int NOT NULL,
+  name varchar(32) NOT NULL,
+  xp int NOT NULL,
+  is_mob tinyint(1) NOT NULL,
+  skill_id int NOT NULL,
+  characterclass_id int NOT NULL,
+  entity_id int NOT NULL,
+  item_id_weapon int DEFAULT NULL,
+  item_id_boots int DEFAULT NULL,
+  item_id_helm int DEFAULT NULL);"); */
+        }
         public void SeedItemType()
         {
             // Ta bort allt!
@@ -64,6 +80,7 @@ namespace ZoneRpg.Database
             {
                 _connection.Execute($"INSERT INTO item_info {columns} VALUES {value}");
             }
+
         }
     }
 }

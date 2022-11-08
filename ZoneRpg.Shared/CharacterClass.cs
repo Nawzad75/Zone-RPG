@@ -1,4 +1,4 @@
-enum CharacterClass
+public enum CharacterClass
 {
     Warrior,
     Mage,
