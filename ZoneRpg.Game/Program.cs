@@ -10,7 +10,11 @@ namespace ZoneRpg.Game
             DatabaseManager db = new DatabaseManager();
             Class1 class1 = new Class1(db);
 
-
+            string prompt = "Welcome to the game";
+            string[] options = { "Start", "Exit" };
+            Menu mainMenu = new Menu(prompt, options);
+            mainMenu.DisplayOptions();
+            Console.ReadKey(true);
 
 
 
