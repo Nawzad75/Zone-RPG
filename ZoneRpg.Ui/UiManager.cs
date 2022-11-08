@@ -40,7 +40,7 @@ public class UiManager
     }
     public void DrawEntity(Zone zone)
     {
-        foreach (var item in zone.entities)
+        foreach (var item in zone.Entities)
         {
             Console.SetCursorPosition(item.X, item.Y);
             Console.WriteLine(item.Symbol);
@@ -66,5 +66,10 @@ public class UiManager
         return new Player();
 
 
+    }
+    public void DrawPlayer(Zone zone)
+    {
+        Console.SetCursorPosition(zone.Player.entity.X, zone.Player.entity.Y);
+        Console.WriteLine(zone.Player.name);      
     }
 }

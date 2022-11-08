@@ -48,7 +48,7 @@ namespace ZoneRpg.Game
             {
                 uiManager.DrawZone(zone);
 
-                zone.entities = db.GetEntities();
+                zone.Entities = db.GetEntities();
 
                 uiManager.DrawEntity(zone);
                 
