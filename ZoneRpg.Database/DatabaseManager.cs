@@ -73,6 +73,21 @@ namespace ZoneRpg.Database
 
             _connection.Execute(sql, data.GetValues());
         }
+        public Zone GetZone()
+        {
+            string sql = "SELECT * FROM zone";
+
+            Zone zone = _connection.Query<Zone>(sql).First();
+            // zone.Height=12;
+            // zone.Width= 45;
+            return zone;
+        }
+        public List<Entity> GetEntities()
+        {
+            string sql = "SELECT * FROM entity";
+            List<Entity> entities = _connection.Query<Entity>(sql).ToList();
+            return entities;
+        }
 
     }
 
