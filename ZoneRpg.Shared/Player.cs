@@ -1,6 +1,6 @@
 namespace ZoneRpg.Shared
 {
-    public class Player
+    public class Player 
     {
         public string Name { get; set; }
         public int Xp { get; set; }
@@ -15,7 +15,7 @@ namespace ZoneRpg.Shared
         public Item ItemIdBoots { get; set; }
         public Item ItemIdHelm { get; set; }
 
-
+        public Entity entity {get;set;}
 
 
 
