@@ -49,23 +49,22 @@ public class UiManager
     }
     public void Run()
     {
-        Player player = Creatplayer();
+        Player player = CreatePlayer();
         _db.InsertPlayer(player);
     }
 
-    public Player Creatplayer()
+    public Player CreatePlayer()
     {
         Menu menu = new Menu("Choose class" , new string[] { "Warrior", "Mage", "Rogue" });
         Player player = new Player();
+
         Console.Clear();
         Console.WriteLine("Enter Character Name");
-        string name = Console.ReadLine(); //här skickar vi in namnet som spelaren skriver in
+        player.Name = Console.ReadLine(); //här skickar vi in namnet som spelaren skriver in
         Console.Clear();
         CharacterClass characterClass = (CharacterClass)menu.Run(); //Här skickar vi in spelarens klass
         Console.Clear();
-         
-        return new Player();
 
-
+        return player;
     }
 }

@@ -6,10 +6,10 @@ namespace ZoneRpg.Shared
         public int Xp { get; set; }
         public int Level { get; set; }
         public int Skill { get; set; }
-        public string CharacterClass { get; set; }
+        public CharacterClass CharacterClass { get; set; }
         public int Attack { get; set; }
         public int Health { get; set; }
-        public int IsMob { get; set; }
+        public bool IsMob { get; set; } = true;
         public Entity Entity { get; set; } = new Entity();
         public Item ItemIdWeapon { get; set; }
         public Item ItemIdBoots { get; set; }
@@ -29,16 +29,16 @@ namespace ZoneRpg.Shared
 
         public void CharacterClassSet()
         {
-            if (CharacterClass == "Warrior")
-            {
-                Attack = 5;
-                Health = 10;
-            }
-            else if (CharacterClass == "Hitter")
-            {
-                Attack = 3;
-                Health = 5;
-            }
+            // if (CharacterClass == "Warrior")
+            // {
+            //     Attack = 5;
+            //     Health = 10;
+            // }
+            // else if (CharacterClass == "Hitter")
+            // {
+            //     Attack = 3;
+            //     Health = 5;
+            // }
         }
 
         //funktion för att levela upp spelaren.

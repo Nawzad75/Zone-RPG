@@ -98,11 +98,27 @@ namespace ZoneRpg.Database
         public void InsertPlayer(Player player)
 
         {
-            
-            var sql = @"INSERT INTO `player`(`name`, `xp`, `is_mob`, `skill_id`, `characterclass_id`, `entity_id`, `item_id_weapon`, `item_id_boots`, `item_id_helm`)
-             VALUES (@Name, @Xp, @IsMob, @Skill, @CharacterClass, @Eid, @ItemIdWeapon, @ItemIdBoots, @ItemIdHelm)";
-            var parameters = new {Name = player.Name , Xp = player.Xp, IsMob = player.IsMob, Skill = player.Skill, CharacterClass = player.CharacterClass, Eid = player.Entity.Id, ItemIdWeapon = player.ItemIdWeapon, ItemIdBoots = player.ItemIdBoots, ItemIdHelm = player.ItemIdHelm};
-            _connection.Execute(sql, player);
+            var sql = @"INSERT INTO player (name, xp, is_mob, skill_id, characterclass_id, entity_id)
+             VALUES (@name, @xp, @is_mob, @skill, @characterclass_id, @entity_id)";
+             
+
+            Console.WriteLine("player.Name: " + player.Name);
+            Console.WriteLine("player.isMob: " + player.IsMob);
+            Console.WriteLine("player.CharacterClass: " + (int)player.CharacterClass);
+
+            var parameters = new
+            {
+                name = player.Name,
+                xp = player.Xp,
+                is_mob = player.IsMob,
+                skill = player.Skill,
+                characterclass_id = (int)player.CharacterClass,
+                entity_id = player.Entity.Id
+            };
+
+            Console.WriteLine("parameter.characterclass_id: " + parameters.characterclass_id);
+
+            _connection.Execute(sql, parameters);
         }
     }
 
