@@ -88,7 +88,22 @@ namespace ZoneRpg.Database
             List<Entity> entities = _connection.Query<Entity>(sql).ToList();
             return entities;
         }
+        public Player GetPlayer()
+        {
+            string sql = "SELECT * FROM player";
+            Player player = _connection.Query<Player>(sql).First();
+            return player;
 
+        }
+        public void InsertPlayer(Player player)
+
+        {
+            
+            var sql = @"INSERT INTO `player`(`name`, `xp`, `is_mob`, `skill_id`, `characterclass_id`, `entity_id`, `item_id_weapon`, `item_id_boots`, `item_id_helm`)
+             VALUES (@Name, @Xp, @IsMob, @Skill, @CharacterClass, @Eid, @ItemIdWeapon, @ItemIdBoots, @ItemIdHelm)";
+            var parameters = new {Name = player.Name , Xp = player.Xp, IsMob = player.IsMob, Skill = player.Skill, CharacterClass = player.CharacterClass, Eid = player.Entity.Id, ItemIdWeapon = player.ItemIdWeapon, ItemIdBoots = player.ItemIdBoots, ItemIdHelm = player.ItemIdHelm};
+            _connection.Execute(sql, player);
+        }
     }
 
 

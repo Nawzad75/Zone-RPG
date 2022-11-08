@@ -2,13 +2,18 @@ namespace ZoneRpg.Shared
 {
     public class Player
     {
-        public string name { get; set; }
-        public int xp { get; set; }
-        public int level { get; set; }
-        public int skill { get; set; }
+        public string Name { get; set; }
+        public int Xp { get; set; }
+        public int Level { get; set; }
+        public int Skill { get; set; }
         public string CharacterClass { get; set; }
-        public int attack { get; set; }
-        public int health { get; set; }
+        public int Attack { get; set; }
+        public int Health { get; set; }
+        public int IsMob { get; set; }
+        public Entity Entity { get; set; } = new Entity();
+        public Item ItemIdWeapon { get; set; }
+        public Item ItemIdBoots { get; set; }
+        public Item ItemIdHelm { get; set; }
 
 
 
@@ -17,48 +22,38 @@ namespace ZoneRpg.Shared
         public Player()
         {
 
-            SetPlayer();
+         
 
         }
         // här sätter jag spelarens stats (attack och health) beroende på vilken klass spelaren har valt
-        public void SetPlayer()
-        {
-            
-            name = name;
-            level = level;
-            skill = skill;
-            CharacterClass = CharacterClass;
-            attack = level * 2;
-            health = level * 5;
 
-        }
         public void CharacterClassSet()
         {
             if (CharacterClass == "Warrior")
             {
-                attack = 5;
-                health = 10;
+                Attack = 5;
+                Health = 10;
             }
             else if (CharacterClass == "Hitter")
             {
-                attack = 3;
-                health = 5;
+                Attack = 3;
+                Health = 5;
             }
         }
 
         //funktion för att levela upp spelaren.
         public void LevelUp()
         {
-            level++;
-            xp = 0;
-            SetPlayer();
+            Level++;
+            Xp = 0;
+            
         }
 
         //Funktion så vi lägger till xp till spelaren, lägger in int xp som parameter för att kunna använda den i andra funktioner
         public void AddXp(int xp)
         {
-            this.xp += xp;
-            if (this.xp >= 100)
+            this.Xp += xp;
+            if (this.Xp >= 100)
             {
                 LevelUp();
             }

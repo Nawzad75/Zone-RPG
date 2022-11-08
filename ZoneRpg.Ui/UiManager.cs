@@ -48,11 +48,12 @@ public class UiManager
     public void Run()
     {
         Player player = Creatplayer();
+        _db.InsertPlayer(player);
     }
 
     public Player Creatplayer()
     {
-        Menu menu = new Menu("Ange din class" , new string[] { "Warrior", "Mage", "Rogue" });
+        Menu menu = new Menu("Choose class" , new string[] { "Warrior", "Mage", "Rogue" });
         Player player = new Player();
         Console.Clear();
         Console.WriteLine("Enter Character Name");
