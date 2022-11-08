@@ -1,6 +1,6 @@
 namespace ZoneRpg.Shared
 {
-    class Entity
+    public class Entity
     {
         public int X { get; set; }
         public int Y { get; set; }
