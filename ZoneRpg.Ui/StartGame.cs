@@ -40,11 +40,14 @@ namespace ZoneRpg.Game
 
         }
 
+            //Här skickar vi in funktionen som skapar spelaren
         public void Start()
         {
+            
+           
+        
 
-            //Här skickar vi in funktionen som skapar spelaren
-
+                
 
         }
         public void ExitGame()
