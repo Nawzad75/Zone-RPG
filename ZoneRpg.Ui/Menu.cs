@@ -2,7 +2,7 @@ using ZoneRpg.Game;
 using ZoneRpg.Database;
 using ZoneRpg.Ui;
 
-namespace ZoneRpg.Game
+namespace ZoneRpg.Ui
 {
     public class Menu
     {
