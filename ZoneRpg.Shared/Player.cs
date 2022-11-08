@@ -1,4 +1,4 @@
-namespace ZoneRpg.Game
+namespace ZoneRpg.Shared
 {
     public class Player
     {

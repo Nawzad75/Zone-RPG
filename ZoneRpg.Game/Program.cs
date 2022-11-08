@@ -7,7 +7,10 @@ namespace ZoneRpg.Game
 {
     internal class Program
     {
+     
+
         private static void Main(string[] args)
+
         {
             DatabaseManager db = new DatabaseManager();
             db.SeedDatabase();
@@ -27,9 +30,11 @@ namespace ZoneRpg.Game
             string prompt = "Welcome to the game";
             string[] options = { "Start", "Exit" };
             Menu mainMenu = new Menu(prompt, options);
-            mainMenu.DisplayOptions();
+            // mainMenu.DisplayOptions();
             Console.ReadKey(true);
 
+            StartGame startGame = new StartGame();
+            startGame.RunMainMenu();
 
             UiManager uiManager = new UiManager(db);
 
@@ -45,5 +50,11 @@ namespace ZoneRpg.Game
 
         }
 
+<<<<<<< HEAD
+=======
+
+
+
+>>>>>>> 90e8b8568411f6cbfb114ecd2971c7ff8539f7a4
     }
 }
