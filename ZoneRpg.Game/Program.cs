@@ -30,7 +30,7 @@ namespace ZoneRpg.Game
             string prompt = "Welcome to the game";
             string[] options = { "Start", "Exit" };
             Menu mainMenu = new Menu(prompt, options);
-            // mainMenu.DisplayOptions();
+            mainMenu.DisplayOptions();
             Console.ReadKey(true);
 
             StartGame startGame = new StartGame();

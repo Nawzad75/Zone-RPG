@@ -18,7 +18,7 @@ namespace ZoneRpg.Game
             _choice = 0;
         }
 
-        private void DisplayOptions()
+        public void DisplayOptions()
         {
             Console.WriteLine(Prompt);
 
