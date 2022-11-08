@@ -6,7 +6,7 @@ namespace ZoneRpg.Game
 {
     public class Menu
     {
-       
+
         private int _choice;
         private string[] Options;
         private string Prompt;
@@ -18,11 +18,10 @@ namespace ZoneRpg.Game
             _choice = 0;
         }
 
-        public void DisplayOptions()
-        
+        private void DisplayOptions()
         {
-        
             Console.WriteLine(Prompt);
+
             for (int i = 0; i < Options.Length; i++)
             {
                 string currentOption = Options[i];
@@ -32,7 +31,7 @@ namespace ZoneRpg.Game
                     prefix = ">";
                     Console.ForegroundColor = ConsoleColor.Red;
                     Console.BackgroundColor = ConsoleColor.Black;
-                    
+
                 }
                 else
                 {
@@ -42,9 +41,44 @@ namespace ZoneRpg.Game
                 }
                 Console.WriteLine(prefix + currentOption);
                 
+
             }
-        Console.ResetColor();
+
+            Console.ResetColor();
         }
-        
+
+        public int Run()
+        {
+            ConsoleKey keyPressed;
+            do
+            {
+
+                DisplayOptions();
+
+                ConsoleKeyInfo keyInfo = Console.ReadKey(true);
+                keyPressed = keyInfo.Key;
+                if (keyPressed == ConsoleKey.UpArrow)
+                {
+                    _choice--;
+                    if (_choice < 0)
+                    {
+                        _choice = Options.Length - 1;
+                    }
+                    Console.Clear();
+                }
+                else if (keyPressed == ConsoleKey.DownArrow)
+                {
+                    _choice++;
+                    if (_choice >= Options.Length)
+                    {
+                        _choice = 0;
+                    }
+                    Console.Clear();
+                }
+            } while (keyPressed != ConsoleKey.Enter);
+            return _choice;
+
+        }
+
     }
 }

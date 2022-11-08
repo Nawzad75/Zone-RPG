@@ -1,6 +1,6 @@
-namespace ZoneRpg.Game
+namespace ZoneRpg.Shared
 {
-    public class Monster
+    public class Monster 
     {
         public string name { get; set; }
 
