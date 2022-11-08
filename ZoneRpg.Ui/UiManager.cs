@@ -54,15 +54,15 @@ public class UiManager
 
     public Player Creatplayer()
     {
+        Menu menu = new Menu("Ange din class" , new string[] { "Warrior", "Mage", "Rogue" });
         Player player = new Player();
         Console.Clear();
         Console.WriteLine("Enter Character Name");
         string name = Console.ReadLine(); //här skickar vi in namnet som spelaren skriver in
         Console.Clear();
-        Console.WriteLine("What is your class?\nWarrior\nMage\nRogue\n");
-        string CharacterClass = Console.ReadLine(); //Här skickar vi in spelarens klass
+        CharacterClass characterClass = (CharacterClass)menu.Run(); //Här skickar vi in spelarens klass
         Console.Clear();
-
+         
         return new Player();
 
 
