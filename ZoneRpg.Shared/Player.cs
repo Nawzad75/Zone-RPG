@@ -15,7 +15,7 @@ namespace ZoneRpg.Shared
         public Item ItemIdBoots { get; set; }
         public Item ItemIdHelm { get; set; }
 
-        public Entity entity {get;set;}
+       
 
 
 

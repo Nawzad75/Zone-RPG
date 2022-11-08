@@ -40,38 +40,6 @@ namespace ZoneRpg.Game
             uiManager.Run();
 
 
-            Player player = new Player();
-            
-            
-            Zone zone = db.GetZone();
-            while (true)
-            {
-                uiManager.DrawZone(zone);
-
-                zone.Entities = db.GetEntities();
-
-                uiManager.DrawEntity(zone);
-                
-                ConsoleKeyInfo cki= Console.ReadKey();
-                
-                if (cki.Key==ConsoleKey.UpArrow)
-                {
-                    player.entity.Y--;
-                }
-                if (cki.Key == ConsoleKey.DownArrow)
-                {
-                    player.entity.Y++;
-                }
-                if (cki.Key == ConsoleKey.LeftArrow)
-                {
-                    player.entity.X--;
-                }
-                if (cki.Key == ConsoleKey.RightArrow)
-                {
-                    player.entity.X++;
-                }
-
-            }
 
             
            

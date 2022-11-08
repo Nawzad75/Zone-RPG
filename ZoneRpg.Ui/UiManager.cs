@@ -5,7 +5,7 @@ namespace ZoneRpg.Ui;
 public class UiManager
 {
     private DatabaseManager _db;
-   
+
     public UiManager(DatabaseManager db)
     {
         Console.Clear();
@@ -14,7 +14,7 @@ public class UiManager
     public void DrawZone(Zone zone)
     {
         Console.Clear();
-       
+
         for (int i = 0; i < zone.Width; i++)
         {
             Console.Write("-");
@@ -44,21 +44,57 @@ public class UiManager
         {
             Console.SetCursorPosition(item.X, item.Y);
             Console.WriteLine(item.Symbol);
-            
+
         }
     }
     public void Run()
     {
-        Player player = CreatePlayer();
-        _db.InsertPlayer(player);
+        Zone zone = _db.GetZone();
+        zone.Player= CreatePlayer();
+
+        _db.InsertPlayer(zone.Player);
+
+
+
+        
+        while (true)
+        {
+            DrawZone(zone);
+
+            zone.Entities = _db.GetEntities();
+
+            DrawEntity(zone);
+            DrawPlayer(zone);
+            ConsoleKeyInfo cki = Console.ReadKey();
+
+            if (cki.Key == ConsoleKey.UpArrow)
+            {
+                zone.Player.Entity.Y--;
+            }
+            if (cki.Key == ConsoleKey.DownArrow)
+            {
+                zone.Player.Entity.Y++;
+            }
+            if (cki.Key == ConsoleKey.LeftArrow)
+            {
+                zone.Player.Entity.X--;
+            }
+            if (cki.Key == ConsoleKey.RightArrow)
+            {
+                zone.Player.Entity.X++;
+            }
+
+        }
+
     }
 
     public Player CreatePlayer()
     {
-        Menu menu = new Menu("Choose class" , new string[] { "Warrior", "Mage", "Rogue" });
+        Menu menu = new Menu("Choose class", new string[] { "Warrior", "Mage", "Rogue" });
         Player player = new Player();
 
         Console.Clear();
+        player.Entity.Symbol = 'P';
         Console.WriteLine("Enter Character Name");
         player.Name = Console.ReadLine(); //här skickar vi in namnet som spelaren skriver in
         Console.Clear();
@@ -69,7 +105,7 @@ public class UiManager
     }
     public void DrawPlayer(Zone zone)
     {
-        Console.SetCursorPosition(zone.Player.entity.X, zone.Player.entity.Y);
-        Console.WriteLine(zone.Player.name);      
+        Console.SetCursorPosition(zone.Player.Entity.X, zone.Player.Entity.Y);
+        Console.WriteLine(zone.Player.Entity.Symbol);
     }
 }
