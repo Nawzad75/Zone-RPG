@@ -8,6 +8,7 @@ public class UiManager
    
     public UiManager(DatabaseManager db)
     {
+        Console.Clear();
         _db = db;
     }
     public void DrawZone(Zone zone)

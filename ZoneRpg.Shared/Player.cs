@@ -1,6 +1,6 @@
 namespace ZoneRpg.Shared
 {
-    public class Player
+    public class Player 
     {
         public string name { get; set; }
         public int xp { get; set; }
@@ -10,7 +10,7 @@ namespace ZoneRpg.Shared
         public int attack { get; set; }
         public int health { get; set; }
 
-
+        public Entity entity {get;set;}
 
 
 
