@@ -5,6 +5,8 @@ namespace ZoneRpg.Ui;
 public class UiManager
 {
     private DatabaseManager _db;
+    private FightManager? _currentFight;
+
     public UiManager(DatabaseManager db)
     {
         Console.Clear();
@@ -34,12 +36,39 @@ public class UiManager
             DrawZone(zone);
             DrawEntity(zone);
             DrawPlayer(zone);
-
             ReadInput(zone);
-
+            // Check for fights...
+            if (_currentFight == null)
+            {
+                _currentFight = LookForFight(zone);
+            }
+            else
+            {
+                string result = _currentFight.Fight();
+                Console.WriteLine(result);
+            }
         }
     }
 
+    //
+    // 
+    //
+    private FightManager? LookForFight(Zone zone)
+    {
+        foreach (var entity in zone.Entities)
+        {
+            if (entity.X == zone.Player.Entity.X && entity.Y == zone.Player.Entity.Y && entity.Symbol == 'M')
+            {
+                Monster monster = _db.GetMonsterByEntityId(entity.Id);
+                return new FightManager(zone.Player, monster);
+            }
+        }
+        return null;
+    }
+
+    //
+    //
+    //
     private void ReadInput(Zone zone)
     {
         ConsoleKeyInfo cki = Console.ReadKey();

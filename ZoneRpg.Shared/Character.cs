@@ -1,6 +1,6 @@
 namespace ZoneRpg.Shared
 {
-    public class Character
+    public class Character : IFighter
     {
         public string Name { get; set; }
         public int Xp { get; set; }
@@ -8,16 +8,12 @@ namespace ZoneRpg.Shared
         public int Skill { get; set; }
         public CharacterClass CharacterClass { get; set; }
         public int Attack { get; set; }
-        public int Health { get; set; }
+        public int Hp { get; set; }
         public bool IsMob { get; set; } = true;
         public Entity Entity { get; set; } = new Entity();
         public Item ItemIdWeapon { get; set; }
         public Item ItemIdBoots { get; set; }
         public Item ItemIdHelm { get; set; }
-
-       
-
-
 
         public Character(){}
         
@@ -91,6 +87,25 @@ namespace ZoneRpg.Shared
             }
         }
 
+        public int GetAttack()
+        {
+            return Attack;
+        }
+
+        public void TakeDamage(int damage)
+        {
+            Hp -= damage;
+        }
+
+        public string GetName()
+        {
+            return Name;
+        }
+
+        public int GetHp()
+        {
+            return Hp;
+        }
     }
 }
 
