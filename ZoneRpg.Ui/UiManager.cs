@@ -145,21 +145,49 @@ public class UiManager
     //
     public Character CreatePlayer()
     {
+        int Choose;
+        Console.WriteLine("Choose one of following optins:");
+        Console.WriteLine("1.Creat new character:");
+        Console.WriteLine("2.Choose a character:");
+        Choose=(Convert.ToInt32(Console.ReadLine()));
         Character player = new Character();
-        player.Entity.Symbol = 'P';
+        switch (Choose)
 
-        Console.Clear();
-        Console.WriteLine("Enter Character Name");
+        {
+            case 1:
+                
+                player.Entity.Symbol = 'P';
 
-        player.Name = Console.ReadLine()!; //här skickar vi in namnet som spelaren skriver in
-        Console.Clear();
+                Console.Clear();
+                Console.WriteLine("Enter Character Name");
 
-        CharacterClass characterClass = (CharacterClass) new Menu(
-            "Choose class",
-            new string[] { "Warrior", "Mage", "Rogue" }
-        ).Run(); //Här skickar vi in spelarens klass
-        
-        Console.Clear();
+                player.Name = Console.ReadLine()!; //här skickar vi in namnet som spelaren skriver in
+                Console.Clear();
+
+                CharacterClass characterClass = (CharacterClass)new Menu(
+                    "Choose class",
+                    new string[] { "Warrior", "Mage", "Rogue" }
+                ).Run(); //Här skickar vi in spelarens klass
+
+                Console.Clear();
+                
+            break;
+            case 2:
+                Console.Clear();
+                Console.WriteLine("Choose a character:");
+                List<Character> characters = _db.GetCharacters();
+                int index = 0;
+                foreach (var character in characters)
+                {
+                    Console.WriteLine($"{index++}. {character.Name}");
+                }
+                int choice = Convert.ToInt32(Console.ReadLine());
+                player=characters[choice];
+            
+
+            break;
+            
+        }
         return player;
     }
     public Monster CreateMonster()
