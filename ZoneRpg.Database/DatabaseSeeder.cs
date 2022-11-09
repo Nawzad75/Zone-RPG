@@ -18,8 +18,8 @@ namespace ZoneRpg.Database
         //
         public void SeedMonster()
         {
-             
-             _connection.Execute(@"Create table monster_info (
+
+            _connection.Execute(@"Create table monster_info (
                 id int not null auto_increment,
                 name VARCHAR(255) not null,
                 type VARCHAR(255) not null,
@@ -41,12 +41,9 @@ namespace ZoneRpg.Database
                 PRIMARY KEY (id)
             )");
             // Lägg till data
-            // Weapon = 1, Boots = 2, Helmet = 3
-            foreach (string value in new string[] { "Weapon", "Boots", "Helmet" })
-            {
-                string sql = $"INSERT INTO item_type (name) VALUES ('{value}')";
-                _connection.Execute(sql);
-            }
+            _connection.Execute("INSERT INTO item_type (name) VALUES ('Weapon')");
+            _connection.Execute("INSERT INTO item_type (name) VALUES ('Boots')");
+            _connection.Execute("INSERT INTO item_type (name) VALUES ('Helmet')");
         }
 
         //
