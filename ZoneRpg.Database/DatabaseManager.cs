@@ -53,7 +53,7 @@ namespace ZoneRpg.Database
             DatabaseSeeder seeder = new DatabaseSeeder(_connection);
             /* seeder.SeedMonster();
             seeder.SeedItemType();
-            seeder.SeedItemInfo(); */ 
+            seeder.SeedItemInfo(); */
         }
 
 
@@ -97,14 +97,26 @@ namespace ZoneRpg.Database
         }
 
         //
-        // Gets a player from the database
+        // Gets a characters from the database
         //
-        public Character GetCharacter()
+        public List<Character> GetCharacters()
         {
-            string sql = "SELECT * FROM player";
-            Character player = _connection.Query<Character>(sql).First();
-            return player;
+            string sql = "SELECT * FROM `character`";
+            List<Character> characters = _connection.Query<Character>(sql).ToList();
+            return characters;
         }
+
+        //
+        //
+        //
+        public Monster GetMonsterByEntityId(int id)
+        {
+            Console.WriteLine("looking for monster entity: " + id);
+            string sql = "SELECT * FROM `character` WHERE entity_id = @id";
+            Monster monster = _connection.Query<Monster>(sql, new { id }).First();
+            return monster;
+        }
+
 
         public void UpdateEntityPosition(Entity entity)
         {
@@ -140,7 +152,7 @@ namespace ZoneRpg.Database
             var parameters = new
             {
                 name = character.Name,
-                hp = character.Health,
+                hp = character.Hp,
                 xp = character.Xp,
                 is_monster = character.Is_Monster,
                 skill = character.Skill,
@@ -151,5 +163,6 @@ namespace ZoneRpg.Database
             _connection.Execute(sql, parameters);
 
         }
+
     }
 }

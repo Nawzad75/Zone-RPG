@@ -4,12 +4,20 @@ using ZoneRpg.Shared;
 namespace ZoneRpg.Ui;
 public class FightManager
 {
-    Character _a;
-    Character _b;
+    IFighter _a;
+    IFighter _b;
 
-    public FightManager(Character a, Character b)
+    public FightManager(IFighter a, IFighter b)
     {
         _a = a;
-        _b = b;
+        _b = b;        
     }
+
+    public string Fight(){
+        _a.TakeDamage(_b.GetAttack());
+        _b.TakeDamage(_b.GetAttack());
+        return $"{_a.GetName()}: {_a.GetHp()}\n {_b.GetName()}: {_b.GetHp()}";
+    }
+
 }
+

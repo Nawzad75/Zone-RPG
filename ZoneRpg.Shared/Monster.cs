@@ -7,7 +7,7 @@ namespace ZoneRpg.Shared
         {
             Name = "Monster";
             Attack = 0;
-            Health = 0;
+            Hp = 0;
             Level = 1;
         }
 
@@ -15,7 +15,7 @@ namespace ZoneRpg.Shared
         {
             this.Level = Level;
             Attack = Level * 2;
-            Health = Level * 5;
+            Hp = Level * 5;
         }
     }
 }
