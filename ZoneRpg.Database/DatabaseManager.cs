@@ -103,7 +103,6 @@ namespace ZoneRpg.Database
             string sql = "SELECT * FROM player";
             Character player = _connection.Query<Character>(sql).First();
             return player;
-
         }
 
         //
