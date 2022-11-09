@@ -6,6 +6,7 @@ public class UiManager
 {
     private DatabaseManager _db;
     private FightManager? _currentFight;
+    private string _fightResult = "";
 
     public UiManager(DatabaseManager db)
     {
@@ -20,11 +21,7 @@ public class UiManager
     {
         Console.Clear();
         Console.CursorVisible = false;
-
-        StartGame startGame = new StartGame();
-        startGame.RunMainMenu();
-
-
+        new StartGame().RunMainMenu();
         Zone zone = _db.GetZone();
         zone.Player = CreatePlayer();
 
@@ -34,37 +31,40 @@ public class UiManager
             zone.Entities = _db.GetEntities();
 
             DrawZone(zone);
+            Console.WriteLine(_fightResult);
+
             DrawEntity(zone);
             DrawPlayer(zone);
+
             ReadInput(zone);
-            // Check for fights...
-            if (_currentFight == null)
-            {
-                _currentFight = LookForFight(zone);
-            }
-            else
-            {
-                string result = _currentFight.Fight();
-                Console.WriteLine(result);
-            }
+            LookForFight(zone);
+            HandleFight(zone);
         }
     }
 
-    //
-    // 
-    //
-    private FightManager? LookForFight(Zone zone)
+    private void HandleFight(Zone zone)
     {
+        throw new NotImplementedException();
+    }
+
+    //
+    // Marcus kommentar:  Tycker inte om att _currentFight ändras här. 
+    // Det är gömt och borde nog synas i main loopen.  
+    //
+    private void LookForFight(Zone zone)
+    {
+        if (_currentFight != null)
+        {
+            return;
+        }
         foreach (var entity in zone.Entities)
         {
             if (entity.X == zone.Player.Entity.X && entity.Y == zone.Player.Entity.Y && entity.Symbol == 'm')
             {
                 Monster monster = _db.GetMonsterByEntityId(entity.Id);
-                Console.WriteLine("Fight!");
-                return new FightManager(zone.Player, monster);
+                _currentFight = new FightManager(zone.Player, monster);
             }
         }
-        return null;
     }
 
     //
@@ -145,17 +145,21 @@ public class UiManager
     //
     public Character CreatePlayer()
     {
-        Menu menu = new Menu("Choose class", new string[] { "Warrior", "Mage", "Rogue" });
         Character player = new Character();
-
-        Console.Clear();
         player.Entity.Symbol = 'P';
-        Console.WriteLine("Enter Character Name");
-        player.Name = Console.ReadLine(); //här skickar vi in namnet som spelaren skriver in
+
         Console.Clear();
-        CharacterClass characterClass = (CharacterClass)menu.Run(); //Här skickar vi in spelarens klass
+        Console.WriteLine("Enter Character Name");
+
+        player.Name = Console.ReadLine()!; //här skickar vi in namnet som spelaren skriver in
         Console.Clear();
 
+        CharacterClass characterClass = (CharacterClass) new Menu(
+            "Choose class",
+            new string[] { "Warrior", "Mage", "Rogue" }
+        ).Run(); //Här skickar vi in spelarens klass
+        
+        Console.Clear();
         return player;
     }
     public Monster CreateMonster()
@@ -164,7 +168,7 @@ public class UiManager
         Monster monster = new Monster();
         monster.Entity.Symbol = 'M';
         monster.Name = "Monster";
-        
+
 
         return monster;
     }
