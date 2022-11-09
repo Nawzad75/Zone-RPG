@@ -16,6 +16,7 @@ public class UiManager
     //
     public void Run()
     {
+        Console.Clear();
         Console.CursorVisible = false;
         Zone zone = _db.GetZone();
         zone.Player = CreatePlayer();
