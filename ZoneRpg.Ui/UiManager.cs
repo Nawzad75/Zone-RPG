@@ -18,40 +18,52 @@ public class UiManager
     {
         Console.CursorVisible = false;
         Zone zone = _db.GetZone();
-        zone.Player= CreatePlayer();
+        zone.Player = CreatePlayer();
 
-        _db.InsertCharacter(zone.Player);      
+        _db.InsertCharacter(zone.Player);
         while (true)
         {
             zone.Entities = _db.GetEntities();
-            
+
             DrawZone(zone);
             DrawEntity(zone);
             DrawPlayer(zone);
 
-            ConsoleKeyInfo cki = Console.ReadKey();
-
-            if (cki.Key == ConsoleKey.UpArrow)
-            {
-                zone.Player.Entity.Y--;
-            }
-            if (cki.Key == ConsoleKey.DownArrow)
-            {
-                zone.Player.Entity.Y++;
-            }
-            if (cki.Key == ConsoleKey.LeftArrow)
-            {
-                zone.Player.Entity.X--;
-            }
-            if (cki.Key == ConsoleKey.RightArrow)
-            {
-                zone.Player.Entity.X++;
-            }
-
-            
+            ReadInput(zone);
 
         }
     }
+
+    private static void ReadInput(Zone zone)
+    {
+        ConsoleKeyInfo cki = Console.ReadKey();
+
+        if (cki.Key == ConsoleKey.UpArrow)
+        {
+            if (zone.Player.Entity.Y<zone.Height)
+            {
+                zone.Player.Entity.Y--;
+            }
+            // zone.Player.Entity.Y--;
+        }
+        if (cki.Key == ConsoleKey.DownArrow)
+        {
+            // if (zone.Player.Entity.Y < zone.Height)
+            // {
+            //     zone.Player.Entity.Y++;
+            // }
+            zone.Player.Entity.Y++;
+        }
+        if (cki.Key == ConsoleKey.LeftArrow)
+        {
+            zone.Player.Entity.X--;
+        }
+        if (cki.Key == ConsoleKey.RightArrow)
+        {
+            zone.Player.Entity.X++;
+        }
+    }
+
 
     //
     // Draws a Zone in the console

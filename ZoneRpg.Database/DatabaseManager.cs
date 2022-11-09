@@ -110,8 +110,20 @@ namespace ZoneRpg.Database
         // 
         public void InsertCharacter(Character character)
         {
-            var sql = @"INSERT INTO `character` (name, xp, is_mob, skill_id, characterclass_id, entity_id)
-             VALUES (@name, @xp, @is_mob, @skill, @characterclass_id, @entity_id)";
+            string entity_sql = @"
+                INSERT INTO entity 
+                    (symbol, zone_id, x, y, hp)
+                VALUES
+                    (@Symbol, @ZoneId, @X, @Y, @Hp);
+                SELECT LAST_INSERT_ID();";
+
+            character.Entity.Id = _connection.Query<int>(entity_sql, character.Entity).First();
+
+            string sql = @"
+                INSERT INTO `character` 
+                    (name, xp, is_mob, skill_id, characterclass_id, entity_id)
+                VALUES 
+                    (@name, @xp, @is_mob, @skill, @characterclass_id, @entity_id)";
 
             var parameters = new
             {
