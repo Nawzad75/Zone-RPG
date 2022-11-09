@@ -57,9 +57,10 @@ public class UiManager
     {
         foreach (var entity in zone.Entities)
         {
-            if (entity.X == zone.Player.Entity.X && entity.Y == zone.Player.Entity.Y && entity.Symbol == 'M')
+            if (entity.X == zone.Player.Entity.X && entity.Y == zone.Player.Entity.Y && entity.Symbol == 'm')
             {
                 Monster monster = _db.GetMonsterByEntityId(entity.Id);
+                Console.WriteLine("Fight!");
                 return new FightManager(zone.Player, monster);
             }
         }

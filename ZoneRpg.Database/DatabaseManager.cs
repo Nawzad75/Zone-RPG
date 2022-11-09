@@ -151,7 +151,7 @@ namespace ZoneRpg.Database
             var parameters = new
             {
                 name = character.Name,
-                hp = character.Health,
+                hp = character.Hp,
                 xp = character.Xp,
                 is_monster = character.Is_Monster,
                 skill = character.Skill,
