@@ -16,7 +16,13 @@ public class UiManager
     //
     public void Run()
     {
+        Console.Clear();
         Console.CursorVisible = false;
+
+        StartGame startGame = new StartGame();
+        startGame.RunMainMenu();
+
+
         Zone zone = _db.GetZone();
         zone.Player = CreatePlayer();
 
