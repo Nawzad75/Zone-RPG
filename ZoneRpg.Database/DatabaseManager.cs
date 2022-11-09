@@ -111,7 +111,7 @@ namespace ZoneRpg.Database
         //
         public Monster GetMonsterByEntityId(int id)
         {
-            string sql = "SELECT * FROM `characters` WHERE entity_id = @id";
+            string sql = "SELECT * FROM `character` WHERE entity_id = @id";
             Monster monster = _connection.Query<Monster>(sql, new { id }).First();
             return monster;
         }
