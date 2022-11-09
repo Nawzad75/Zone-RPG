@@ -3,6 +3,7 @@ namespace ZoneRpg.Shared
     public class Character : IFighter
     {
         public string Name { get; set; }
+        public int Type { get; set; }
         public int Xp { get; set; }
         public int Level { get; set; }
         public int Skill { get; set; }

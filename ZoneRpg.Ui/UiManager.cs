@@ -172,6 +172,7 @@ public class UiManager
 
         return monster;
     }
+    
 
     //
     // Draw the player
