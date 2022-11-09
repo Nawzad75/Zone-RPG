@@ -40,26 +40,29 @@ public class UiManager
         }
     }
 
-    private static void ReadInput(Zone zone)
+    private void ReadInput(Zone zone)
     {
         ConsoleKeyInfo cki = Console.ReadKey();
 
         if (cki.Key == ConsoleKey.UpArrow)
         {
             zone.Player.MoveUpp();
-            
+            _db.UpdateEntityPosition(zone.Player.Entity);
         }
         if (cki.Key == ConsoleKey.DownArrow)
         {
             zone.Player.MoveDown(zone.Height + 1);
+            _db.UpdateEntityPosition(zone.Player.Entity);
         }
         if (cki.Key == ConsoleKey.LeftArrow)
         {
             zone.Player.MoveLeft(zone.Width - 45);
+            _db.UpdateEntityPosition(zone.Player.Entity);
         }
         if (cki.Key == ConsoleKey.RightArrow)
         {
             zone.Player.MoveRight(zone.Width - 2);
+            _db.UpdateEntityPosition(zone.Player.Entity);
         }
     }
 
