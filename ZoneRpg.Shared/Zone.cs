@@ -7,7 +7,7 @@ namespace ZoneRpg.Shared
         public string Name { get; set; }
       
         public List<Entity> Entities = new();
-        public Player Player = new();
+        public Character Player = new();
         public Zone() { }
         public Zone(string name)
         {

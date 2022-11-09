@@ -2,27 +2,33 @@ namespace ZoneRpg.Shared
 {
     public class Monster 
     {
-        public string name { get; set; }
+        public string Name { get; set; }
 
-        public int attack { get; set; }
-        public int health { get; set; }
-        public int level { get; set; }
-        public int loot { get; set; }
+        public int Attack { get; set; }
+        public int Health { get; set; }
+        public int Level { get; set; }
+        public int Loot { get; set; }
+        public Entity Entity { get; set; } = new Entity();
+        public int Xp { get; set; }
+        public bool IsMob { get; set; }
+        public int Skill { get; set; }
+        public int CharacterClass { get; set; }
 
-        Monster monster = new Monster();
+
+        
         public Monster()
         {
-            name = "Monster";
-            attack = 0;
-            health = 0;
-            level = 1;
+            Name = "Monster";
+            Attack = 0;
+            Health = 0;
+            Level = 1;
         }
 
         public void SetMonster()
         {
-            this.level = level;
-            attack = level * 2;
-            health = level * 5;
+            this.Level = Level;
+            Attack = Level * 2;
+            Health = Level * 5;
         }
     }
 }

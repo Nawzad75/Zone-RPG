@@ -99,10 +99,10 @@ public class UiManager
     //
     // Create a player
     //
-    public Player CreatePlayer()
+    public Character CreatePlayer()
     {
         Menu menu = new Menu("Choose class", new string[] { "Warrior", "Mage", "Rogue" });
-        Player player = new Player();
+        Character player = new Character();
 
         Console.Clear();
         player.Entity.Symbol = 'P';
@@ -113,6 +113,15 @@ public class UiManager
         Console.Clear();
 
         return player;
+    }
+    public Monster CreateMonster()
+    {
+
+        Monster monster = new Monster();
+        monster.Entity.Symbol = 'M';
+        monster.Name = "Monster";
+       
+        return monster;
     }
 
     //
