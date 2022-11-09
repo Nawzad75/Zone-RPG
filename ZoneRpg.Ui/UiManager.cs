@@ -40,36 +40,20 @@ public class UiManager
 
         if (cki.Key == ConsoleKey.UpArrow)
         {
-            if (zone.Player.Entity.Y>0)
-            {
-                zone.Player.Entity.Y--;
-            }
-            // zone.Player.Entity.Y--;
+            zone.Player.MoveUpp();
+            
         }
         if (cki.Key == ConsoleKey.DownArrow)
         {
-            if (zone.Player.Entity.Y < zone.Height+2)
-            {
-                zone.Player.Entity.Y++;
-            }
-            
+            zone.Player.MoveDown(zone.Height + 1);
         }
         if (cki.Key == ConsoleKey.LeftArrow)
         {
-            
-            if (zone.Player.Entity.X > zone.Width - 45)
-            {
-                zone.Player.Entity.X--;
-            }
-            
+            zone.Player.MoveLeft(zone.Width - 45);
         }
         if (cki.Key == ConsoleKey.RightArrow)
         {
-            if (zone.Player.Entity.X <zone.Width-2)
-            {
-                zone.Player.Entity.X++;
-            }
-
+            zone.Player.MoveRight(zone.Width - 2);
         }
     }
 
@@ -141,7 +125,7 @@ public class UiManager
         Monster monster = new Monster();
         monster.Entity.Symbol = 'M';
         monster.Name = "Monster";
-       
+
         return monster;
     }
 

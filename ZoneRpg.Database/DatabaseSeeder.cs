@@ -25,7 +25,7 @@ namespace ZoneRpg.Database
                 type VARCHAR(255) not null,
                 PRIMARY KEY (id)");
 
-                _connection.Execute(@"INSERT")
+                _connection.Execute(@"INSERT");
 
 
            

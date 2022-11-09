@@ -62,8 +62,34 @@ namespace ZoneRpg.Shared
             PlayerAddXp(monster.Loot);
         } */
 
-        
-        
+        public void MoveUpp()
+        {
+            if (Entity.Y > 0)
+            {
+                Entity.Y--;
+            }
+        }
+        public void MoveDown(int limit )
+        {
+            if (Entity.Y <limit)
+            {
+                Entity.Y++;
+            }
+        }
+        public void MoveLeft(int limit)
+        {
+            if (Entity.X > limit)
+            {
+                Entity.X--;
+            }
+        }
+        public void MoveRight(int limit)
+        {
+            if (Entity.X < limit)
+            {
+                Entity.X++;
+            }
+        }
 
     }
 }
