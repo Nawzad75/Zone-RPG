@@ -1,6 +1,6 @@
 namespace ZoneRpg.Shared
 {
-    public class Player 
+    public class Character 
     {
         public string Name { get; set; }
         public int Xp { get; set; }
@@ -19,12 +19,9 @@ namespace ZoneRpg.Shared
 
 
 
-        public Player()
-        {
-
-         
-
-        }
+        public Character(){}
+        
+        
         // här sätter jag spelarens stats (attack och health) beroende på vilken klass spelaren har valt
 
         public void CharacterClassSet()
@@ -62,7 +59,7 @@ namespace ZoneRpg.Shared
         //När vi dödar en monster så ska vi få xp och levela upp. Samt få loot.
         public void KillMonster(Monster monster)
         {
-            AddXp(monster.loot);
+            AddXp(monster.Loot);
         }
     }
 }
