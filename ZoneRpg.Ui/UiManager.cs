@@ -16,18 +16,19 @@ public class UiManager
     //
     public void Run()
     {
+        Console.CursorVisible = false;
         Zone zone = _db.GetZone();
         zone.Player= CreatePlayer();
 
         _db.InsertPlayer(zone.Player);      
         while (true)
         {
-            DrawZone(zone);
-
             zone.Entities = _db.GetEntities();
-
+            
+            DrawZone(zone);
             DrawEntity(zone);
             DrawPlayer(zone);
+
             ConsoleKeyInfo cki = Console.ReadKey();
 
             if (cki.Key == ConsoleKey.UpArrow)
@@ -46,6 +47,9 @@ public class UiManager
             {
                 zone.Player.Entity.X++;
             }
+
+            
+
         }
     }
 
@@ -54,7 +58,7 @@ public class UiManager
     //
     public void DrawZone(Zone zone)
     {
-        Console.Clear();
+        Console.SetCursorPosition(0, 0);
         for (int i = 0; i < zone.Width; i++)
         {
             Console.Write("-");
