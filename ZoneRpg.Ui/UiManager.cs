@@ -163,6 +163,7 @@ public class UiManager
         Monster monster = new Monster();
         monster.Entity.Symbol = 'M';
         monster.Name = "Monster";
+        
 
         return monster;
     }
