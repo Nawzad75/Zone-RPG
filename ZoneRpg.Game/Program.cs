@@ -11,6 +11,7 @@ namespace ZoneRpg.Game
         {
             DatabaseManager db = new DatabaseManager();
             db.SeedDatabase();
+            
 
             string prompt = "Welcome to the game";
             string[] options = { "Start", "Exit" };

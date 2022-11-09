@@ -19,13 +19,16 @@ namespace ZoneRpg.Database
         public void SeedMonster()
         {
 
-            _connection.Execute(@"Create table monster_info (
-                id int not null auto_increment,
-                name VARCHAR(255) not null,
-                type VARCHAR(255) not null,
-                PRIMARY KEY (id)");
+            _connection.Execute(@"CREATE TABLE monster_info (
+                id INT NOT NULL AUTO_INCREMENT,
+                name VARCHAR(32) not null,
+                type VARCHAR(32) not null,
+                PRIMARY KEY (id))");
 
-                _connection.Execute(@"INSERT")
+                _connection.Execute("INSERT INTO monster_info (name, type) VALUES ('Goblin', 'Humanoid')");
+                _connection.Execute("INSERT INTO monster_info (name, type) VALUES ('Orc', 'Humanoid')");
+                _connection.Execute("INSERT INTO monster_info (name, type) VALUES ('Troll', 'Humanoid')");
+                _connection.Execute("INSERT INTO monster_info (name, type) VALUES ('Dragon', 'Dragon')");
 
 
            

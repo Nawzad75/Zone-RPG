@@ -51,8 +51,9 @@ namespace ZoneRpg.Database
         public void SeedDatabase()
         {
             DatabaseSeeder seeder = new DatabaseSeeder(_connection);
+            /* seeder.SeedMonster();
             seeder.SeedItemType();
-            seeder.SeedItemInfo();
+            seeder.SeedItemInfo(); */ 
         }
 
 
