@@ -1,7 +1,4 @@
-using ZoneRpg.Game;
-using ZoneRpg.Ui;
-using ZoneRpg.Database;
-namespace ZoneRpg.Game
+namespace ZoneRpg.Ui
 {
 
     public class StartGame

@@ -18,6 +18,11 @@ public class UiManager
     {
         Console.Clear();
         Console.CursorVisible = false;
+
+        StartGame startGame = new StartGame();
+        startGame.RunMainMenu();
+
+
         Zone zone = _db.GetZone();
         zone.Player = CreatePlayer();
 
@@ -41,7 +46,7 @@ public class UiManager
 
         if (cki.Key == ConsoleKey.UpArrow)
         {
-            if (zone.Player.Entity.Y>0)
+            if (zone.Player.Entity.Y > 0)
             {
                 zone.Player.Entity.Y--;
             }
@@ -49,24 +54,24 @@ public class UiManager
         }
         if (cki.Key == ConsoleKey.DownArrow)
         {
-            if (zone.Player.Entity.Y < zone.Height+2)
+            if (zone.Player.Entity.Y < zone.Height + 2)
             {
                 zone.Player.Entity.Y++;
             }
-            
+
         }
         if (cki.Key == ConsoleKey.LeftArrow)
         {
-            
+
             if (zone.Player.Entity.X > zone.Width - 45)
             {
                 zone.Player.Entity.X--;
             }
-            
+
         }
         if (cki.Key == ConsoleKey.RightArrow)
         {
-            if (zone.Player.Entity.X <zone.Width-2)
+            if (zone.Player.Entity.X < zone.Width - 2)
             {
                 zone.Player.Entity.X++;
             }
@@ -142,7 +147,7 @@ public class UiManager
         Monster monster = new Monster();
         monster.Entity.Symbol = 'M';
         monster.Name = "Monster";
-       
+
         return monster;
     }
 

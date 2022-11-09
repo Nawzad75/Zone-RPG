@@ -12,9 +12,6 @@ namespace ZoneRpg.Game
             DatabaseManager db = new DatabaseManager();
             db.SeedDatabase();
 
-            StartGame startGame = new StartGame();
-            startGame.RunMainMenu();
-
             UiManager uiManager = new UiManager(db);
             uiManager.Run();
         }
