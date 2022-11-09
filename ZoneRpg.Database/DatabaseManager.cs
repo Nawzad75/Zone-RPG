@@ -124,9 +124,9 @@ namespace ZoneRpg.Database
         {
             string entity_sql = @"
                 INSERT INTO entity 
-                    (symbol, zone_id, x, y, hp)
+                    (type, symbol, zone_id, x, y, hp)
                 VALUES
-                    (@Symbol, @ZoneId, @X, @Y, @Hp);
+                    (@Type, @Symbol, @ZoneId, @X, @Y, @Hp);
                 SELECT LAST_INSERT_ID();";
 
             character.Entity.Id = _connection.Query<int>(entity_sql, character.Entity).First();
