@@ -25,8 +25,7 @@ namespace ZoneRpg.Database
                 type VARCHAR(255) not null,
                 PRIMARY KEY (id)");
 
-                _connection.Execute(@"INSERT")
-
+                // _connection.Execute(@"INSERT")
 
            
         }
@@ -75,7 +74,6 @@ namespace ZoneRpg.Database
             {
                 _connection.Execute($"INSERT INTO item_info {columns} VALUES {value}");
             }
-
         }
     }
 }
