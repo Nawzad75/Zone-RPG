@@ -20,7 +20,7 @@ public class UiManager
         Zone zone = _db.GetZone();
         zone.Player= CreatePlayer();
 
-        _db.InsertPlayer(zone.Player);      
+        _db.InsertCharacter(zone.Player);      
         while (true)
         {
             zone.Entities = _db.GetEntities();

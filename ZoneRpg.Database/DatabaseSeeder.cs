@@ -16,21 +16,17 @@ namespace ZoneRpg.Database
         //
         // Recreates the item_type table and inserts data
         //
-        public void SeedPlayer()
+        public void SeedMonster()
         {
              
-             
-           /*  _connection.Execute("DROP TABLE IF EXISTS player");
-            _connection.Execute(@"CREATE TABLE player (id int NOT NULL,
-  name varchar(32) NOT NULL,
-  xp int NOT NULL,
-  is_mob tinyint(1) NOT NULL,
-  skill_id int NOT NULL,
-  characterclass_id int NOT NULL,
-  entity_id int NOT NULL,
-  item_id_weapon int DEFAULT NULL,
-  item_id_boots int DEFAULT NULL,
-  item_id_helm int DEFAULT NULL);"); */
+             _connection.Execute(@"Create table monster_info (
+                id int not null auto_increment,
+                name VARCHAR(255) not null,
+                type VARCHAR(255) not null,
+                PRIMARY KEY (id)");
+
+                
+           
         }
         public void SeedItemType()
         {
