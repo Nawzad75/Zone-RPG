@@ -39,12 +39,12 @@ namespace ZoneRpg.Database
                 PRIMARY KEY (id)
             )");
             // Lägg till data
-            // Weapon = 1, Boots = 2, Helmet = 3
-            foreach (string value in new string[] { "Weapon", "Boots", "Helmet" })
-            {
-                string sql = $"INSERT INTO item_type (name) VALUES ('{value}')";
-                _connection.Execute(sql);
-            }
+                string sql1 = $"INSERT INTO item_type (name) VALUES ('Weapon')";
+                string sql2 = $"INSERT INTO item_type (name) VALUES ('Boots')";
+                string sql3 = $"INSERT INTO item_type (name) VALUES ('Helmet')";
+                _connection.Execute(sql1);
+                _connection.Execute(sql2);
+                _connection.Execute(sql3);
         }
 
         //
