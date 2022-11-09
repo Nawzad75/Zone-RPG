@@ -13,18 +13,8 @@ namespace ZoneRpg.Game
             db.SeedDatabase();
             
 
-            string prompt = "Welcome to the game";
-            string[] options = { "Start", "Exit" };
-            Menu mainMenu = new Menu(prompt, options);
-            mainMenu.DisplayOptions();
-            Console.ReadKey(true);
-
-            StartGame startGame = new StartGame();
-            startGame.RunMainMenu();
-
             UiManager uiManager = new UiManager(db);
             uiManager.Run();
-
         }
     }
 }

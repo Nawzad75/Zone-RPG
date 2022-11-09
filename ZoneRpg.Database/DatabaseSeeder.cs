@@ -78,7 +78,6 @@ namespace ZoneRpg.Database
             {
                 _connection.Execute($"INSERT INTO item_info {columns} VALUES {value}");
             }
-
         }
     }
 }

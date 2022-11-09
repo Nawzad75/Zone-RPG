@@ -106,6 +106,17 @@ namespace ZoneRpg.Database
             return player;
         }
 
+        public void UpdateEntityPosition(Entity entity)
+        {
+            string sql = "UPDATE entity SET x = @x, y = @y WHERE id = @id";
+            _connection.Execute(sql, new
+            {
+                x = entity.X,
+                y = entity.Y,
+                id = entity.Id
+            });
+        }
+
         //
         // Inserts a player into the database
         // 
@@ -137,7 +148,7 @@ namespace ZoneRpg.Database
             };
 
             _connection.Execute(sql, parameters);
-            
+
         }
     }
 }
