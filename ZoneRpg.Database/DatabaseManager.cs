@@ -98,7 +98,7 @@ namespace ZoneRpg.Database
         //
         // Gets a player from the database
         //
-        public Character GetPlayer()
+        public Character GetCharacter()
         {
             string sql = "SELECT * FROM player";
             Character player = _connection.Query<Character>(sql).First();
@@ -108,7 +108,7 @@ namespace ZoneRpg.Database
         //
         // Inserts a player into the database
         // 
-        public void InsertPlayer(Character player)
+        public void InsertCharacter(Character character)
         {
             string entity_sql = @"
                 INSERT INTO entity 
@@ -117,7 +117,7 @@ namespace ZoneRpg.Database
                     (@Symbol, @ZoneId, @X, @Y, @Hp);
                 SELECT LAST_INSERT_ID();";
 
-            player.Entity.Id = _connection.Query<int>(entity_sql, player.Entity).First();
+            character.Entity.Id = _connection.Query<int>(entity_sql, character.Entity).First();
 
             string sql = @"
                 INSERT INTO `character` 
@@ -127,15 +127,16 @@ namespace ZoneRpg.Database
 
             var parameters = new
             {
-                name = player.Name,
-                xp = player.Xp,
-                is_mob = player.IsMob,
-                skill = player.Skill,
-                characterclass_id = (int)player.CharacterClass,
-                entity_id = player.Entity.Id
+                name = character.Name,
+                xp = character.Xp,
+                is_mob = character.IsMob,
+                skill = character.Skill,
+                characterclass_id = (int)character.CharacterClass,
+                entity_id = character.Entity.Id
             };
 
             _connection.Execute(sql, parameters);
+            
         }
     }
 }

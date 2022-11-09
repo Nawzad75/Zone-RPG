@@ -1,6 +1,6 @@
 namespace ZoneRpg.Shared
 {
-    public class Character 
+    public class Character
     {
         public string Name { get; set; }
         public int Xp { get; set; }
@@ -39,7 +39,7 @@ namespace ZoneRpg.Shared
         }
 
         //funktion för att levela upp spelaren.
-        public void LevelUp()
+        public void PlayerLevelUp()
         {
             Level++;
             Xp = 0;
@@ -47,20 +47,24 @@ namespace ZoneRpg.Shared
         }
 
         //Funktion så vi lägger till xp till spelaren, lägger in int xp som parameter för att kunna använda den i andra funktioner
-        public void AddXp(int xp)
+        public void PlayerAddXp(int xp)
         {
             this.Xp += xp;
             if (this.Xp >= 100)
             {
-                LevelUp();
+                PlayerLevelUp();
             }
         }
 
         //När vi dödar en monster så ska vi få xp och levela upp. Samt få loot.
-        public void KillMonster(Monster monster)
+      /*   public void PlayerKillMonster(Monster monster)
         {
-            AddXp(monster.Loot);
-        }
+            PlayerAddXp(monster.Loot);
+        } */
+
+        
+        
+
     }
 }
 
