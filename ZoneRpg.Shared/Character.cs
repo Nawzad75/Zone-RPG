@@ -117,7 +117,7 @@ namespace ZoneRpg.Shared
                     MoveUp(1);
                     break;
                 case ConsoleKey.DownArrow:
-                    MoveDown(zone.Height +1);
+                    MoveDown(zone.Height -2);
                     break;
                 case ConsoleKey.LeftArrow:
                     MoveLeft(1);
