@@ -137,32 +137,27 @@ public class UiManager
     //
     public Character CreatePlayer()
     {
-        int choose = new Menu(
-            "Choose one of following options:",
-            new string[] { "1. Create new character", "2. Choose a character" }
-        ).Run();
+        CreateOption createOption = (CreateOption)new Menu(
+            "Create or choose a character!",
+            new string[] { "Create", "Choose" }).Run();
 
         Character player = new Character();
-        switch (choose)
+        Console.Clear();
+        switch (createOption)
         {
-            case 1:
-                player.Entity.Symbol = 'P';
-                player.Entity.Type = EntityType.Player;
+            case CreateOption.Create:
 
-                Console.Clear();
+                player.Entity.Symbol = 'P';
                 Console.WriteLine("Enter Character Name");
                 player.Name = Console.ReadLine()!; //här skickar vi in namnet som spelaren skriver in
-
                 Console.Clear();
                 CharacterClass characterClass = (CharacterClass)new Menu(
                     "Choose class",
                     new string[] { "Warrior", "Mage", "Rogue" }
                 ).Run(); //Här skickar vi in spelarens klass
-
-                Console.Clear();
-
                 break;
-            case 2:
+
+            case CreateOption.Choose:
                 Console.Clear();
                 Console.WriteLine("Choose a character:");
                 List<Character> characters = _db.GetCharacters();
