@@ -46,7 +46,6 @@ public class UiManager
 
     private void HandleFight(Zone zone)
     {
-        throw new NotImplementedException();
     }
 
     //
@@ -78,7 +77,7 @@ public class UiManager
 
         if (cki.Key == ConsoleKey.UpArrow)
         {
-            zone.Player.MoveUpp();
+            zone.Player.MoveUp();
             _db.UpdateEntityPosition(zone.Player.Entity);
         }
         if (cki.Key == ConsoleKey.DownArrow)
