@@ -120,12 +120,12 @@ public class UiManager
         {
             Console.Write("-");
         }
-        Console.WriteLine("");
+        Console.WriteLine();
 
-        for (int i = 0; i < zone.Height + 1; i++)
+        for (int i = 0; i < zone.Height; i++)
         {
             Console.Write("|");
-            for (int j = 0; j < zone.Width - 2; j++)
+            for (int j = 0; j < zone.Width - 1; j++)
             {
                 Console.Write(" ");
             }
@@ -160,9 +160,10 @@ public class UiManager
     {
 
         Character player = new Character();
-        player.Entity.X=22;
-        player.Entity.Y=6;
+        player.Entity.X = 22;
+        player.Entity.Y = 6;
         player.Entity.Symbol = 'P';
+        player.Entity.EntityType = EntityType.Player;
         Console.WriteLine("Enter Character Name");
         player.Name = Console.ReadLine()!; //här skickar vi in namnet som spelaren skriver in
         Console.Clear();
