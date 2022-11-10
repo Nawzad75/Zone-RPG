@@ -8,7 +8,7 @@ namespace ZoneRpg.Shared
         public int X { get; set; }
         public int Y { get; set; }
         public int Hp { get; set; }
-        public int Type { get; set; }
+        public EntityType Type { get; set; }
         
         public Entity(){}
         public Entity(int x, int y, char symbol, int hp)
