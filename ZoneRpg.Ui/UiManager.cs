@@ -23,9 +23,9 @@ public class UiManager
         Console.CursorVisible = false;
         new StartGame().RunMainMenu();
         Zone zone = _db.GetZone();
-        zone.Player = CreatePlayer();
 
-        _db.InsertCharacter(zone.Player);
+        zone.Player = CreateOrChoosePlayer();
+
         while (true)
         {
             zone.Entities = _db.GetEntities();
@@ -38,6 +38,22 @@ public class UiManager
             LookForFight(zone);
             HandleFight(zone);
         }
+    }
+
+    private Character CreateOrChoosePlayer()
+    {
+        CreateOption createOption = (CreateOption)new Menu(
+            "Create or choose a character!",
+            new string[] { "Create", "Choose" }
+        ).Run();
+
+        if (createOption == CreateOption.Create)
+        {
+            return CreatePlayer();
+        }
+
+        return ChoosePlayer();
+
     }
 
     private void DrawFightResult()
@@ -138,45 +154,34 @@ public class UiManager
     //
     public Character CreatePlayer()
     {
-        CreateOption createOption = (CreateOption)new Menu(
-            "Create or choose a character!",
-            new string[] { "Create", "Choose" }).Run();
 
         Character player = new Character();
-        switch (createOption)
 
-        {
-            case CreateOption.Create:
-
-                player.Entity.Symbol = 'P';
-                Console.WriteLine("Enter Character Name");
-                player.Name = Console.ReadLine()!; //här skickar vi in namnet som spelaren skriver in
-                Console.Clear();
-                CharacterClass characterClass = (CharacterClass)new Menu(
-                    "Choose class",
-                    new string[] { "Warrior", "Mage", "Rogue" }
-                ).Run(); //Här skickar vi in spelarens klass
-                break;
-
-            case CreateOption.Choose:
-                Console.Clear();
-                Console.WriteLine("Choose a character:");
-                List<Character> characters = _db.GetCharacters();
-                int index = 0;
-                foreach (var character in characters)
-                {
-                    Console.WriteLine($"{index++}. {character.Name}  (id: {character.id})");
-                }
-                int choice = Convert.ToInt32(Console.ReadLine());
-                player = characters[choice];
-                break;
-
-        }
+        player.Entity.Symbol = 'P';
+        Console.WriteLine("Enter Character Name");
+        player.Name = Console.ReadLine()!; //här skickar vi in namnet som spelaren skriver in
+        Console.Clear();
+        CharacterClass characterClass = (CharacterClass)new Menu(
+            "Choose class",
+            new string[] { "Warrior", "Mage", "Rogue" }
+        ).Run(); //Här skickar vi in spelarens klass
         return player;
     }
 
     //
+    // Choose player
     //
+    public Character ChoosePlayer()
+    {
+        Console.Clear();
+        List<Character> characters = _db.GetCharacters();
+        string[] options = characters.Select(c => $"{c.Name}  (id: {c.id})").ToArray();
+        int index = new Menu("Choose a character:", options).Run();
+        return characters[index];
+    }
+
+    //
+    // Create monster
     //
     public Monster CreateMonster()
     {
@@ -206,7 +211,7 @@ public class UiManager
             Console.WriteLine("Du har öppnat en kista och hittat en ny vapen");
         }
     }
-    
+
     //
     // Draw the player
     //

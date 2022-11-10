@@ -126,13 +126,6 @@ namespace ZoneRpg.Shared
                     MoveRight(zone.Width - 1);
                     break;
             }
-            Console.ReadKey();
         }
     }
 }
-
-
-
-
-
-
