@@ -2,6 +2,7 @@ namespace ZoneRpg.Shared
 {
     public class Character : IFighter
     {
+        public int id { get; set; }
         public string Name { get; set; }
         public int Type { get; set; }
         public int Xp { get; set; }
@@ -59,9 +60,9 @@ namespace ZoneRpg.Shared
               PlayerAddXp(monster.Loot);
           } */
 
-        public void MoveUp()
+        public void MoveUp(int limit)
         {
-            if (Entity.Y > 0)
+            if (Entity.Y > limit)
             {
                 Entity.Y--;
             }
@@ -113,7 +114,7 @@ namespace ZoneRpg.Shared
             switch (key)
             {
                 case ConsoleKey.UpArrow:
-                    MoveUp();
+                    MoveUp(0);
                     break;
                 case ConsoleKey.DownArrow:
                     MoveDown(zone.Height - 1);
@@ -125,6 +126,8 @@ namespace ZoneRpg.Shared
                     MoveRight(zone.Width - 1);
                     break;
             }
+            Console.WriteLine("You moved to: " + Entity.X + " " + Entity.Y);
+            Console.ReadKey();
         }
     }
 }

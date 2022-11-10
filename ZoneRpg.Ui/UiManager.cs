@@ -165,7 +165,7 @@ public class UiManager
                 int index = 0;
                 foreach (var character in characters)
                 {
-                    Console.WriteLine($"{index++}. {character.Name}");
+                    Console.WriteLine($"{index++}. {character.Name}  (id: {character.id})");
                 }
                 int choice = Convert.ToInt32(Console.ReadLine());
                 player = characters[choice];
@@ -206,6 +206,7 @@ public class UiManager
             Console.WriteLine("Du har öppnat en kista och hittat en ny vapen");
         }
     }
+    
     //
     // Draw the player
     //
