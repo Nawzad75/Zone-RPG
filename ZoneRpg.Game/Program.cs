@@ -1,6 +1,5 @@
-﻿using ZoneRpg.Loot;
+﻿using System.Text;
 using ZoneRpg.Database;
-using ZoneRpg.Shared;
 using ZoneRpg.Ui;
 
 namespace ZoneRpg.Game
@@ -9,6 +8,7 @@ namespace ZoneRpg.Game
     {
         private static void Main(string[] args)
         {
+            Console.OutputEncoding = Encoding.UTF8;
             DatabaseManager db = new DatabaseManager();
             db.SeedDatabase();
             

@@ -6,7 +6,7 @@ namespace ZoneRpg.Ui
         public void RunMainMenu()
         {
 
-
+            
             string prompt = @"███████  ██████  ███    ██ ███████ ██████  ██████   ██████  
    ███  ██    ██ ████   ██ ██      ██   ██ ██   ██ ██       
   ███   ██    ██ ██ ██  ██ █████   ██████  ██████  ██   ███ 
@@ -17,10 +17,6 @@ namespace ZoneRpg.Ui
             string[] options = { "Start", "About", "Exit" };
             Menu mainMenu = new Menu(prompt, options);
             int _choice = mainMenu.Run();
-           
-
-
-
 
             switch (_choice)
             {
@@ -38,14 +34,14 @@ namespace ZoneRpg.Ui
 
         }
 
-            //Här skickar vi in funktionen som skapar spelaren
+        //Här skickar vi in funktionen som skapar spelaren
         public void Start()
         {
-            
-           
-        
 
-                
+
+
+
+
 
         }
         public void ExitGame()
