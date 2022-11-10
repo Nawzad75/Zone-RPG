@@ -126,7 +126,6 @@ namespace ZoneRpg.Shared
                     MoveRight(zone.Width - 1);
                     break;
             }
-            Console.WriteLine("You moved to: " + Entity.X + " " + Entity.Y);
             Console.ReadKey();
         }
     }
