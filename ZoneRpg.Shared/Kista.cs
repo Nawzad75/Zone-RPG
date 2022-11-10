@@ -1,17 +1,22 @@
 
+
 namespace ZoneRpg.Shared
+
 {
-  
-    //skapar en kista som har loot i sig
-    public class Kista 
+
     
+    public class Kista
     {
-      
-      Kista kista = new Kista();
-      public List<Item> Loot = new();
-
-    
+        public int Id { get; set; }
+        public string Name { get; set; }
+        public int Type { get; set; }
+        public int Symbol { get; set; }
        
-    }
+        public Entity Entity { get; set; } = new Entity();
 
+        public Kista(){}
+
+
+    }
 }
+
