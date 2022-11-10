@@ -7,6 +7,7 @@ public class UiManager
 {
     private DatabaseManager _db;
     private FightManager? _currentFight;
+
     private string _fightResult = "";
 
     public UiManager(DatabaseManager db)
@@ -79,8 +80,11 @@ public class UiManager
         {
             if (entity.X == zone.Player.Entity.X && entity.Y == zone.Player.Entity.Y && entity.Symbol == 'm')
             {
-                Monster monster = _db.GetMonsterByEntityId(entity.Id);
-                _currentFight = new FightManager(zone.Player, monster);
+                Monster? monster = _db.GetMonsterByEntityId(entity.Id);
+                if (monster != null)
+                {
+                    _currentFight = new FightManager(zone.Player, monster);
+                }
             }
         }
     }

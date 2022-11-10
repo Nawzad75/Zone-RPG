@@ -149,7 +149,6 @@ namespace ZoneRpg.Database
                 SELECT LAST_INSERT_ID();";
 
             character.Entity.Id = _connection.Query<int>(entity_sql, character.Entity).First();
-
             string sql = @"
                 INSERT INTO `character` 
                     (name, hp, xp, is_monster, skill_id, characterclass_id, entity_id)

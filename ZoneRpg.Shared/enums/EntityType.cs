@@ -7,7 +7,7 @@ namespace ZoneRpg.Shared
     {
         Player = 1,
         Monster = 2,
-        Object = 3,
-        Chest = 4
+        Chest = 3,
+        Door = 4,
     }
 }
