@@ -152,6 +152,8 @@ public class UiManager
         Console.WriteLine("2.Choose a character:");
         Choose = (Convert.ToInt32(Console.ReadLine()));
         Character player = new Character();
+        player.Entity.X=20;
+        player.Entity.Y=6;
         switch (Choose)
 
         {
@@ -184,8 +186,6 @@ public class UiManager
                 }
                 int choice = Convert.ToInt32(Console.ReadLine());
                 player = characters[choice];
-
-
                 break;
 
         }
