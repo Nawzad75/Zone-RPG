@@ -1,29 +1,29 @@
-using ZoneRpg.Database;
-using ZoneRpg.Ui;
-
 namespace ZoneRpg.Ui
 {
     public class Menu
     {
 
         private int _choice;
-        private string[] Options;
-        private string Prompt;
+        private string[] _options;
+        private string _prompt;
 
         public Menu(string prompt, string[] options)
         {
-            Prompt = prompt;
-            Options = options;
+            _prompt = prompt;
+            _options = options;
             _choice = 0;
         }
 
+        //
+        // Displays all the options in the menu
+        //
         public void DisplayOptions()
         {
-            Console.WriteLine(Prompt);
+            Console.WriteLine(_prompt);
 
-            for (int i = 0; i < Options.Length; i++)
+            for (int i = 0; i < _options.Length; i++)
             {
-                string currentOption = Options[i];
+                string currentOption = _options[i];
                 string prefix;
                 if (i == _choice)
                 {
@@ -57,14 +57,14 @@ namespace ZoneRpg.Ui
                     _choice--;
                     if (_choice < 0)
                     {
-                        _choice = Options.Length - 1;
+                        _choice = _options.Length - 1;
                     }
                     Console.Clear();
                 }
                 else if (keyPressed == ConsoleKey.DownArrow)
                 {
                     _choice++;
-                    if (_choice >= Options.Length)
+                    if (_choice >= _options.Length)
                     {
                         _choice = 0;
                     }
