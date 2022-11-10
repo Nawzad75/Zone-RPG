@@ -59,7 +59,7 @@ namespace ZoneRpg.Shared
             PlayerAddXp(monster.Loot);
         } */
 
-        public void MoveUpp()
+        public void MoveUp()
         {
             if (Entity.Y > 0)
             {

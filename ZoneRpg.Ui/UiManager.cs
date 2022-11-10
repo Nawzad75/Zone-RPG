@@ -10,7 +10,6 @@ public class UiManager
 
     public UiManager(DatabaseManager db)
     {
-        Console.Clear();
         _db = db;
     }
 
@@ -31,15 +30,18 @@ public class UiManager
             zone.Entities = _db.GetEntities();
 
             DrawZone(zone);
-            Console.WriteLine(_fightResult);
-
-            DrawEntity(zone);
+            DrawFightResult();
+            DrawEntities(zone);
             DrawPlayer(zone);
-
             ReadInput(zone);
             LookForFight(zone);
             HandleFight(zone);
         }
+    }
+
+    private void DrawFightResult()
+    {
+        Console.WriteLine(_fightResult);
     }
 
     private void HandleFight(Zone zone)
@@ -130,7 +132,7 @@ public class UiManager
     //
     // Draws all entities in the zone
     //
-    public void DrawEntity(Zone zone)
+    public void DrawEntities(Zone zone)
     {
         foreach (var item in zone.Entities)
         {
@@ -149,13 +151,13 @@ public class UiManager
         Console.WriteLine("Choose one of following optins:");
         Console.WriteLine("1.Creat new character:");
         Console.WriteLine("2.Choose a character:");
-        Choose=(Convert.ToInt32(Console.ReadLine()));
+        Choose = (Convert.ToInt32(Console.ReadLine()));
         Character player = new Character();
         switch (Choose)
 
         {
             case 1:
-                
+
                 player.Entity.Symbol = 'P';
 
                 Console.Clear();
@@ -170,8 +172,8 @@ public class UiManager
                 ).Run(); //Här skickar vi in spelarens klass
 
                 Console.Clear();
-                
-            break;
+
+                break;
             case 2:
                 Console.Clear();
                 Console.WriteLine("Choose a character:");
@@ -182,11 +184,11 @@ public class UiManager
                     Console.WriteLine($"{index++}. {character.Name}");
                 }
                 int choice = Convert.ToInt32(Console.ReadLine());
-                player=characters[choice];
-            
+                player = characters[choice];
 
-            break;
-            
+
+                break;
+
         }
         return player;
     }
@@ -200,7 +202,7 @@ public class UiManager
 
         return monster;
     }
-    
+
 
     //
     // Draw the player
