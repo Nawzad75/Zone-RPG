@@ -1,5 +1,9 @@
-public enum CreateOption
+namespace ZoneRpg
 {
-    Create,
-    Choose
+    // Enum för att skapa eller ladda spelare
+    public enum CreateOption
+    {
+        Create,
+        Choose
+    }
 }
