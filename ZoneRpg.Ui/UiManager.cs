@@ -1,6 +1,7 @@
 ﻿using ZoneRpg.Database;
 using ZoneRpg.Shared;
 
+
 namespace ZoneRpg.Ui;
 public class UiManager
 {
@@ -142,8 +143,8 @@ public class UiManager
             new string[] { "Create", "Choose" }).Run();
 
         Character player = new Character();
-        Console.Clear();
         switch (createOption)
+
         {
             case CreateOption.Create:
 
@@ -168,8 +169,6 @@ public class UiManager
                 }
                 int choice = Convert.ToInt32(Console.ReadLine());
                 player = characters[choice];
-
-
                 break;
 
         }
@@ -189,7 +188,24 @@ public class UiManager
 
         return monster;
     }
+    public Kista CreateChest()
+    {
 
+        Kista kista = new Kista();
+        kista.Entity.Symbol = 'K';
+        kista.Name = "Kista";
+        return kista;
+    }
+    public void OpenChest()
+    {
+        Character player = new Character();
+        Kista kista = new Kista();
+
+        if (kista.Entity.X == player.Entity.X && kista.Entity.Y == player.Entity.Y)
+        {
+            Console.WriteLine("Du har öppnat en kista och hittat en ny vapen");
+        }
+    }
     //
     // Draw the player
     //
@@ -199,3 +215,4 @@ public class UiManager
         Console.WriteLine(zone.Player.Entity.Symbol);
     }
 }
+
