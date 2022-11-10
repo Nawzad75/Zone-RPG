@@ -142,7 +142,7 @@ public class UiManager
             new string[] { "Create", "Choose" }).Run();
 
         Character player = new Character();
-        switch (Choose)
+        switch (createOption)
 
         {
             case CreateOption.Create:
