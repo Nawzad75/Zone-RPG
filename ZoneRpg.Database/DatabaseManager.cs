@@ -143,12 +143,25 @@ namespace ZoneRpg.Database
         {
             string entity_sql = @"
                 INSERT INTO entity 
-                    (type, symbol, zone_id, x, y, hp)
+                    (entity_type_id, symbol, zone_id, x, y, hp)
                 VALUES
-                    (@Type, @Symbol, @ZoneId, @X, @Y, @Hp);
+                    (@EntityType, @Symbol, @ZoneId, @X, @Y, @Hp);
                 SELECT LAST_INSERT_ID();";
+            var enntityParameters = new
+            {
+              EntityType = character.Entity.EntityType,
+              Symbol = character.Entity.Symbol,
+              Zoneid = character.Entity.ZoneId,
+              X = character.Entity.X,
+              Y = character.Entity.Y,
+              HP = character.Entity.Hp
+
+            };
 
             character.Entity.Id = _connection.Query<int>(entity_sql, character.Entity).First();
+
+            //  ------------------------------------------------------
+ 
             string sql = @"
                 INSERT INTO `character` 
                     (name, hp, xp, is_monster, skill_id, characterclass_id, entity_id)
