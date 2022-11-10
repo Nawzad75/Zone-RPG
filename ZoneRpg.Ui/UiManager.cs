@@ -108,35 +108,45 @@ public class UiManager
             _db.UpdateEntityPosition(zone.Player.Entity);
         }
     }
-
+    
 
     //
     // Draws a Zone in the console
     //
     public void DrawZone(Zone zone)
     {
+    
+        string c1 = "╔";
+        string c2 = "╗";
+        string c3 = "╝";
+        string c4 = "╚";
+        string space = "═";
+        string I = "║";
         Console.SetCursorPosition(0, 0);
-        for (int i = 0; i < zone.Width; i++)
+        Console.Write(c1);
+        for (int i = 1; i < zone.Width-1; i++)
         {
-            Console.Write("-");
+            Console.Write(space);
         }
-        Console.WriteLine();
+        Console.WriteLine(c2);
 
-        for (int i = 0; i < zone.Height; i++)
+        for (int i = 2; i < zone.Height; i++)
         {
-            Console.Write("|");
-            for (int j = 0; j < zone.Width - 1; j++)
+            Console.Write(I);
+            for (int j = 2; j < zone.Width ; j++)
             {
                 Console.Write(" ");
             }
-            Console.WriteLine("|");
+            Console.WriteLine(I);
         }
-        for (int i = 0; i < zone.Width; i++)
+        Console.Write(c4);
+        
+        for (int i = 2; i < zone.Width; i++)
         {
-            Console.Write("-");
+            Console.Write(space);
 
         }
-        Console.WriteLine();
+        Console.WriteLine(c3);
         Console.WriteLine("                Zone: " + zone.Name);
     }
 
