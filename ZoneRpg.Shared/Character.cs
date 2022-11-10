@@ -3,7 +3,7 @@ namespace ZoneRpg.Shared
     public class Character : IFighter
     {
         public int id { get; set; }
-        public string Name { get; set; }
+        public string Name { get; set; } = "Unnamed player";
         public int Type { get; set; }
         public int Xp { get; set; }
         public int Level { get; set; }
@@ -13,9 +13,9 @@ namespace ZoneRpg.Shared
         public int Hp { get; set; }
         public bool Is_Monster { get; set; } = true;
         public Entity Entity { get; set; } = new Entity();
-        public Item ItemIdWeapon { get; set; }
-        public Item ItemIdBoots { get; set; }
-        public Item ItemIdHelm { get; set; }
+        public Item? ItemIdWeapon { get; set; }
+        public Item? ItemIdBoots { get; set; }
+        public Item? ItemIdHelm { get; set; }
 
         public Character() { }
 
