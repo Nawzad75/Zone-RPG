@@ -114,16 +114,16 @@ namespace ZoneRpg.Shared
             switch (key)
             {
                 case ConsoleKey.UpArrow:
-                    MoveUp(0);
+                    MoveUp(1);
                     break;
                 case ConsoleKey.DownArrow:
-                    MoveDown(zone.Height - 1);
+                    MoveDown(zone.Height +1);
                     break;
                 case ConsoleKey.LeftArrow:
-                    MoveLeft(0);
+                    MoveLeft(1);
                     break;
                 case ConsoleKey.RightArrow:
-                    MoveRight(zone.Width - 1);
+                    MoveRight(zone.Width - 2);
                     break;
             }
         }

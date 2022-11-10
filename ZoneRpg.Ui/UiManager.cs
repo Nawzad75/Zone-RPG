@@ -156,7 +156,8 @@ public class UiManager
     {
 
         Character player = new Character();
-
+        player.Entity.X=22;
+        player.Entity.Y=6;
         player.Entity.Symbol = 'P';
         Console.WriteLine("Enter Character Name");
         player.Name = Console.ReadLine()!; //här skickar vi in namnet som spelaren skriver in
