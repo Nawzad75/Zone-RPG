@@ -16,9 +16,9 @@ namespace ZoneRpg.Shared
         public Item ItemIdBoots { get; set; }
         public Item ItemIdHelm { get; set; }
 
-        public Character(){}
-        
-        
+        public Character() { }
+
+
         // här sätter jag spelarens stats (attack och health) beroende på vilken klass spelaren har valt
 
         public void CharacterClassSet()
@@ -40,7 +40,7 @@ namespace ZoneRpg.Shared
         {
             Level++;
             Xp = 0;
-            
+
         }
 
         //Funktion så vi lägger till xp till spelaren, lägger in int xp som parameter för att kunna använda den i andra funktioner
@@ -54,10 +54,10 @@ namespace ZoneRpg.Shared
         }
 
         //När vi dödar en monster så ska vi få xp och levela upp. Samt få loot.
-      /*   public void PlayerKillMonster(Monster monster)
-        {
-            PlayerAddXp(monster.Loot);
-        } */
+        /*   public void PlayerKillMonster(Monster monster)
+          {
+              PlayerAddXp(monster.Loot);
+          } */
 
         public void MoveUp()
         {
@@ -66,9 +66,9 @@ namespace ZoneRpg.Shared
                 Entity.Y--;
             }
         }
-        public void MoveDown(int limit )
+        public void MoveDown(int limit)
         {
-            if (Entity.Y <limit)
+            if (Entity.Y < limit)
             {
                 Entity.Y++;
             }
@@ -106,6 +106,25 @@ namespace ZoneRpg.Shared
         public int GetHp()
         {
             return Hp;
+        }
+
+        public void Move(ConsoleKey key, Zone zone)
+        {
+            switch (key)
+            {
+                case ConsoleKey.UpArrow:
+                    MoveUp();
+                    break;
+                case ConsoleKey.DownArrow:
+                    MoveDown(zone.Height - 1);
+                    break;
+                case ConsoleKey.LeftArrow:
+                    MoveLeft(0);
+                    break;
+                case ConsoleKey.RightArrow:
+                    MoveRight(zone.Width - 1);
+                    break;
+            }
         }
     }
 }

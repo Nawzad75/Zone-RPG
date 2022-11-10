@@ -74,25 +74,16 @@ public class UiManager
     private void ReadInput(Zone zone)
     {
         ConsoleKeyInfo cki = Console.ReadKey();
+        var allArrowKeys = new[] {
+            ConsoleKey.UpArrow,
+            ConsoleKey.DownArrow,
+            ConsoleKey.LeftArrow,
+            ConsoleKey.RightArrow
+        };
 
-        if (cki.Key == ConsoleKey.UpArrow)
+        if (allArrowKeys.Contains(cki.Key))
         {
-            zone.Player.MoveUp();
-            _db.UpdateEntityPosition(zone.Player.Entity);
-        }
-        if (cki.Key == ConsoleKey.DownArrow)
-        {
-            zone.Player.MoveDown(zone.Height + 1);
-            _db.UpdateEntityPosition(zone.Player.Entity);
-        }
-        if (cki.Key == ConsoleKey.LeftArrow)
-        {
-            zone.Player.MoveLeft(zone.Width - 45);
-            _db.UpdateEntityPosition(zone.Player.Entity);
-        }
-        if (cki.Key == ConsoleKey.RightArrow)
-        {
-            zone.Player.MoveRight(zone.Width - 2);
+            zone.Player.Move(cki.Key, zone);
             _db.UpdateEntityPosition(zone.Player.Entity);
         }
     }
@@ -146,36 +137,27 @@ public class UiManager
     //
     public Character CreatePlayer()
     {
-        int Choose;
-        Console.WriteLine("Choose one of following optins:");
-        Console.WriteLine("1.Creat new character:");
-        Console.WriteLine("2.Choose a character:");
-        Choose = (Convert.ToInt32(Console.ReadLine()));
+        CreateOption createOption = (CreateOption)new Menu(
+            "Create or choose a character!",
+            new string[] { "Create", "Choose" }).Run();
+
         Character player = new Character();
-        player.Entity.X=20;
-        player.Entity.Y=6;
         switch (Choose)
 
         {
-            case 1:
+            case CreateOption.Create:
 
                 player.Entity.Symbol = 'P';
-
-                Console.Clear();
                 Console.WriteLine("Enter Character Name");
-
                 player.Name = Console.ReadLine()!; //här skickar vi in namnet som spelaren skriver in
                 Console.Clear();
-
                 CharacterClass characterClass = (CharacterClass)new Menu(
                     "Choose class",
                     new string[] { "Warrior", "Mage", "Rogue" }
                 ).Run(); //Här skickar vi in spelarens klass
-
-                Console.Clear();
-
                 break;
-            case 2:
+
+            case CreateOption.Choose:
                 Console.Clear();
                 Console.WriteLine("Choose a character:");
                 List<Character> characters = _db.GetCharacters();
@@ -191,6 +173,10 @@ public class UiManager
         }
         return player;
     }
+
+    //
+    //
+    //
     public Monster CreateMonster()
     {
 
@@ -201,7 +187,6 @@ public class UiManager
 
         return monster;
     }
-
 
     //
     // Draw the player
