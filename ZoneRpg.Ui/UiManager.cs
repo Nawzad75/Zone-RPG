@@ -109,7 +109,7 @@ namespace ZoneRpg.Ui
         public Monster CreateMonster()
         {
             Monster monster = new Monster();
-            monster.Entity.Symbol = "M";
+            monster.Entity.Symbol = "🐉";
             monster.Name = "Monster";
             return monster;
         }
