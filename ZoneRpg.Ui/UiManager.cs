@@ -15,8 +15,7 @@ namespace ZoneRpg.Ui
 
         // Ui Members
         private DatabaseManager _db;
-        private FightManager? _fightManager;
-        private string _fightResult = "";
+        private BattleManager? _battleManager;
         private IZoneVisualizer _zoneVisualizer = new ZoneVisualizerAscii();
         // private IZoneVisualizer _zoneVisualizer = new ZoneVisualizerUtf8();
 
@@ -41,17 +40,18 @@ namespace ZoneRpg.Ui
             // Get the starting zone for the player
             Zone zone = _db.GetZone();
             zone.Player = CreateOrChoosePlayer();
-            _fightManager = new FightManager(_db, zone.Player);
+            _battleManager = new BattleManager(_db, zone.Player);
 
             while (true)
             {
                 zone.Entities = _db.GetEntities();
                 _zoneVisualizer.DrawZone(zone);
+                _zoneVisualizer.DrawBattle(_battleManager.GetBattleStatus());
                 _zoneVisualizer.DrawEntities(zone.Entities);
                 _zoneVisualizer.DrawPlayerEntity(zone.Player.Entity);
                 ReadInput(zone);
-                // LookForFight(zone);
-                // _fightManager.HandleFight();
+                _battleManager.LookForMonsters(zone.Entities);
+                _battleManager.ProgressBattle();
             }
         }
 
