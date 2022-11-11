@@ -12,7 +12,7 @@ namespace ZoneRpg.Shared
             CharacterClass = characterClass;
             Entity.X = 22;
             Entity.Y = 6;
-            Entity.Symbol = 'P';
+            Entity.Symbol = "😱";
             Entity.EntityType = EntityType.Player;
         }
     }
