@@ -121,13 +121,13 @@ namespace ZoneRpg.Ui
             kista.Name = "Kista";
             return kista;
         }
-       
-        
+
+
         public void OpenChest(Zone zone)
         {
             Entity? chestEntity = zone.Entities.Find(entity => entity.EntityType == EntityType.Chest);
-
-            if(chestEntity == null){
+            if (chestEntity == null)
+            {
                 return;
             }
 
@@ -137,8 +137,8 @@ namespace ZoneRpg.Ui
 
                 Console.ReadKey();
             }
-            
-            
+
+
         }
 
         // Reads user input and takes action.
