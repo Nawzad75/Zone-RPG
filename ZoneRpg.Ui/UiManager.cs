@@ -122,19 +122,21 @@ namespace ZoneRpg.Ui
             return kista;
         }
        
+        
         public void OpenChest(Zone zone)
-        
-        
         {
-            
+            Entity? chestEntity = zone.Entities.Find(entity => entity.EntityType == EntityType.Chest);
 
-            if (kista.Entity.X == player.Entity.X && kista.Entity.Y == player.Entity.Y)
+            if(chestEntity == null){
+                return;
+            }
+
+            if (chestEntity.X == zone.Player.Entity.X && chestEntity.Y == zone.Player.Entity.Y)
             {
                 Console.WriteLine("Du har öppnat en kista och hittat en ny vapen");
 
                 Console.ReadKey();
             }
-            //när player och kista är på samma plats så öppnas kistan och spelaren får ett vapen
             
             
         }
