@@ -60,6 +60,28 @@ namespace ZoneRpg.Shared
               PlayerAddXp(monster.Loot);
           } */
 
+        public void Move(ConsoleKey key, Zone zone)
+        {
+            switch (key)
+            {
+                case ConsoleKey.UpArrow:
+                    MoveUp(1);
+                    break;
+
+                case ConsoleKey.DownArrow:
+                    MoveDown(zone.Height - 2);
+                    break;
+
+                case ConsoleKey.LeftArrow:
+                    MoveLeft(1);
+                    break;
+
+                case ConsoleKey.RightArrow:
+                    MoveRight(zone.Width - 2);
+                    break;
+            }
+        }
+
         public void MoveUp(int limit)
         {
             if (Entity.Y > limit)
@@ -109,23 +131,6 @@ namespace ZoneRpg.Shared
             return Hp;
         }
 
-        public void Move(ConsoleKey key, Zone zone)
-        {
-            switch (key)
-            {
-                case ConsoleKey.UpArrow:
-                    MoveUp(1);
-                    break;
-                case ConsoleKey.DownArrow:
-                    MoveDown(zone.Height -2);
-                    break;
-                case ConsoleKey.LeftArrow:
-                    MoveLeft(1);
-                    break;
-                case ConsoleKey.RightArrow:
-                    MoveRight(zone.Width - 2);
-                    break;
-            }
-        }
+
     }
 }

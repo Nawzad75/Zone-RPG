@@ -1,5 +1,9 @@
+using ZoneRpg.Shared;
+
 public interface IFighter
 {
+    Entity Entity { get; set; }
+
     string GetName();
 
     int GetHp();
