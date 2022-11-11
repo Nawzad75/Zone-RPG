@@ -1,5 +1,6 @@
 ﻿using ZoneRpg.Database;
 using ZoneRpg.Shared;
+
 namespace ZoneRpg.Ui
 {
     public class UiManager
@@ -16,7 +17,8 @@ namespace ZoneRpg.Ui
         private DatabaseManager _db;
         private FightManager? _fightManager;
         private string _fightResult = "";
-        
+        private IZoneVisualizer _zoneVisualizer = new ZoneVisualizerAscii();
+        // private IZoneVisualizer _zoneVisualizer = new ZoneVisualizerUtf8();
 
         // Constructor
         public UiManager(DatabaseManager db)
@@ -44,11 +46,9 @@ namespace ZoneRpg.Ui
             while (true)
             {
                 zone.Entities = _db.GetEntities();
-
-                DrawZone(zone);
-                DrawFightResult();
-                DrawEntities(zone);
-                DrawPlayer(zone);
+                _zoneVisualizer.DrawZone(zone);
+                _zoneVisualizer.DrawEntities(zone.Entities);
+                _zoneVisualizer.DrawPlayerEntity(zone.Player.Entity);
                 ReadInput(zone);
                 OpenChest(zone);
                 // LookForFight(zone);
@@ -56,101 +56,36 @@ namespace ZoneRpg.Ui
             }
         }
 
+
         //
         // Let the player choose a character or create a new one
         //
         private Character CreateOrChoosePlayer()
         {
-            CreateOption createOption = (CreateOption)new Menu(
-                "Create or choose a character!",
-                new string[] { "Create", "Choose" }
-            ).Run();
+            string prompt = "Create or choose a character!";
+            CreateChooseMenu createOption = new Menu<CreateChooseMenu>(prompt).Run();
 
-            return (createOption == CreateOption.Create) ? CreatePlayer() : ChoosePlayer();
+            if (createOption == CreateChooseMenu.Create)
+            {
+                Character player = CreatePlayer();
+                _db.InsertCharacter(player);
+                return player;
+            }
+            return ChoosePlayer();
         }
 
-        //
-        // Draw the fight results
-        //
-        private void DrawFightResult()
-        {
-            Console.WriteLine(_fightResult);
-        }
-
-
-        //
-        // Reads user input and takes action!
-        //
-        private void ReadInput(Zone zone)
-        {
-            ConsoleKeyInfo cki = Console.ReadKey();
-            if (_allArrowKeys.Contains(cki.Key))
-            {
-                zone.Player.Move(cki.Key, zone);
-                _db.UpdateEntityPosition(zone.Player.Entity);
-            }
-        }
-
-
-        //
-        // Draws a Zone in the console
-        //
-        public void DrawZone(Zone zone)
-        {
-            Console.SetCursorPosition(0, 0);
-            for (int i = 0; i < zone.Width; i++)
-            {
-                Console.Write("-");
-            }
-            Console.WriteLine("");
-
-            for (int i = 0; i < zone.Height + 1; i++)
-            {
-                Console.Write("|");
-                for (int j = 0; j < zone.Width - 2; j++)
-                {
-                    Console.Write(" ");
-                }
-                Console.WriteLine("|");
-            }
-            for (int i = 0; i < zone.Width; i++)
-            {
-                Console.Write("-");
-
-            }
-            Console.WriteLine();
-            Console.WriteLine("                Zone: " + zone.Name);
-        }
-
-        //
-        // Draws all entities in the zone
-        //
-        public void DrawEntities(Zone zone)
-        {
-            foreach (var item in zone.Entities)
-            {
-                Console.SetCursorPosition(item.X, item.Y);
-                Console.WriteLine(item.Symbol);
-
-            }
-        }
 
         //
         // Create a player
         //
         public Character CreatePlayer()
         {
-
-            Character player = new Character();
-            player.Entity.Symbol = 'P';
-            Console.WriteLine("Enter Character Name");
-            player.Name = Console.ReadLine()!; //här skickar vi in namnet som spelaren skriver in
             Console.Clear();
-            CharacterClass characterClass = (CharacterClass)new Menu(
-                "Choose class",
-                new string[] { "Warrior", "Mage", "Rogue" }
-            ).Run(); //Här skickar vi in spelarens klass
-            return player;
+            Console.WriteLine("Enter Character Name");
+            string name = Console.ReadLine()!; //här skickar vi in namnet som spelaren skriver in
+            CharacterClass characterClass = new Menu<CharacterClass>("Choose class").Run();
+
+            return new Player(name, characterClass);
         }
 
         //
@@ -161,7 +96,8 @@ namespace ZoneRpg.Ui
             Console.Clear();
             List<Character> characters = _db.GetCharacters();
             string[] options = characters.Select(c => $"{c.Name}  (id: {c.id})").ToArray();
-            int index = new Menu("Choose a character:", options).Run();
+            int index = new Menu<int>("Choose a character:", options).Run();
+
             return characters[index];
         }
 
@@ -170,17 +106,14 @@ namespace ZoneRpg.Ui
         //
         public Monster CreateMonster()
         {
-
             Monster monster = new Monster();
             monster.Entity.Symbol = 'M';
             monster.Name = "Monster";
-
-
             return monster;
         }
+
         public Kista CreateChest()
         {
-
             Kista kista = new Kista();
             kista.Entity.Symbol = 'K';
             kista.Name = "Kista";
@@ -204,15 +137,18 @@ namespace ZoneRpg.Ui
             
         }
 
-       
+        // Reads user input and takes action.
         //
-        // Draw the player
+        // @param zone - We need a zone to restrict the player movement
         //
-        public void DrawPlayer(Zone zone)
+        private void ReadInput(Zone zone)
         {
-            Console.SetCursorPosition(zone.Player.Entity.X, zone.Player.Entity.Y);
-            Console.WriteLine(zone.Player.Entity.Symbol);
+            ConsoleKeyInfo cki = Console.ReadKey();
+            if (_allArrowKeys.Contains(cki.Key))
+            {
+                zone.Player.Move(cki.Key, zone);
+                _db.UpdateEntityPosition(zone.Player.Entity);
+            }
         }
     }
-
-}   
+}

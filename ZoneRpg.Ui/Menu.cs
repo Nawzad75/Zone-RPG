@@ -1,17 +1,26 @@
 namespace ZoneRpg.Ui
 {
-    public class Menu
+    //
+    // Menu which can: 
+    //      * use string[] options and return index as int
+    //      * use enum and return enum value
+    //
+    public class Menu<T>
     {
-
-        private int _choice;
+        private int _choice = 0;
         private string[] _options;
         private string _prompt;
 
+        // Constructor where we pass in the options and the prompt
         public Menu(string prompt, string[] options)
         {
             _prompt = prompt;
             _options = options;
-            _choice = 0;
+        }
+
+        // Constructor where figure out the options from the enum
+        public Menu(string prompt) : this(prompt, Enum.GetNames(typeof(T)))
+        {
         }
 
         //
@@ -42,7 +51,10 @@ namespace ZoneRpg.Ui
             Console.ResetColor();
         }
 
-        public int Run()
+        //
+        // Get the user's choice
+        //
+        public T Run()
         {
             ConsoleKey keyPressed;
             do
@@ -71,7 +83,25 @@ namespace ZoneRpg.Ui
                     Console.Clear();
                 }
             } while (keyPressed != ConsoleKey.Enter);
-            return _choice;
+
+
+            // If T is an int, return the index of the choice
+            if (typeof(T) == typeof(int))
+            {
+                return (T)Convert.ChangeType(_choice, typeof(T));
+            }
+
+            // If T is an enum, return the enum value of the choice
+            else if (typeof(T).IsEnum)
+            {
+                return (T)Enum.Parse(typeof(T), _options[_choice]);
+            }
+            // Else throw an error
+            else
+            {
+                throw new Exception("Menu<T> only supports int and enums!");
+            }
+            
 
         }
 

@@ -1,3 +1,5 @@
+using ZoneRpg.Shared;
+
 namespace ZoneRpg.Ui
 {
 
@@ -14,38 +16,38 @@ namespace ZoneRpg.Ui
 ███████  ██████  ██   ████ ███████ ██   ██ ██       ██████  
                                                             
                                                             ";
-            string[] options = { "Start", "About", "Exit" };
-            Menu mainMenu = new Menu(prompt, options);
-            int _choice = mainMenu.Run();
-           
+            // string[] options = { "Start", "About", "Exit" };
+            // Menu mainMenu = new Menu(prompt, options);
+            // int _choice = mainMenu.Run();
 
-
-
+            StartMenu _choice = new Menu<StartMenu>(prompt).Run();
 
             switch (_choice)
             {
-                case 0:
+                case StartMenu.Start:
                     Start();
                     Console.Clear();
                     break;
-                case 1:
+
+                case StartMenu.About:
                     About();
                     break;
-                case 2:
+
+                case StartMenu.Exit:
                     ExitGame();
                     break;
             }
 
         }
 
-            //Här skickar vi in funktionen som skapar spelaren
+        //Här skickar vi in funktionen som skapar spelaren
         public void Start()
         {
-            
-           
-        
 
-                
+
+
+
+
 
         }
         public void ExitGame()
