@@ -109,7 +109,7 @@ namespace ZoneRpg.Ui
         public Monster CreateMonster()
         {
             Monster monster = new Monster();
-            monster.Entity.Symbol = 'M';
+            monster.Entity.Symbol = "M";
             monster.Name = "Monster";
             return monster;
         }
@@ -117,7 +117,7 @@ namespace ZoneRpg.Ui
         public Kista CreateChest()
         {
             Kista kista = new Kista();
-            kista.Entity.Symbol = 'K';
+            kista.Entity.Symbol = "K";
             kista.Name = "Kista";
             return kista;
         }
