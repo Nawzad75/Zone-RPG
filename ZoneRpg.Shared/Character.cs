@@ -11,7 +11,7 @@ namespace ZoneRpg.Shared
         public CharacterClass CharacterClass { get; set; }
         public int Attack { get; set; }
         public int Hp { get; set; }
-        public bool Is_Monster { get; set; } = true;
+        public bool Is_Monster { get; set; } = false;
         public Entity Entity { get; set; } = new Entity();
         public Item? ItemIdWeapon { get; set; }
         public Item? ItemIdBoots { get; set; }
