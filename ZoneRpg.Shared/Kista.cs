@@ -11,6 +11,9 @@ namespace ZoneRpg.Shared
         public string Name { get; set; } = "Unamed chest";
         public int Type { get; set; }
         public int Symbol { get; set; }
+
+        Zone zone = new Zone();
+       
        
         public Entity Entity { get; set; } = new Entity();
 

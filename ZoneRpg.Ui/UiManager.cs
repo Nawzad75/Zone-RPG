@@ -16,6 +16,7 @@ namespace ZoneRpg.Ui
         private DatabaseManager _db;
         private FightManager? _fightManager;
         private string _fightResult = "";
+        
 
         // Constructor
         public UiManager(DatabaseManager db)
@@ -49,6 +50,7 @@ namespace ZoneRpg.Ui
                 DrawEntities(zone);
                 DrawPlayer(zone);
                 ReadInput(zone);
+                OpenChest(zone);
                 // LookForFight(zone);
                 // _fightManager.HandleFight();
             }
@@ -184,17 +186,25 @@ namespace ZoneRpg.Ui
             kista.Name = "Kista";
             return kista;
         }
-        public void OpenChest()
+       
+        public void OpenChest(Zone zone)
+        
+        
         {
-            Character player = new Character();
-            Kista kista = new Kista();
+            
 
             if (kista.Entity.X == player.Entity.X && kista.Entity.Y == player.Entity.Y)
             {
                 Console.WriteLine("Du har öppnat en kista och hittat en ny vapen");
+
+                Console.ReadKey();
             }
+            //när player och kista är på samma plats så öppnas kistan och spelaren får ett vapen
+            
+            
         }
 
+       
         //
         // Draw the player
         //
