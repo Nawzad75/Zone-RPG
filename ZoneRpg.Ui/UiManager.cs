@@ -15,8 +15,7 @@ namespace ZoneRpg.Ui
 
         // Ui Members
         private DatabaseManager _db;
-        private FightManager? _fightManager;
-        private string _fightResult = "";
+        private BattleManager? _battleManager;
         private IZoneVisualizer _zoneVisualizer = new ZoneVisualizerAscii();
         // private IZoneVisualizer _zoneVisualizer = new ZoneVisualizerUtf8();
 
@@ -41,17 +40,21 @@ namespace ZoneRpg.Ui
             // Get the starting zone for the player
             Zone zone = _db.GetZone();
             zone.Player = CreateOrChoosePlayer();
-            _fightManager = new FightManager(_db, zone.Player);
+            _battleManager = new BattleManager(_db, zone.Player);
 
             while (true)
             {
                 zone.Entities = _db.GetEntities();
                 _zoneVisualizer.DrawZone(zone);
+                _zoneVisualizer.DrawBattle(_battleManager.GetBattleStatus());
                 _zoneVisualizer.DrawEntities(zone.Entities);
                 _zoneVisualizer.DrawPlayerEntity(zone.Player.Entity);
                 ReadInput(zone);
+                OpenChest(zone);
                 // LookForFight(zone);
                 // _fightManager.HandleFight();
+                _battleManager.LookForMonsters(zone.Entities);
+                _battleManager.ProgressBattle();
             }
         }
 
@@ -118,16 +121,22 @@ namespace ZoneRpg.Ui
             kista.Name = "Kista";
             return kista;
         }
-
-        public void OpenChest()
+       
+        public void OpenChest(Zone zone)
+        
+        
         {
-            Character player = new Character();
-            Kista kista = new Kista();
+            
 
             if (kista.Entity.X == player.Entity.X && kista.Entity.Y == player.Entity.Y)
             {
                 Console.WriteLine("Du har öppnat en kista och hittat en ny vapen");
+
+                Console.ReadKey();
             }
+            //när player och kista är på samma plats så öppnas kistan och spelaren får ett vapen
+            
+            
         }
 
         // Reads user input and takes action.
