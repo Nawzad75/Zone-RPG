@@ -3,7 +3,7 @@ using ZoneRpg.Shared;
 
 namespace ZoneRpg.UserInterface
 {
-    public class Ui
+    public  class Ui
     {
         // Ui Members
         private DatabaseManager _db;
@@ -38,8 +38,10 @@ namespace ZoneRpg.UserInterface
             _zone = _db.GetZone();
             _player = CreateOrChoosePlayer();
 
-            _playerRenderer.SetDrawOrigin(0, _zone.Height + 2);
-            _monsterRenderer.SetDrawOrigin(20, _zone.Height + 2);
+            _playerRenderer.SetDrawOrigin(2, _zone.Height + 2);
+            _playerRenderer.SetAccentColor(ConsoleColor.Cyan);
+            _monsterRenderer.SetDrawOrigin(24, _zone.Height + 2);
+            _monsterRenderer.SetAccentColor(ConsoleColor.Red);
 
 
             while (true)
@@ -73,7 +75,6 @@ namespace ZoneRpg.UserInterface
             }
         }
 
-
         //
         // Let the player choose a character or create a new one
         //
@@ -90,7 +91,6 @@ namespace ZoneRpg.UserInterface
             }
             return ChoosePlayer();
         }
-
 
         //
         // Create a player

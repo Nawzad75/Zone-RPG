@@ -26,22 +26,29 @@ namespace ZoneRpg.UserInterface
         }
 
         public void DrawCharacter(IFighter? character)
-        {            
+        {
+            ConsoleUtils.DrawBox(_x, _y, 19, 3);
+            Console.SetCursorPosition(_x + 2, _y + 1);
+
+            Console.ForegroundColor = ConsoleColor.Yellow;
+            Console.Write("Name: ");
             Console.ForegroundColor = _accentColor;
-            ConsoleUtils.DrawBox(_x,_y, 20, 10);
-            
+            Console.Write(character?.Name.PadLeft(2) ?? "");
+
+            Console.SetCursorPosition(_x + 2, _y + 2);
+            Console.ForegroundColor = ConsoleColor.Yellow;
+            Console.Write("HP: ");
+            Console.ForegroundColor = _accentColor;
+            Console.Write(character?.Hp.ToString().PadLeft(5) ?? "");
 
             Console.SetCursorPosition(_x + 2, _y + 3);
-            Console.Write("Name: " + character?.Name ?? "");
-            
-            Console.SetCursorPosition(_x + 2, _y + 4);
-            Console.Write("Hp: " + character?.Hp ?? "");
+            Console.ForegroundColor = ConsoleColor.Yellow;
+            Console.Write("Attack: ");
+            Console.ForegroundColor = _accentColor;
+            Console.Write(character?.Attack.ToString() ?? "");
 
-            Console.SetCursorPosition(_x + 2, _y + 5);
-            Console.Write("Attack: " + character?.Attack ?? "");
+            Console.ResetColor();
 
-
-            Console.ResetColor();           
         }
 
 
