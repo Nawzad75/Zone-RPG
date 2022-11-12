@@ -152,7 +152,7 @@ namespace ZoneRpg.Ui
 
                 if (sword != null)
                 {
-                    zone.Player.
+                    // zone.Player.
                 }
 
             
@@ -189,8 +189,7 @@ namespace ZoneRpg.Ui
                     {
                         Console.Clear();
                         Player player = (Player) zone.Player; // Cast from "Character" till "Player"
-                        player.Respawn();
-                        _battleManager.Reset();
+                        player.Respawn();                        
                         _inputState = InputState.ZoneMovement;
                     }
                     break;

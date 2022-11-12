@@ -55,6 +55,7 @@ namespace ZoneRpg.Ui
             {
                 Status.AddMessage($"{_monster.GetName()} has died!");
                 Status.SetState(BattleState.Won);
+                _monster = null;
                 return;
             }
 
@@ -68,6 +69,7 @@ namespace ZoneRpg.Ui
             {
                 Status.AddMessage($"{_player.GetName()} has died!");
                 Status.SetState(BattleState.Lost);
+                _monster = null; 
             }
 
         }
