@@ -1,6 +1,6 @@
 ﻿using System.Text;
 using ZoneRpg.Database;
-using ZoneRpg.Ui;
+using ZoneRpg.UserInterface;
 
 namespace ZoneRpg.Game
 {
@@ -11,10 +11,10 @@ namespace ZoneRpg.Game
             Console.OutputEncoding = Encoding.UTF8;
             DatabaseManager db = new DatabaseManager();
             db.SeedDatabase();
-            
 
-            UiManager uiManager = new UiManager(db);
-            uiManager.Run();
+
+            Ui ui = new Ui(db);
+            ui.Run();
         }
     }
 }

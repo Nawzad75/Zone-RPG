@@ -1,8 +1,8 @@
 using ZoneRpg.Shared;
 
-namespace ZoneRpg.Ui
+namespace ZoneRpg.UserInterface
 {
-    internal class ZoneVisualizerAscii : IZoneVisualizer
+    internal class ZoneRendererAscii : IZoneRenderer
     {
 
         //
@@ -10,38 +10,8 @@ namespace ZoneRpg.Ui
         //
         public void DrawZone(Zone zone)
         {
-
-            string c1 = "╔";
-            string c2 = "╗";
-            string c3 = "╝";
-            string c4 = "╚";
-            string space = "═";
-            string I = "║";
             Console.SetCursorPosition(0, 0);
-            Console.Write(c1);
-            for (int i = 1; i < zone.Width - 1; i++)
-            {
-                Console.Write(space);
-            }
-            Console.WriteLine(c2);
-
-            for (int i = 2; i < zone.Height; i++)
-            {
-                Console.Write(I);
-                for (int j = 2; j < zone.Width; j++)
-                {
-                    Console.Write(" ");
-                }
-                Console.WriteLine(I + "  ");  // Extra spaces om utf-8 råkar förstöra
-            }
-            Console.Write(c4);
-
-            for (int i = 2; i < zone.Width; i++)
-            {
-                Console.Write(space);
-
-            }
-            Console.WriteLine(c3);
+            ConsoleUtils.DrawBox(zone.Width, zone.Height);
             Console.WriteLine("                Zone: " + zone.Name);
         }
 
@@ -95,9 +65,6 @@ namespace ZoneRpg.Ui
                     Console.WriteLine("You lost the battle!");
                     break;
             }
-
-
-
         }
     }
 }

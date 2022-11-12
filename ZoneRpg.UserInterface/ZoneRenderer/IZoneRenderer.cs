@@ -1,8 +1,8 @@
 using ZoneRpg.Shared;
 
-namespace ZoneRpg.Ui
+namespace ZoneRpg.UserInterface
 {
-    internal interface IZoneVisualizer
+    internal interface IZoneRenderer
     {
         public void DrawZone(Zone zone);
 

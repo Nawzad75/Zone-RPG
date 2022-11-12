@@ -1,4 +1,4 @@
-namespace ZoneRpg.Ui
+namespace ZoneRpg.UserInterface
 {
     public enum InputState
     {

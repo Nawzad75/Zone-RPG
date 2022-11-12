@@ -1,4 +1,4 @@
-namespace ZoneRpg.Ui
+namespace ZoneRpg.UserInterface
 {
     //
     // Menu which can: 

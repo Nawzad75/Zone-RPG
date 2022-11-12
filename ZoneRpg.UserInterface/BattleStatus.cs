@@ -1,8 +1,8 @@
-namespace ZoneRpg.Ui
+namespace ZoneRpg.UserInterface
 {
     public class BattleStatus
     {
-        public BattleState State { get; private set; }
+        public BattleState State { get; set; }
         private List<string> _messages = new List<string>();
 
         public BattleStatus(BattleState state)
@@ -15,10 +15,6 @@ namespace ZoneRpg.Ui
             _messages.Add(v);
         }
 
-        public void SetState(BattleState newState)
-        {
-            State = newState;
-        }
 
         public List<string> GetMessages()
         {

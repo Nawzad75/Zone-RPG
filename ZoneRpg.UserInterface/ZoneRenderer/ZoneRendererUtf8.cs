@@ -1,8 +1,8 @@
 using ZoneRpg.Shared;
 
-namespace ZoneRpg.Ui
+namespace ZoneRpg.UserInterface
 {
-    internal class ZoneVisualizerUtf8 : IZoneVisualizer
+    internal class ZoneRendererUtf8 : IZoneRenderer
     {
 
         //

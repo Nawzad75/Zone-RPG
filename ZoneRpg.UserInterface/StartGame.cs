@@ -1,6 +1,6 @@
 using ZoneRpg.Shared;
 
-namespace ZoneRpg.Ui
+namespace ZoneRpg.UserInterface
 {
 
     public class StartGame

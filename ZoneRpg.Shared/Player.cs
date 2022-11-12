@@ -30,6 +30,11 @@ namespace ZoneRpg.Shared
             }
         }
 
+        public bool IsDead()
+        {
+            return Entity.Hp <= 0;
+        }
+
         public void Respawn()
         {
             Entity.X = Constants.StartPositionX;
