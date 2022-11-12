@@ -5,26 +5,28 @@ namespace ZoneRpg.Ui
 {
     public class BattleManager
     {
-        private IFighter _player;
+        private IFighter? _player;
         private IFighter? _monster;
         private DatabaseManager _db;
         private int _turn = 0;
-        private BattleStatus _battleStatus = new BattleStatus(BattleState.NotInBattle);
+        public BattleStatus Status = new BattleStatus(BattleState.NotInBattle);
 
-        //
-        // Vi startar en BattleManager med bara spelare (inget monster ännu)
-        //
-        public BattleManager(DatabaseManager db, IFighter player)
+        public BattleManager(DatabaseManager db)
         {
             _db = db;
-            _player = player;
+        }
+
+        internal void AddPlayerToBattle(IFighter player)
+        {
+            _player = player;            
         }
 
         public void AddMonsterToBattle(IFighter monster)
         {
             _monster = monster;
-            _battleStatus.SetState(BattleState.InBattle);
+            Status.SetState(BattleState.InBattle);
         }
+
 
 
         //
@@ -41,31 +43,31 @@ namespace ZoneRpg.Ui
 
             if (_turn == 1)
             {
-                _battleStatus.SetState(BattleState.BattleJustStarted);
+                Status.SetState(BattleState.BattleJustStarted);
             }
 
             // Spelaren attackerar
             _monster.TakeDamage(_monster.GetAttack());
-            _battleStatus.AddMessage($"{_player.GetName()} attacks {_monster.GetName()} for {_player.GetAttack()} damage!");
+            Status.AddMessage($"{_player.GetName()} attacks {_monster.GetName()} for {_player.GetAttack()} damage!");
 
             // B died (_monster)
             if (_monster.GetHp() <= 0)
             {
-                _battleStatus.AddMessage($"{_monster.GetName()} has died!");
-                _battleStatus.SetState(BattleState.Won);
+                Status.AddMessage($"{_monster.GetName()} has died!");
+                Status.SetState(BattleState.Won);
                 return;
             }
 
 
             // Monstret attackerar
             _player.TakeDamage(_monster.GetAttack());
-            _battleStatus.AddMessage($"{_monster.GetName()} attacks {_player.GetName()} for {_monster.GetAttack()} damage!");
+            Status.AddMessage($"{_monster.GetName()} attacks {_player.GetName()} for {_monster.GetAttack()} damage!");
 
             // A died (_player)
             if (_player.GetHp() <= 0)
             {
-                _battleStatus.AddMessage($"{_player.GetName()} has died!");
-                _battleStatus.SetState(BattleState.Lost);
+                Status.AddMessage($"{_player.GetName()} has died!");
+                Status.SetState(BattleState.Lost);
             }
 
         }
@@ -74,7 +76,7 @@ namespace ZoneRpg.Ui
         public void LookForMonsters(List<Entity> entities)
         {
             // Om vi redan är i en fight, så behöver vi inte leta efter nya fiender
-            if (_battleStatus.GetState() != BattleState.NotInBattle)
+            if (Status.State != BattleState.NotInBattle)
             {
                 return;
             }
@@ -122,8 +124,9 @@ namespace ZoneRpg.Ui
         //
         public BattleStatus GetBattleStatus()
         {
-            return _battleStatus;
+            return Status;
         }
+
     }
 }
 

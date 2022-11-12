@@ -109,20 +109,20 @@ namespace ZoneRpg.Database
         //
         // Gets a characters from the database
         //
-        public List<Character> GetCharacters()
+        public List<Player> GetPlayers()
         {
             string sql = @"
                 SELECT * FROM `character` c 
                 INNER JOIN entity e ON e.id = c.entity_id
                 WHERE c.is_monster = 0";
 
-            List<Character> characters = _connection.Query<Character, Entity, Character>(sql, (character, entity) =>
+            List<Player> players = _connection.Query<Player, Entity, Player>(sql, (player, entity) =>
             {
-                character.Entity = entity;
-                return character;
+                player.Entity = entity;
+                return player;
             }).ToList();
 
-            return characters;
+            return players;
         }
 
         //

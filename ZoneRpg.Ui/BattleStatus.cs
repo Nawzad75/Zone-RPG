@@ -2,12 +2,12 @@ namespace ZoneRpg.Ui
 {
     public class BattleStatus
     {
-        private BattleState _state;
+        public BattleState State { get; private set; }
         private List<string> _messages = new List<string>();
 
         public BattleStatus(BattleState state)
         {
-            _state = state;
+            State = state;
         }
 
         public void AddMessage(string v)
@@ -17,12 +17,7 @@ namespace ZoneRpg.Ui
 
         public void SetState(BattleState newState)
         {
-            _state = newState;
-        }
-
-        public BattleState GetState()
-        {
-            return _state;
+            State = newState;
         }
 
         public List<string> GetMessages()

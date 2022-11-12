@@ -32,7 +32,7 @@ namespace ZoneRpg.Ui
                 {
                     Console.Write(" ");
                 }
-                Console.WriteLine(I);
+                Console.WriteLine(I + "  ");  // Extra spaces om utf-8 råkar förstöra
             }
             Console.Write(c4);
 
@@ -72,7 +72,7 @@ namespace ZoneRpg.Ui
         //
         public void DrawBattle(BattleStatus battleStatus)
         {
-            switch (battleStatus.GetState())
+            switch (battleStatus.State)
             {
                 case BattleState.NotInBattle:
                     Console.WriteLine("Not in battle");

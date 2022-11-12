@@ -5,16 +5,9 @@ namespace ZoneRpg.Ui
 {
     public class UiManager
     {
-        // Constant array with all arrow keys
-        private static readonly ConsoleKey[] _allArrowKeys = new ConsoleKey[] {
-            ConsoleKey.UpArrow,
-            ConsoleKey.DownArrow,
-            ConsoleKey.LeftArrow,
-            ConsoleKey.RightArrow
-        };
-
         // Ui Members
         private DatabaseManager _db;
+        private InputState _inputState;
         private BattleManager? _battleManager;
         private IZoneVisualizer _zoneVisualizer = new ZoneVisualizerAscii();
         // private IZoneVisualizer _zoneVisualizer = new ZoneVisualizerUtf8();
@@ -23,6 +16,7 @@ namespace ZoneRpg.Ui
         public UiManager(DatabaseManager db)
         {
             _db = db;
+            _battleManager = new BattleManager(_db);
         }
 
         //
@@ -40,21 +34,39 @@ namespace ZoneRpg.Ui
             // Get the starting zone for the player
             Zone zone = _db.GetZone();
             zone.Player = CreateOrChoosePlayer();
-            _battleManager = new BattleManager(_db, zone.Player);
+            _battleManager.AddPlayerToBattle(zone.Player);
+            
 
             while (true)
             {
                 zone.Entities = _db.GetEntities();
                 _zoneVisualizer.DrawZone(zone);
-                _zoneVisualizer.DrawBattle(_battleManager.GetBattleStatus());
+                _zoneVisualizer.DrawBattle(_battleManager.Status);
                 _zoneVisualizer.DrawEntities(zone.Entities);
                 _zoneVisualizer.DrawPlayerEntity(zone.Player.Entity);
+
+                HandlePlayerDeath(_battleManager.Status);
+
                 ReadInput(zone);
                 OpenChest(zone);
                 // LookForFight(zone);
                 // _fightManager.HandleFight();
                 _battleManager.LookForMonsters(zone.Entities);
                 _battleManager.ProgressBattle();
+            }
+        }
+
+        //
+        //
+        //
+        private void HandlePlayerDeath(BattleStatus status)
+        {
+            if (status.State == BattleState.Lost)
+            {
+                Console.Clear();
+                Console.WriteLine("You died!");
+                Console.WriteLine("Press any key to exit...");
+                _inputState = InputState.Dead;
             }
         }
 
@@ -93,14 +105,14 @@ namespace ZoneRpg.Ui
         //
         // Choose player
         //
-        public Character ChoosePlayer()
+        public Player ChoosePlayer()
         {
             Console.Clear();
-            List<Character> characters = _db.GetCharacters();
-            string[] options = characters.Select(c => $"{c.Name}  (id: {c.id})").ToArray();
+            List<Player> players = _db.GetPlayers();
+            string[] options = players.Select(c => $"{c.Name}  (id: {c.id})").ToArray();
             int index = new Menu<int>("Choose a character:", options).Run();
 
-            return characters[index];
+            return players[index];
         }
 
         //
@@ -148,11 +160,38 @@ namespace ZoneRpg.Ui
         private void ReadInput(Zone zone)
         {
             ConsoleKeyInfo cki = Console.ReadKey();
-            if (_allArrowKeys.Contains(cki.Key))
+
+            switch (_inputState)
             {
-                zone.Player.Move(cki.Key, zone);
-                _db.UpdateEntityPosition(zone.Player.Entity);
+                case InputState.ZoneMovement:
+                    if (Constants.AllArrowKeys.Contains(cki.Key))
+                    {
+                        zone.Player.Move(cki.Key, zone);
+                        _db.UpdateEntityPosition(zone.Player.Entity);
+
+                    }
+                    break;
+
+                case InputState.Battle:
+
+                    break;
+
+                case InputState.Dead:
+                    if (cki.Key == ConsoleKey.Enter)
+                    {
+                        Console.Clear();
+                        Player player = (Player) zone.Player; // Cast from "Character" till "Player"
+                        player.Respawn();
+                        _battleManager.Reset();
+                        _inputState = InputState.ZoneMovement;
+                    }
+                    break;
+
+
             }
+
+
+
         }
     }
 }
