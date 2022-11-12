@@ -1,4 +1,6 @@
-namespace ZoneRpg.UserInterface
+using ZoneRpg.Shared;
+
+namespace ZoneRpg.GameLogic
 {
     public class BattleStatus
     {

@@ -2,6 +2,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\ZoneRpg.Database\ZoneRpg.Database.csproj" />
+    <ProjectReference Include="..\ZoneRpg.GameLogic\ZoneRpg.GameLogic.csproj" />
     <ProjectReference Include="..\ZoneRpg.Shared\ZoneRpg.Shared.csproj" />
   </ItemGroup>
 

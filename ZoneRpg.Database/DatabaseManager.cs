@@ -79,10 +79,10 @@ namespace ZoneRpg.Database
         //
         // Gets a zone from the database
         //
-        public Zone GetZone()
+        public Zone GetZone(int ZoneId)
         {
-            string sql = "SELECT * FROM zone";
-            Zone zone = _connection.Query<Zone>(sql).First();
+            string sql = "SELECT * FROM zone WHERE id = @id";
+            Zone zone = _connection.Query<Zone>(sql, new { id = ZoneId }).First();
             return zone;
         }
 

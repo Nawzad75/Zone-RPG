@@ -1,72 +1,76 @@
-﻿using ZoneRpg.Database;
+﻿using System.Text;
+using ZoneRpg.Database;
 using ZoneRpg.Shared;
+using ZoneRpg.GameLogic;
 
 namespace ZoneRpg.UserInterface
 {
-    public  class Ui
+    public class Ui
     {
         // Ui Members
         private DatabaseManager _db;
-        private BattleManager _battleManager;
         private IZoneRenderer _zoneRenderer = new ZoneRendererAscii();
         private ICharacterRenderer _playerRenderer = new CharacterRenderer();
         private ICharacterRenderer _monsterRenderer = new CharacterRenderer();
         private InputState _inputState = InputState.ZoneMovement;
-        private Zone _zone = new Zone();
-        private Player _player = new Player();
+        BattleManager _battleManager;
+        private Game _game;
 
         // Constructor
-        public Ui(DatabaseManager db)
+        public Ui(DatabaseManager db, Game game)
         {
             _db = db;
-            _battleManager = new BattleManager(_db);
+            _game = game;
+            _battleManager = game.BattleManager;
+            Setup();
+        }
+
+        // Setup the UI
+        public void Setup()
+        {
+            // Prepare the console
+            Console.OutputEncoding = Encoding.UTF8;
+            Console.CursorVisible = false;
+            Console.Clear();
+
+            // Show the intro screen and start menu
+            new StartGame().RunMainMenu();
+
+            _playerRenderer.SetDrawOrigin(2, _game.Zone.Height + 2);
+            _playerRenderer.SetAccentColor(ConsoleColor.Cyan);
+            _monsterRenderer.SetDrawOrigin(24, _game.Zone.Height + 2);
+            _monsterRenderer.SetAccentColor(ConsoleColor.Red);
         }
 
         //
         // Run!
         //
-        public void Run()
+        public void Render()
         {
-            // Prepare the console
-            Console.Clear();
-            Console.CursorVisible = false;
-
-            // Show the intro screen and start menu
-            new StartGame().RunMainMenu();
-
-            // Get the starting zone for the player
-            _zone = _db.GetZone();
-            _player = CreateOrChoosePlayer();
-
-            _playerRenderer.SetDrawOrigin(2, _zone.Height + 2);
-            _playerRenderer.SetAccentColor(ConsoleColor.Cyan);
-            _monsterRenderer.SetDrawOrigin(24, _zone.Height + 2);
-            _monsterRenderer.SetAccentColor(ConsoleColor.Red);
-
-
-            while (true)
-            {
-                _zone.Entities = _db.GetEntities();
-                _zoneRenderer.DrawZone(_zone);
-                _zoneRenderer.DrawEntities(_zone.Entities);
-                _zoneRenderer.DrawPlayerEntity(_player.Entity);
-                _zoneRenderer.DrawBattle(_battleManager.Status);
-
-                _playerRenderer.DrawCharacter(_player);
-                _monsterRenderer.DrawCharacter(_battleManager.GetMonster());
-
-                ReadInput();
-                OpenChest();
-
-                _battleManager.LookForMonsters(_zone.Entities);
-                _battleManager.ProgressBattle();
-                HandlePlayerDeath();
+            if (_game.state == GameState.GetPlayerCharacter){
+                _game.Player = CreateOrChoosePlayer();
+                _game.state = GameState.Playing;
             }
+            
+            _zoneRenderer.DrawZone(_game.Zone);
+            _zoneRenderer.DrawEntities(_game.Zone.Entities);
+            _zoneRenderer.DrawPlayerEntity(_game.Player.Entity);
+            _zoneRenderer.DrawBattle(_battleManager.GetBattleStatus());
+            _playerRenderer.DrawCharacter(_game.Player);
+            _monsterRenderer.DrawCharacter(_battleManager.GetMonster());
+
+            // Är detta UI? (Jag tror inte det) 
+            // Hur flyttar vi det nån annanstans?
+            OpenChest();
+            _battleManager.LookForMonsters(_game.Zone.Entities);
+            _battleManager.ProgressBattle();
+            HandlePlayerDeath();
+
         }
 
         private void HandlePlayerDeath()
         {
-            if (_player != null && _player.IsDead())
+            if (_game.Player != null && _game.Player.IsDead())
             {
                 Console.Clear();
                 Console.WriteLine("You died!");
@@ -140,13 +144,13 @@ namespace ZoneRpg.UserInterface
 
         public void OpenChest()
         {
-            Entity? chestEntity = _zone.Entities.Find(entity => entity.EntityType == EntityType.Chest);
+            Entity? chestEntity = _game.Zone.Entities.Find(entity => entity.EntityType == EntityType.Chest);
             if (chestEntity == null)
             {
                 return;
             }
 
-            if (chestEntity.X == _player.Entity.X && chestEntity.Y == _player.Entity.Y)
+            if (chestEntity.X == _game.Player.Entity.X && chestEntity.Y == _game.Player.Entity.Y)
             {
                 //öppnar kistan och får ett svärd från databasen
                 Console.WriteLine("Du har öppnat en kista och fått ett svärd!");
@@ -168,7 +172,7 @@ namespace ZoneRpg.UserInterface
         //
         // @param zone - We need a zone to restrict the player movement
         //
-        private void ReadInput()
+        public void ReadInput()
         {
             ConsoleKeyInfo cki = Console.ReadKey();
 
@@ -177,8 +181,8 @@ namespace ZoneRpg.UserInterface
                 case InputState.ZoneMovement:
                     if (Constants.AllArrowKeys.Contains(cki.Key))
                     {
-                        _player.Move(cki.Key, _zone);
-                        _db.UpdateEntityPosition(_player.Entity);
+                        _game.Player.Move(cki.Key, _game.Zone);
+                        _db.UpdateEntityPosition(_game.Player.Entity);
                     }
                     break;
 
@@ -198,8 +202,8 @@ namespace ZoneRpg.UserInterface
         private void RespawnPlayer()
         {
             Console.Clear();
-            _player.Respawn();
-            _db.UpdateEntityPosition(_player.Entity);
+            _game.Player.Respawn();
+            _db.UpdateEntityPosition(_game.Player.Entity);
             _inputState = InputState.ZoneMovement;
         }
     }

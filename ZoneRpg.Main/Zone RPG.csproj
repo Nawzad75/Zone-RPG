@@ -9,8 +9,9 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\ZoneRpg.Database\ZoneRpg.Database.csproj" />
     <ProjectReference Include="..\ZoneRpg.UserInterface\ZoneRpg.UserInterface.csproj" />
+    <ProjectReference Include="..\ZoneRpg.Database\ZoneRpg.Database.csproj" />
+    <ProjectReference Include="..\ZoneRpg.GameLogic\ZoneRpg.GameLogic.csproj" />
     <ProjectReference Include="..\ZoneRpg.Shared\ZoneRpg.Shared.csproj" />
     <ProjectReference Include="..\ZoneRpg.Loot\ZoneRpg.Loot.csproj" />
   </ItemGroup>

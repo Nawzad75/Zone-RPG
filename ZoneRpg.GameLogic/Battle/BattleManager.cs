@@ -1,7 +1,7 @@
 ﻿using ZoneRpg.Database;
 using ZoneRpg.Shared;
 
-namespace ZoneRpg.UserInterface
+namespace ZoneRpg.GameLogic
 {
     public class BattleManager
     {
@@ -136,15 +136,8 @@ namespace ZoneRpg.UserInterface
             return Status;
         }
 
-        internal void HandlePlayerDeath(InputState inputState)
-        {
-            if (Status.State == BattleState.Lost)
-            {
-                Status.State = BattleState.NotInBattle;
-            }
-        }
 
-        internal IFighter? GetMonster()
+        public IFighter? GetMonster()
         {
             return _monster;
         }

@@ -1,3 +1,4 @@
+using ZoneRpg.GameLogic;
 using ZoneRpg.Shared;
 
 namespace ZoneRpg.UserInterface

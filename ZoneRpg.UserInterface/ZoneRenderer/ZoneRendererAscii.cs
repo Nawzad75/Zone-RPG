@@ -1,3 +1,4 @@
+using ZoneRpg.GameLogic;
 using ZoneRpg.Shared;
 
 namespace ZoneRpg.UserInterface
@@ -11,7 +12,7 @@ namespace ZoneRpg.UserInterface
         public void DrawZone(Zone zone)
         {
             Console.SetCursorPosition(0, 0);
-            ConsoleUtils.DrawBox(0,0, zone.Width, zone.Height);
+            ConsoleUtils.DrawBox(0, 0, zone.Width, zone.Height);
             Console.WriteLine("                Zone: " + zone.Name);
         }
 

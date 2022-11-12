@@ -1,4 +1,4 @@
-namespace ZoneRpg.UserInterface
+namespace ZoneRpg.Shared
 {
     public enum BattleState
     {
