@@ -17,7 +17,6 @@ namespace ZoneRpg.GameLogic
             _messages.Add(v);
         }
 
-
         public List<string> GetMessages()
         {
             return _messages;

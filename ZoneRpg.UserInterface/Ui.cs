@@ -45,19 +45,19 @@ namespace ZoneRpg.UserInterface
         //
         public void Render()
         {
-            if (_game.state == GameState.MainMenu)
+            if (_game.State == GameState.MainMenu)
             {
                 new StartGame().RunMainMenu();
-                _game.state = GameState.GetPlayerCharacter; 
+                _game.SetState(GameState.GetPlayerCharacter);
             }
 
-            if (_game.state == GameState.GetPlayerCharacter)
+            if (_game.State == GameState.GetPlayerCharacter)
             {
-                _game.Player = CreateOrChoosePlayer();
-                _game.state = GameState.Playing;
+                _game.SetPlayer(CreateOrChoosePlayer());
+                _game.SetState(GameState.Playing);
             }
 
-            if (_game.state == GameState.Dead)
+            if (_game.State == GameState.Dead)
             {
                 Console.Clear();
                 Console.WriteLine("You died!");
@@ -67,17 +67,14 @@ namespace ZoneRpg.UserInterface
 
             _zoneRenderer.DrawZone(_game.Zone);
             _zoneRenderer.DrawEntities(_game.Zone.Entities);
-            _zoneRenderer.DrawPlayerEntity(_game.Player.Entity);
+            _zoneRenderer.DrawPlayerEntity(_game.GetPlayerEntity());
             _zoneRenderer.DrawBattle(_battleManager.GetBattleStatus());
-            _playerRenderer.DrawCharacter(_game.Player);
+            _playerRenderer.DrawCharacter(_game.GetPlayer());
             _monsterRenderer.DrawCharacter(_battleManager.GetMonster());
 
             // Är detta UI? (Jag tror inte det) 
             // Hur flyttar vi det nån annanstans?
             OpenChest();
-            _battleManager.LookForMonsters(_game.Zone.Entities);
-            _battleManager.ProgressBattle();
-
         }
 
 
@@ -152,7 +149,9 @@ namespace ZoneRpg.UserInterface
                 return;
             }
 
-            if (chestEntity.X == _game.Player.Entity.X && chestEntity.Y == _game.Player.Entity.Y)
+            Entity playerEntity = _game.GetPlayerEntity();
+
+            if (chestEntity.X == playerEntity.X && chestEntity.Y == playerEntity.Y)
             {
                 //öppnar kistan och får ett svärd från databasen
                 Console.WriteLine("Du har öppnat en kista och fått ett svärd!");
@@ -183,8 +182,7 @@ namespace ZoneRpg.UserInterface
                 case InputState.ZoneMovement:
                     if (Constants.AllArrowKeys.Contains(cki.Key))
                     {
-                        _game.Player.Move(cki.Key, _game.Zone);
-                        _db.UpdateEntityPosition(_game.Player.Entity);
+                        _game.MovePlayer(cki.Key);
                     }
                     break;
 
@@ -195,18 +193,10 @@ namespace ZoneRpg.UserInterface
                 case InputState.Dead:
                     if (cki.Key == ConsoleKey.Enter)
                     {
-                        RespawnPlayer();
+                        _game.RespawnPlayer();
                     }
                     break;
             }
-        }
-
-        private void RespawnPlayer()
-        {
-            Console.Clear();
-            _game.Player.Respawn();
-            _db.UpdateEntityPosition(_game.Player.Entity);
-            _inputState = InputState.ZoneMovement;
         }
     }
 }
