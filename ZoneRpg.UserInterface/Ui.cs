@@ -7,11 +7,11 @@ namespace ZoneRpg.UserInterface
     {
         // Ui Members
         private DatabaseManager _db;
-        private InputState _inputState;
         private BattleManager _battleManager;
         private IZoneRenderer _zoneRenderer = new ZoneRendererAscii();
         private ICharacterRenderer _playerRenderer = new CharacterRenderer();
         private ICharacterRenderer _monsterRenderer = new CharacterRenderer();
+        private InputState _inputState = InputState.ZoneMovement;
         private Zone _zone = new Zone();
         private Player _player = new Player();
 
@@ -49,7 +49,7 @@ namespace ZoneRpg.UserInterface
                 _zone.Entities = _db.GetEntities();
                 _zoneRenderer.DrawZone(_zone);
                 _zoneRenderer.DrawEntities(_zone.Entities);
-                _zoneRenderer.DrawPlayerEntity(_zone.Player.Entity);
+                _zoneRenderer.DrawPlayerEntity(_player.Entity);
                 _zoneRenderer.DrawBattle(_battleManager.Status);
 
                 _playerRenderer.DrawCharacter(_player);
@@ -146,7 +146,7 @@ namespace ZoneRpg.UserInterface
                 return;
             }
 
-            if (chestEntity.X == _zone.Player.Entity.X && chestEntity.Y == _zone.Player.Entity.Y)
+            if (chestEntity.X == _player.Entity.X && chestEntity.Y == _player.Entity.Y)
             {
                 //öppnar kistan och får ett svärd från databasen
                 Console.WriteLine("Du har öppnat en kista och fått ett svärd!");
@@ -177,8 +177,8 @@ namespace ZoneRpg.UserInterface
                 case InputState.ZoneMovement:
                     if (Constants.AllArrowKeys.Contains(cki.Key))
                     {
-                        _zone.Player.Move(cki.Key, _zone);
-                        _db.UpdateEntityPosition(_zone.Player.Entity);
+                        _player.Move(cki.Key, _zone);
+                        _db.UpdateEntityPosition(_player.Entity);
                     }
                     break;
 
@@ -198,9 +198,8 @@ namespace ZoneRpg.UserInterface
         private void RespawnPlayer()
         {
             Console.Clear();
-            Player player = _zone.Player;
-            player.Respawn();
-
+            _player.Respawn();
+            _db.UpdateEntityPosition(_player.Entity);
             _inputState = InputState.ZoneMovement;
         }
     }
