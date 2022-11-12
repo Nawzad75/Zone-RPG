@@ -33,8 +33,6 @@ namespace ZoneRpg.UserInterface
             Console.CursorVisible = false;
             Console.Clear();
 
-            // Show the intro screen and start menu
-            new StartGame().RunMainMenu();
 
             _playerRenderer.SetDrawOrigin(2, _game.Zone.Height + 2);
             _playerRenderer.SetAccentColor(ConsoleColor.Cyan);
@@ -47,11 +45,26 @@ namespace ZoneRpg.UserInterface
         //
         public void Render()
         {
-            if (_game.state == GameState.GetPlayerCharacter){
+            if (_game.state == GameState.MainMenu)
+            {
+                new StartGame().RunMainMenu();
+                _game.state = GameState.GetPlayerCharacter; 
+            }
+
+            if (_game.state == GameState.GetPlayerCharacter)
+            {
                 _game.Player = CreateOrChoosePlayer();
                 _game.state = GameState.Playing;
             }
-            
+
+            if (_game.state == GameState.Dead)
+            {
+                Console.Clear();
+                Console.WriteLine("You died!");
+                Console.WriteLine("Press any key to exit...");
+                Console.ReadLine();
+            }
+
             _zoneRenderer.DrawZone(_game.Zone);
             _zoneRenderer.DrawEntities(_game.Zone.Entities);
             _zoneRenderer.DrawPlayerEntity(_game.Player.Entity);
@@ -64,20 +77,9 @@ namespace ZoneRpg.UserInterface
             OpenChest();
             _battleManager.LookForMonsters(_game.Zone.Entities);
             _battleManager.ProgressBattle();
-            HandlePlayerDeath();
 
         }
 
-        private void HandlePlayerDeath()
-        {
-            if (_game.Player != null && _game.Player.IsDead())
-            {
-                Console.Clear();
-                Console.WriteLine("You died!");
-                Console.WriteLine("Press any key to exit...");
-                _inputState = InputState.Dead;
-            }
-        }
 
         //
         // Let the player choose a character or create a new one

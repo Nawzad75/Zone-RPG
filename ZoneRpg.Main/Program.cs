@@ -12,6 +12,7 @@ namespace ZoneRpg.Main
             DatabaseManager db = new DatabaseManager();
 
             Game game = new Game(db);
+
             Ui ui = new Ui(db, game);
 
 
@@ -21,8 +22,6 @@ namespace ZoneRpg.Main
                 ui.Render();
                 ui.ReadInput();
             }
-
         }
     }
-
 }

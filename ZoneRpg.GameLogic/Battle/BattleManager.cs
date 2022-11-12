@@ -16,8 +16,6 @@ namespace ZoneRpg.GameLogic
             _db = db;
         }
 
-
-
         public void AddMonsterToBattle(IFighter monster)
         {
             _monster = monster;
@@ -47,8 +45,9 @@ namespace ZoneRpg.GameLogic
                 Status.State = BattleState.BattleJustStarted;
             }
 
+            
             // Spelaren attackerar
-            _monster.TakeDamage(_monster.Attack);
+            _monster.TakeDamage(_player.Attack);
             Status.AddMessage($"{_player.Name} attacks {_monster.Name} for {_player.Attack} damage!");
 
             // B died (_monster)
@@ -104,12 +103,11 @@ namespace ZoneRpg.GameLogic
         //
         private bool WhereNearbyMonster(Entity entity)
         {
-            // Vi vill vara säkra på att _player finns
-            if(_player == null)
+            if (_player == null)
             {
                 return false;
-            }
-            
+            };
+
             // Om entityn inte är ett monster:
             if (entity.EntityType != EntityType.Monster)
             {
