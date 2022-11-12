@@ -12,7 +12,6 @@ namespace ZoneRpg.UserInterface
         private IZoneRenderer _zoneRenderer = new ZoneRendererAscii();
         private ICharacterRenderer _playerRenderer = new CharacterRenderer();
         private ICharacterRenderer _monsterRenderer = new CharacterRenderer();
-        private InputState _inputState = InputState.ZoneMovement;
         BattleManager _battleManager;
         private Game _game;
 
@@ -34,9 +33,9 @@ namespace ZoneRpg.UserInterface
             Console.Clear();
 
 
-            _playerRenderer.SetDrawOrigin(2, _game.Zone.Height + 2);
+            _playerRenderer.SetDrawOrigin(2, _game.Zone.Height + 3);
             _playerRenderer.SetAccentColor(ConsoleColor.Cyan);
-            _monsterRenderer.SetDrawOrigin(24, _game.Zone.Height + 2);
+            _monsterRenderer.SetDrawOrigin(24, _game.Zone.Height + 3);
             _monsterRenderer.SetAccentColor(ConsoleColor.Red);
         }
 
@@ -45,34 +44,37 @@ namespace ZoneRpg.UserInterface
         //
         public void Render()
         {
-            if (_game.State == GameState.MainMenu)
+            switch (_game.State)
             {
-                new StartGame().RunMainMenu();
-                _game.SetState(GameState.GetPlayerCharacter);
+                case GameState.MainMenu:
+                    new StartGame().RunMainMenu();
+                    _game.SetState(GameState.GetPlayerCharacter);
+                    Render(); // Render again to show the new state before we read input
+                    break;
+
+                case GameState.GetPlayerCharacter:
+                    _game.SetPlayer(CreateOrChoosePlayer());
+                    _game.SetState(GameState.Playing);
+                    Render(); // Render again to show the new state before we read input
+                    break;
+
+                case GameState.Dead:
+                    Console.Clear();
+                    Console.WriteLine("You died!");
+                    Console.WriteLine("Press <Enter> to respawn...");
+                    break;
+
+                case GameState.Playing:
+                    _zoneRenderer.DrawZone(_game.Zone);
+                    _zoneRenderer.DrawEntities(_game.Zone.Entities);
+                    _zoneRenderer.DrawPlayerEntity(_game.GetPlayerEntity());
+                    _zoneRenderer.DrawBattle(_battleManager.GetBattleStatus());
+                    _playerRenderer.DrawCharacter(_game.GetPlayer());
+                    _monsterRenderer.DrawCharacter(_battleManager.GetMonster());
+                    break;
             }
 
-            if (_game.State == GameState.GetPlayerCharacter)
-            {
-                _game.SetPlayer(CreateOrChoosePlayer());
-                _game.SetState(GameState.Playing);
-            }
-
-            if (_game.State == GameState.Dead)
-            {
-                Console.Clear();
-                Console.WriteLine("You died!");
-                Console.WriteLine("Press any key to exit...");
-                Console.ReadLine();
-            }
-
-            _zoneRenderer.DrawZone(_game.Zone);
-            _zoneRenderer.DrawEntities(_game.Zone.Entities);
-            _zoneRenderer.DrawPlayerEntity(_game.GetPlayerEntity());
-            _zoneRenderer.DrawBattle(_battleManager.GetBattleStatus());
-            _playerRenderer.DrawCharacter(_game.GetPlayer());
-            _monsterRenderer.DrawCharacter(_battleManager.GetMonster());
-
-            // Är detta UI? (Jag tror inte det) 
+            // Är detta UI? (delvis?) 
             // Hur flyttar vi det nån annanstans?
             OpenChest();
         }
@@ -175,22 +177,22 @@ namespace ZoneRpg.UserInterface
         //
         public void ReadInput()
         {
-            ConsoleKeyInfo cki = Console.ReadKey();
 
-            switch (_inputState)
+            ConsoleKeyInfo cki = Console.ReadKey();
+            switch (_game.State)
             {
-                case InputState.ZoneMovement:
+                case GameState.Playing:
                     if (Constants.AllArrowKeys.Contains(cki.Key))
                     {
                         _game.MovePlayer(cki.Key);
                     }
                     break;
 
-                case InputState.Battle:
+                case GameState.Battle:
 
                     break;
 
-                case InputState.Dead:
+                case GameState.Dead:
                     if (cki.Key == ConsoleKey.Enter)
                     {
                         _game.RespawnPlayer();

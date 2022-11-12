@@ -15,7 +15,6 @@ namespace ZoneRpg.Main
 
             Ui ui = new Ui(db, game);
 
-
             while (true)
             {
                 game.Update();

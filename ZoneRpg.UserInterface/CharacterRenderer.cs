@@ -31,15 +31,15 @@ namespace ZoneRpg.UserInterface
             Console.SetCursorPosition(_x + 2, _y + 1);
 
             Console.ForegroundColor = ConsoleColor.Yellow;
-            Console.Write("Name: ");
+            Console.Write("Name:   ");
             Console.ForegroundColor = _accentColor;
-            Console.Write(character?.Name.PadLeft(2) ?? "");
+            Console.Write(character?.Name ?? "");
 
             Console.SetCursorPosition(_x + 2, _y + 2);
             Console.ForegroundColor = ConsoleColor.Yellow;
-            Console.Write("HP: ");
+            Console.Write("HP:     ");
             Console.ForegroundColor = _accentColor;
-            Console.Write(character?.Hp.ToString().PadLeft(5) ?? "");
+            Console.Write(character?.Hp.ToString() ?? "");
 
             Console.SetCursorPosition(_x + 2, _y + 3);
             Console.ForegroundColor = ConsoleColor.Yellow;
@@ -48,9 +48,6 @@ namespace ZoneRpg.UserInterface
             Console.Write(character?.Attack.ToString() ?? "");
 
             Console.ResetColor();
-
         }
-
-
     }
 }

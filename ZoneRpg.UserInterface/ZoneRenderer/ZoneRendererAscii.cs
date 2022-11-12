@@ -13,7 +13,7 @@ namespace ZoneRpg.UserInterface
         {
             Console.SetCursorPosition(0, 0);
             ConsoleUtils.DrawBox(0, 0, zone.Width, zone.Height);
-            Console.WriteLine("                Zone: " + zone.Name);
+            Console.WriteLine("\n                Zone: " + zone.Name);
         }
 
         //
