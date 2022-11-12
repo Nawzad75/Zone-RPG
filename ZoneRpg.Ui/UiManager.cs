@@ -145,9 +145,17 @@ namespace ZoneRpg.Ui
 
             if (chestEntity.X == zone.Player.Entity.X && chestEntity.Y == zone.Player.Entity.Y)
             {
-                Console.WriteLine("Du har öppnat en kista och hittat en ny vapen");
+                //öppnar kistan och får ett svärd från databasen
+                Console.WriteLine("Du har öppnat en kista och fått ett svärd!");
+                List<ItemInfo> allItemInfos = _db.GetAllItemInfos();
+                ItemInfo? sword = allItemInfos.Find(item => item.Name == "Sword");
 
-                Console.ReadKey();
+                if (sword != null)
+                {
+                    zone.Player.
+                }
+
+            
             }
 
 
