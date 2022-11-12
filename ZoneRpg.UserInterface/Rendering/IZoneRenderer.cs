@@ -10,7 +10,5 @@ namespace ZoneRpg.UserInterface
         public void DrawEntities(List<Entity> entities);
 
         public void DrawPlayerEntity(Entity playerEntity);
-        
-        public void DrawBattle(BattleStatus v);
     }
 }

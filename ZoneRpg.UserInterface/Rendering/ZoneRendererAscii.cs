@@ -38,34 +38,6 @@ namespace ZoneRpg.UserInterface
             Console.WriteLine(playerEntity.Symbol);
         }
 
-        //
-        //
-        //
-        public void DrawBattle(BattleStatus battleStatus)
-        {
-            switch (battleStatus.State)
-            {
-                case BattleState.NotInBattle:
-                    Console.WriteLine("Not in battle");
-                    break;
-
-
-                case BattleState.InBattle:
-                    Console.WriteLine("You are in a battle with <????> !");
-                    foreach (var item in battleStatus.GetMessages())
-                    {
-                        Console.WriteLine(item);
-                    }
-                    break;
-
-                case BattleState.Won:
-                    Console.WriteLine("You won the battle!");
-                    break;
-
-                case BattleState.Lost:
-                    Console.WriteLine("You lost the battle!");
-                    break;
-            }
-        }
+      
     }
 }

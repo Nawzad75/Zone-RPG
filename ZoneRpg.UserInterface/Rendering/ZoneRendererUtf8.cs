@@ -73,9 +73,6 @@ namespace ZoneRpg.UserInterface
             Console.WriteLine(playerEntity.Symbol.ToString().Replace("P", "🏃"));
         }
 
-        public void DrawBattle(BattleStatus v)
-        {
-            Console.WriteLine("Draw fight not implemented in ZoneVisualizerUtf8");
-        }
+
     }
 }

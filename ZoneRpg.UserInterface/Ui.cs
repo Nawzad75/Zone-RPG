@@ -1,7 +1,10 @@
 ﻿using System.Text;
+using System.Drawing;
+using Colorful;
+using Console = Colorful.Console;
 using ZoneRpg.Database;
-using ZoneRpg.Shared;
 using ZoneRpg.GameLogic;
+using ZoneRpg.Shared;
 
 namespace ZoneRpg.UserInterface
 {
@@ -10,9 +13,9 @@ namespace ZoneRpg.UserInterface
         // Ui Members
         private DatabaseManager _db;
         private IZoneRenderer _zoneRenderer = new ZoneRendererAscii();
-        private ICharacterRenderer _playerRenderer = new CharacterRenderer();
-        private ICharacterRenderer _monsterRenderer = new CharacterRenderer();
-        BattleManager _battleManager;
+        private IRenderer _playerRenderer = new CharacterRenderer();
+        private IRenderer _monsterRenderer = new CharacterRenderer();
+        private IRenderer _battleRenderer;
         private Game _game;
 
         // Constructor
@@ -20,7 +23,18 @@ namespace ZoneRpg.UserInterface
         {
             _db = db;
             _game = game;
-            _battleManager = game.BattleManager;
+            _battleRenderer = new BattleRenderer(game.BattleManager);
+
+
+            List<char> chars = new List<char>()
+{
+    'r', 'e', 'x', 's', 'z', 'q', 'j', 'w', 't', 'a', 'b', 'c', 'l', 'm',
+    'r', 'e', 'x', 's', 'z', 'q', 'j', 'w', 't', 'a', 'b', 'c', 'l', 'm',
+    'r', 'e', 'x', 's', 'z', 'q', 'j', 'w', 't', 'a', 'b', 'c', 'l', 'm',
+    'r', 'e', 'x', 's', 'z', 'q', 'j', 'w', 't', 'a', 'b', 'c', 'l', 'm'
+};
+            Console.WriteWithGradient(chars, Color.Yellow, Color.Fuchsia, 14);
+
             Setup();
         }
 
@@ -33,10 +47,13 @@ namespace ZoneRpg.UserInterface
             Console.Clear();
 
 
-            _playerRenderer.SetDrawOrigin(2, _game.Zone.Height + 3);
+            _playerRenderer.SetRect(2, _game.Zone.Height + 3, 19, 3);
             _playerRenderer.SetAccentColor(ConsoleColor.Cyan);
-            _monsterRenderer.SetDrawOrigin(24, _game.Zone.Height + 3);
+
+            _monsterRenderer.SetRect(24, _game.Zone.Height + 3, 19, 3);
             _monsterRenderer.SetAccentColor(ConsoleColor.Red);
+
+            _battleRenderer.SetRect(2, _game.Zone.Height + 8, 41, 5);
         }
 
         //
@@ -54,6 +71,7 @@ namespace ZoneRpg.UserInterface
 
                 case GameState.GetPlayerCharacter:
                     _game.SetPlayer(CreateOrChoosePlayer());
+                    ((CharacterRenderer)_playerRenderer).SetCharacter(_game.GetPlayer());
                     _game.SetState(GameState.Playing);
                     Render(); // Render again to show the new state before we read input
                     break;
@@ -68,9 +86,9 @@ namespace ZoneRpg.UserInterface
                     _zoneRenderer.DrawZone(_game.Zone);
                     _zoneRenderer.DrawEntities(_game.Zone.Entities);
                     _zoneRenderer.DrawPlayerEntity(_game.GetPlayerEntity());
-                    _zoneRenderer.DrawBattle(_battleManager.GetBattleStatus());
-                    _playerRenderer.DrawCharacter(_game.GetPlayer());
-                    _monsterRenderer.DrawCharacter(_battleManager.GetMonster());
+                    _playerRenderer.Draw();
+                    _monsterRenderer.Draw();
+                    _battleRenderer.Draw();
                     break;
             }
 
@@ -79,6 +97,7 @@ namespace ZoneRpg.UserInterface
             OpenChest();
         }
 
+        
 
         //
         // Let the player choose a character or create a new one

@@ -131,6 +131,14 @@ namespace ZoneRpg.Shared
             return Hp;
         }
 
+        public int GetX()
+        {
+            return Entity.X;
+        }
 
+        public int GetY()
+        {
+            return Entity.Y;
+        }
     }
 }
