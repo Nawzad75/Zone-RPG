@@ -2,78 +2,47 @@ namespace ZoneRpg.UserInterface
 {
     public class ConsoleUtils
     {
-        public static void DrawBox(int width, int height)
-        {
-            string c1 = "╔";
-            string c2 = "╗";
-            string c3 = "╝";
-            string c4 = "╚";
-            string space = "═";
-            string I = "║";
-            Console.Write(c1);
-            for (int i = 1; i < width - 1; i++)
-            {
-                Console.Write(space);
-            }
-            Console.WriteLine(c2);
-
-            for (int i = 2; i < height; i++)
-            {
-                Console.Write(I);
-                for (int j = 2; j < width; j++)
-                {
-                    Console.Write(" ");
-                }
-                Console.WriteLine(I);
-            }
-            Console.Write(c4);
-
-            for (int i = 2; i < width; i++)
-            {
-                Console.Write(space);
-
-            }
-            Console.WriteLine(c3);
-        }
-
         //
-        // Samma sak som ovan, men använder inte WriteLine så vi kan ha en box var som helst på skärmen
+        // 
         //
         public static void DrawBox(int x, int y, int width, int height)
         {
+            
+            string cornerTL = "╔";
+            string cornerTR = "╗";
+            string cornerBR = "╝";
+            string cornerBL = "╚";
+            string vertical = "║";
+            string horizont = "═";
+
             Console.SetCursorPosition(x, y);
-            string c1 = "╔";
-            string c2 = "╗";
-            string c3 = "╝";
-            string c4 = "╚";
-            string space = "═";
-            string I = "║";
-            Console.Write(c1);
-            for (int i = 1; i < width - 1; i++)
+            Console.Write(cornerTL);
+            for (int i = 0; i < width; i++)
             {
-                Console.Write(space);
+                Console.Write(horizont);
             }
-            Console.Write(c2);
+            Console.Write(cornerTR);
             Console.SetCursorPosition(x, y + 1);
 
-            for (int i = 2; i < height; i++)
+            for (int i = 0; i < height; i++)
             {
-                Console.Write(I);
-                for (int j = 2; j < width; j++)
-                {
+                Console.SetCursorPosition(x, y + i + 1);
+                Console.Write(vertical);
+                for (int j = 0; j < width; j++)
+                {                    
                     Console.Write(" ");
                 }
-                Console.Write(I);
-                Console.SetCursorPosition(x + 1, y + 1 + i);
+                Console.Write(vertical);
             }
-            Console.Write(c4);
 
-            for (int i = 2; i < width; i++)
+            Console.SetCursorPosition(x, y + height + 1);
+            Console.Write(cornerBL);
+            for (int i = 0; i < width; i++)
             {
-                Console.Write(space);
+                Console.Write(horizont);
 
             }
-            Console.Write(c3);
+            Console.Write(cornerBR);
 
         }
     }

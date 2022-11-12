@@ -69,7 +69,7 @@ namespace ZoneRpg.Shared
                     break;
 
                 case ConsoleKey.DownArrow:
-                    MoveDown(zone.Height - 2);
+                    MoveDown(zone.Height);
                     break;
 
                 case ConsoleKey.LeftArrow:
@@ -77,7 +77,7 @@ namespace ZoneRpg.Shared
                     break;
 
                 case ConsoleKey.RightArrow:
-                    MoveRight(zone.Width - 2);
+                    MoveRight(zone.Width);
                     break;
             }
         }

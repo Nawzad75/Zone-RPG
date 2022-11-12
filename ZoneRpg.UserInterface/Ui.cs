@@ -13,7 +13,7 @@ namespace ZoneRpg.UserInterface
         private ICharacterRenderer _playerRenderer = new CharacterRenderer();
         private ICharacterRenderer _monsterRenderer = new CharacterRenderer();
         private Zone _zone = new Zone();
-        private Player _player = new Player(); 
+        private Player _player = new Player();
 
         // Constructor
         public Ui(DatabaseManager db)
@@ -179,7 +179,6 @@ namespace ZoneRpg.UserInterface
                     {
                         _zone.Player.Move(cki.Key, _zone);
                         _db.UpdateEntityPosition(_zone.Player.Entity);
-
                     }
                     break;
 
