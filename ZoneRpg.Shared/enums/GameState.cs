@@ -4,9 +4,10 @@ namespace ZoneRpg.Shared
     {
         MainMenu,
         CharacterCreation,
-        GetPlayerCharacter,
-        Playing,
+        GetPlayer,
+        Zone,
         Battle,
+        Loot,
         Dead
     }
 }

@@ -42,7 +42,7 @@ namespace ZoneRpg.UserInterface
             Console.ForegroundColor = ConsoleColor.Yellow;
             Console.Write("Attack: ");
             Console.ForegroundColor = _accentColor;
-            Console.Write(_character?.Attack.ToString() ?? "");
+            Console.Write(_character?.GetAttack().ToString() ?? "");
 
             Console.ResetColor();
         }
