@@ -6,7 +6,7 @@ namespace ZoneRpg.Shared
         public Monster()
         {
             Name = "Monster";
-            Hp = 0;
+            Hp = 10;
             Level = 1;
         }
 
