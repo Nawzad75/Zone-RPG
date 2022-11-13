@@ -6,7 +6,6 @@ namespace ZoneRpg.Shared
         public Monster()
         {
             Name = "Monster";
-            Attack = 0;
             Hp = 0;
             Level = 1;
         }
@@ -14,7 +13,6 @@ namespace ZoneRpg.Shared
         public void SetMonster()
         {
             this.Level = Level;
-            Attack = Level * 2;
             Hp = Level * 5;
         }
     }

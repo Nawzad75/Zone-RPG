@@ -4,18 +4,19 @@ namespace ZoneRpg.Shared
     {
         public int id { get; set; }
         public string Name { get; set; } = "<Unnamed>";
-        public int Type { get; set; }
+        public int Hp { get; set; } = 100;
+        public int MaxHp { get; set; } = 100;
         public int Xp { get; set; }
         public int Level { get; set; }
         public int Skill { get; set; }
         public CharacterClass CharacterClass { get; set; }
-        public int Attack { get; set; }
-        public int Hp { get; set; }
         public bool Is_Monster { get; set; } = false;
         public Entity Entity { get; set; } = new Entity();
-        public Item? ItemIdWeapon { get; set; }
-        public Item? ItemIdBoots { get; set; }
-        public Item? ItemIdHelm { get; set; }
+        
+        // Items
+        public Item? ItemWeapon { get; set; }
+        public Item? ItemBoots { get; set; }
+        public Item? ItemHelm { get; set; }
 
         public Character() { }
 
@@ -113,7 +114,8 @@ namespace ZoneRpg.Shared
 
         public int GetAttack()
         {
-            return Attack;
+            return CharacterClass.GetBaseAttack();// + ItemIdWeapon?.AttackBonus ?? 0;
+            
         }
 
         public void TakeDamage(int damage)

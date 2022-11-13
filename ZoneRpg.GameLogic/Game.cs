@@ -16,8 +16,8 @@ namespace ZoneRpg.GameLogic
         public Game(DatabaseManager db)
         {
             _db = db;
-            BattleManager = new BattleManager(_db);
             Zone = _db.GetZone(1);
+            BattleManager = new BattleManager(_db);
         }
 
 
@@ -25,9 +25,16 @@ namespace ZoneRpg.GameLogic
         {
             Zone.Entities = _db.GetEntities();
             BattleManager.LookForMonsters(Zone.Entities);
+
+            if(BattleManager.State == BattleState.InBattle)
+            {
+                SetState(GameState.Battle);
+            }
+
             BattleManager.ProgressBattle();
         }
 
+        //
         public void SetState(GameState state)
         {
             this.State = state;
@@ -44,12 +51,13 @@ namespace ZoneRpg.GameLogic
             _player.Entity.X = Constants.StartPositionX;
             _player.Entity.Y = Constants.StartPositionY;
             _db.UpdateEntityPosition(_player.Entity);
-            SetState(GameState.Playing);
+            SetState(GameState.Zone);
         }
 
         public void SetPlayer(Player player)
         {
             _player = player;
+            BattleManager.SetPlayer(_player);
         }
 
         public Player GetPlayer()

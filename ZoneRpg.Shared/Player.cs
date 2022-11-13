@@ -17,29 +17,29 @@ namespace ZoneRpg.Shared
             switch (characterClass)
             {
                 case CharacterClass.Warrior:
-                    Entity.Hp = 100;
+                    MaxHp = 100;
                     break;
 
                 case CharacterClass.Mage:
-                    Entity.Hp = 50;
+                    MaxHp = 50;
                     break;
 
                 case CharacterClass.Rogue:
-                    Entity.Hp = 75;
+                    MaxHp = 75;
                     break;
             }
         }
 
         public bool IsDead()
         {
-            return Entity.Hp <= 0;
+            return Hp <= 0;
         }
 
         public void Respawn()
         {
             Entity.X = Constants.StartPositionX;
             Entity.Y = Constants.StartPositionY;
-            Entity.Hp = 100;
+            Hp = MaxHp;
         }
     }
 }

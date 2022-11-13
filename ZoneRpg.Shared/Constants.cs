@@ -1,9 +1,10 @@
 namespace ZoneRpg.Shared
 {
-    public class Constants
+    public static class Constants
     {
         public static int StartPositionX = 22;
         public static int StartPositionY = 6;
+        public static int MaxBattleMessages = 8;
         public static readonly ConsoleKey[] AllArrowKeys = new ConsoleKey[] {
             ConsoleKey.UpArrow,
             ConsoleKey.DownArrow,

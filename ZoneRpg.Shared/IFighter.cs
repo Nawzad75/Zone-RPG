@@ -5,7 +5,7 @@ public interface IFighter
     // Properties    
     int Hp { get; set; }
     string Name { get; set; }
-    int Attack { get; set; }
+    int GetAttack();
     int GetX();
     int GetY();
 

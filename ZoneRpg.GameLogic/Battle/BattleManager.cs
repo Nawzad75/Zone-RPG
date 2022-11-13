@@ -10,7 +10,7 @@ namespace ZoneRpg.GameLogic
         private IFighter? _player;
         private IFighter? _monster;
         private DatabaseManager _db;
-        private int _turn = 0;
+
         private List<string> _messages = new List<string>();
 
         public BattleManager(DatabaseManager db)
@@ -18,13 +18,12 @@ namespace ZoneRpg.GameLogic
             _db = db;
         }
 
-        public void AddMonsterToBattle(IFighter monster)
+        public void SetMonster(IFighter monster)
         {
             _monster = monster;
-            State = BattleState.InBattle;
         }
 
-        public void AddPlayerToBattle(IFighter player)
+        public void SetPlayer(IFighter player)
         {
             _player = player;
         }
@@ -50,17 +49,10 @@ namespace ZoneRpg.GameLogic
                 return;
             }
 
-            _turn++;
-
-            if (_turn == 1)
-            {
-                State = BattleState.BattleJustStarted;
-            }
-
 
             // Spelaren attackerar
-            _monster.TakeDamage(_player.Attack);
-            AddMessage($"{_player.Name} attacks {_monster.Name} for {_player.Attack} damage!");
+            _monster.TakeDamage(_player.GetAttack());
+            AddMessage($"{_player.Name} attacks {_monster.Name} for {_player.GetAttack()} damage!");
 
             // B died (_monster)
             if (_monster.Hp <= 0)
@@ -73,8 +65,8 @@ namespace ZoneRpg.GameLogic
 
 
             // Monstret attackerar
-            _player.TakeDamage(_monster.Attack);
-            AddMessage($"{_monster.Name} attacks {_player.Name} for {_monster.Attack} damage!");
+            _player.TakeDamage(_monster.GetAttack());
+            AddMessage($"{_monster.Name} attacks {_player.Name} for {_monster.GetAttack()} damage!");
 
             // A died (_player)
             if (_player.Hp <= 0)
@@ -87,12 +79,12 @@ namespace ZoneRpg.GameLogic
         }
 
 
-        public void LookForMonsters(List<Entity> entities)
+        public bool LookForMonsters(List<Entity> entities)
         {
             // Om vi redan är i en fight, så behöver vi inte leta efter nya fiender
-            if (State != BattleState.NotInBattle)
+            if (_player == null || State != BattleState.NotInBattle)
             {
-                return;
+                return false;
             }
 
             // Filtera listan med entities så att vi bara får med de som är monster, och som är nära spelaren
@@ -100,13 +92,15 @@ namespace ZoneRpg.GameLogic
 
             if (monstersEntities.Count > 0)
             {
-                int id = monstersEntities.First().Id;
-                Monster? monster = _db.GetMonsterByEntityId(id);
+                Monster? monster = _db.GetMonsterByEntityId(monstersEntities.First().Id);
                 if (monster != null)
                 {
-                    AddMonsterToBattle(monster);
+                    SetMonster(monster);
+                    State = BattleState.InBattle;
+                    return true;
                 }
             }
+            return false;
 
         }
 
@@ -114,13 +108,7 @@ namespace ZoneRpg.GameLogic
         // Checks if a monster is next to the player
         //
         private bool WhereNearbyMonster(Entity entity)
-        {
-            if (_player == null)
-            {
-                return false;
-            };
-
-            // Om entityn inte är ett monster:
+        {            // Om entityn inte är ett monster:
             if (entity.EntityType != EntityType.Monster)
             {
                 return false;
@@ -128,7 +116,7 @@ namespace ZoneRpg.GameLogic
 
             // Om entityn är längre bort än 1 steg:
             if (
-                Math.Abs(_player.GetX() - entity.X) > 1
+                Math.Abs(_player!.GetX() - entity.X) > 1
                 || Math.Abs(_player.GetY() - entity.Y) > 1)
             {
                 return false;

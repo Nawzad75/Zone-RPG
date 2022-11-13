@@ -53,7 +53,7 @@ namespace ZoneRpg.UserInterface
             _monsterRenderer.SetRect(24, _game.Zone.Height + 3, 19, 3);
             _monsterRenderer.SetAccentColor(ConsoleColor.Red);
 
-            _battleRenderer.SetRect(2, _game.Zone.Height + 8, 41, 5);
+            _battleRenderer.SetRect(2, _game.Zone.Height + 8, 60, 5);
         }
 
         //
@@ -65,14 +65,14 @@ namespace ZoneRpg.UserInterface
             {
                 case GameState.MainMenu:
                     new StartGame().RunMainMenu();
-                    _game.SetState(GameState.GetPlayerCharacter);
+                    _game.SetState(GameState.GetPlayer);
                     Render(); // Render again to show the new state before we read input
                     break;
 
-                case GameState.GetPlayerCharacter:
+                case GameState.GetPlayer:
                     _game.SetPlayer(CreateOrChoosePlayer());
                     ((CharacterRenderer)_playerRenderer).SetCharacter(_game.GetPlayer());
-                    _game.SetState(GameState.Playing);
+                    _game.SetState(GameState.Zone);
                     Render(); // Render again to show the new state before we read input
                     break;
 
@@ -82,14 +82,22 @@ namespace ZoneRpg.UserInterface
                     Console.WriteLine("Press <Enter> to respawn...");
                     break;
 
-                case GameState.Playing:
+                case GameState.Zone:
                     _zoneRenderer.DrawZone(_game.Zone);
                     _zoneRenderer.DrawEntities(_game.Zone.Entities);
                     _zoneRenderer.DrawPlayerEntity(_game.GetPlayerEntity());
+                    break;
+
+                case GameState.Battle:
+                    _zoneRenderer.DrawZone(_game.Zone);
+                    _zoneRenderer.DrawEntities(_game.Zone.Entities);
+                    _zoneRenderer.DrawPlayerEntity(_game.GetPlayerEntity());
+
                     _playerRenderer.Draw();
                     _monsterRenderer.Draw();
                     _battleRenderer.Draw();
                     break;
+
             }
 
             // Är detta UI? (delvis?) 
@@ -97,7 +105,7 @@ namespace ZoneRpg.UserInterface
             OpenChest();
         }
 
-        
+
 
         //
         // Let the player choose a character or create a new one
@@ -200,7 +208,7 @@ namespace ZoneRpg.UserInterface
             ConsoleKeyInfo cki = Console.ReadKey();
             switch (_game.State)
             {
-                case GameState.Playing:
+                case GameState.Zone:
                     if (Constants.AllArrowKeys.Contains(cki.Key))
                     {
                         _game.MovePlayer(cki.Key);

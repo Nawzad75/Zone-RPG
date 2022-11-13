@@ -152,37 +152,36 @@ namespace ZoneRpg.Database
         // 
         public void InsertCharacter(Character character)
         {
+            // Entityn först, så vi får ett entity_id att ge till character
             string entity_sql = @"
                 INSERT INTO entity 
-                    (entity_type_id, symbol, zone_id, x, y, hp)
+                    (entity_type_id, symbol, zone_id, x, y)
                 VALUES
-                    (@EntityType, @Symbol, @ZoneId, @X, @Y, @Hp);
+                    (@EntityType, @Symbol, @ZoneId, @X, @Y);
                 SELECT LAST_INSERT_ID();";
             var enntityParameters = new
             {
                 EntityType = character.Entity.EntityType,
                 Symbol = character.Entity.Symbol,
-                Zoneid = character.Entity.ZoneId,
+                ZoneId = character.Entity.ZoneId,
                 X = character.Entity.X,
                 Y = character.Entity.Y,
-                HP = character.Entity.Hp
-
             };
 
             character.Entity.Id = _connection.Query<int>(entity_sql, character.Entity).First();
 
-            //  ------------------------------------------------------
-
+            //  Character 
             string sql = @"
                 INSERT INTO `character` 
-                    (name, hp, xp, is_monster, skill_id, character_class_id, entity_id)
+                    (name, hp, max_hp, xp, is_monster, character_class_id, entity_id)
                 VALUES 
-                    (@name, @hp, @xp, @is_monster, @skill, @character_class_id, @entity_id)";
+                    (@name, @hp, @max_hp, @xp, @is_monster, @character_class_id, @entity_id)";
 
             var parameters = new
             {
                 name = character.Name,
                 hp = character.Hp,
+                max_hp = character.MaxHp,
                 xp = character.Xp,
                 is_monster = character.Is_Monster,
                 skill = character.Skill,
