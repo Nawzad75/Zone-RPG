@@ -73,6 +73,9 @@ namespace ZoneRpg.UserInterface
             Console.WriteLine(playerEntity.Symbol.ToString().Replace("P", "🏃"));
         }
 
-
+        public void DrawMessageBox(MessageBox messageBox,Zone zone)
+        {
+            throw new NotImplementedException();
+        }
     }
 }

@@ -10,5 +10,6 @@ namespace ZoneRpg.UserInterface
         public void DrawEntities(List<Entity> entities);
 
         public void DrawPlayerEntity(Entity playerEntity);
+        public void DrawMessageBox(MessageBox messageBox, Zone zone);
     }
 }

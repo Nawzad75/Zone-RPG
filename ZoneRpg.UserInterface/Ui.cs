@@ -89,6 +89,7 @@ namespace ZoneRpg.UserInterface
                     _playerRenderer.Draw();
                     _monsterRenderer.Draw();
                     _battleRenderer.Draw();
+                    _zoneRenderer.DrawMessageBox(_game.MessageBox, _game.Zone);
                     break;
             }
 
@@ -97,7 +98,7 @@ namespace ZoneRpg.UserInterface
             OpenChest();
         }
 
-        
+
 
         //
         // Let the player choose a character or create a new one
@@ -217,7 +218,30 @@ namespace ZoneRpg.UserInterface
                         _game.RespawnPlayer();
                     }
                     break;
+
+
             }
+            //Chat start.
+            string input = cki.KeyChar.ToString().ToLower();
+            if (input == "t")
+            {
+                Chat();
+            }
+
+        }
+        public void Chat()
+        {
+            Console.Clear();
+            CreateMessage();
+        }
+        // Create a message
+        public void CreateMessage()
+        {
+            Console.Clear();
+            Console.WriteLine("Write a message");
+            string message = Console.ReadLine()!;
+            Message message1 = new Message(message, character: _game.GetPlayer());
+            _db.InsertMessage(message1);
         }
     }
 }

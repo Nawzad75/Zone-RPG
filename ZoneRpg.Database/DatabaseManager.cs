@@ -193,6 +193,37 @@ namespace ZoneRpg.Database
             _connection.Execute(sql, parameters);
 
         }
+        public void  InsertMessage(Message message)
+        {
+            string sql = @"
+            INSERT INTO `message`( character_id , character_name , text) 
 
+            VALUES( @character_id , @character_name , @text )";
+
+            var parameters = new
+            {
+                character_id = message.character.id,
+                character_name= message.character.Name,
+                text = message.Text,
+            };
+
+            _connection.Execute(sql, parameters);
+        }
+        public List<Message> GetMessages()
+        {
+            string sql = @"
+                SELECT * FROM `message` m 
+                INNER JOIN `character` c ON c.name = m.character_name";
+
+            List<Message> messages = _connection.Query<Message, Character, Message>(sql, (message, character) =>
+            {
+                message.character = character;
+                return message;
+            }).ToList();
+
+            return messages;
+        }
+        
+          
     }
 }

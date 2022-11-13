@@ -12,6 +12,7 @@ namespace ZoneRpg.GameLogic
         public GameState State { get; private set; } = GameState.MainMenu;
         private Player _player { get; set; } = new Player(); // Placeholder until we get a real player
         DatabaseManager _db;
+        public MessageBox MessageBox { get; set; } = new MessageBox("ZoneRpg");
 
         public Game(DatabaseManager db)
         {
@@ -24,8 +25,10 @@ namespace ZoneRpg.GameLogic
         public void Update()
         {
             Zone.Entities = _db.GetEntities();
+            Zone.Messages = _db.GetMessages();
             BattleManager.LookForMonsters(Zone.Entities);
             BattleManager.ProgressBattle();
+            
         }
 
         public void SetState(GameState state)
