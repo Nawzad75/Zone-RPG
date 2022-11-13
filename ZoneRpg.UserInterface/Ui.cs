@@ -132,10 +132,19 @@ namespace ZoneRpg.UserInterface
         {
             Console.Clear();
             Console.WriteLine("Enter Character Name");
-            string name = Console.ReadLine()!; //här skickar vi in namnet som spelaren skriver in
-            CharacterClass characterClass = new Menu<CharacterClass>("Choose class").Run();
-
-            return new Player(name, characterClass);
+            
+            string name = Console.ReadLine(); //här skickar vi in namnet som spelaren skriver in
+            if (string.IsNullOrEmpty(name))
+            {
+                Console.WriteLine("Your entery was blank, try again");
+                Console.ReadKey();
+                return CreatePlayer();
+            }else
+            {
+                CharacterClass characterClass = new Menu<CharacterClass>("Choose class").Run();
+                return new Player(name, characterClass);   
+            }
+            
         }
 
         //
