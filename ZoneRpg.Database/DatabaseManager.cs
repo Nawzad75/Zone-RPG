@@ -173,9 +173,11 @@ namespace ZoneRpg.Database
             //  Character 
             string sql = @"
                 INSERT INTO `character` 
-                    (name, hp, max_hp, xp, is_monster, character_class_id, entity_id)
+                    (name, hp, max_hp, xp, character_class_id, entity_id)
                 VALUES 
-                    (@name, @hp, @max_hp, @xp, @is_monster, @character_class_id, @entity_id)";
+                    (@name, @hp, @max_hp, @xp, @character_class_id, @entity_id)";
+
+            // INSERT INTO `character` 
 
             var parameters = new
             {
@@ -183,7 +185,7 @@ namespace ZoneRpg.Database
                 hp = character.Hp,
                 max_hp = character.MaxHp,
                 xp = character.Xp,
-                is_monster = character.Is_Monster,
+                // is_monster = character.Is_Monster,
                 skill = character.Skill,
                 character_class_id = (int)character.CharacterClass,
                 entity_id = character.Entity.Id

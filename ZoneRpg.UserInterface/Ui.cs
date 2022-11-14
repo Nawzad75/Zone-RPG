@@ -136,7 +136,7 @@ namespace ZoneRpg.UserInterface
             string name = Console.ReadLine(); //här skickar vi in namnet som spelaren skriver in
             if (string.IsNullOrEmpty(name))
             {
-                Console.WriteLine("Your entery was blank, try again");
+                Console.WriteLine("Your entery was blank, press enter & try again");
                 Console.ReadKey();
                 return CreatePlayer();
             }else
