@@ -96,7 +96,7 @@ namespace ZoneRpg.Database
                 INNER JOIN entity_type 
                     ON entity.entity_type_id = entity_type.id
                 WHERE entity.zone_id = @zoneId";
-            
+
             List<Entity> entities = _connection.Query<Entity, EntityType, Entity>(sql, (entity, entity_type) =>
             {
                 entity.EntityType = entity_type;
@@ -114,13 +114,14 @@ namespace ZoneRpg.Database
             string sql = @"
                 SELECT * FROM `character` c 
                 INNER JOIN entity e ON e.id = c.entity_id
-                WHERE c.is_monster = 0";
+                WHERE e.entity_type_id = @EntityType_Player";
 
             List<Player> players = _connection.Query<Player, Entity, Player>(sql, (player, entity) =>
             {
                 player.Entity = entity;
                 return player;
-            }).ToList();
+            }, new { EntityType_Player = (int)EntityType.Player }).ToList();
+
 
             return players;
         }
