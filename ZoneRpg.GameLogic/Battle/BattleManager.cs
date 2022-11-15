@@ -8,7 +8,7 @@ namespace ZoneRpg.GameLogic
         public BattleState State { get; set; }
 
         private IFighter? _player;
-        private IFighter? _monster;
+        private IFighter? _monster ;
         private DatabaseManager _db;
 
         private List<string> _messages = new List<string>();
@@ -21,6 +21,11 @@ namespace ZoneRpg.GameLogic
         public void SetMonster(IFighter monster)
         {
             _monster = monster;
+        }
+
+        public IFighter? GetMonster()
+        {
+            return _monster;
         }
 
         public void SetPlayer(IFighter player)
@@ -127,10 +132,7 @@ namespace ZoneRpg.GameLogic
         }
 
 
-        public IFighter? GetMonster()
-        {
-            return _monster;
-        }
+
     }
 }
 

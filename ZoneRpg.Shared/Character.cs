@@ -4,14 +4,15 @@ namespace ZoneRpg.Shared
     {
         public int id { get; set; }
         public string Name { get; set; } = "<Unnamed>";
+        public bool IsMonster { get; set; } = false;
         public int Hp { get; set; } = 100;
         public int MaxHp { get; set; } = 100;
         public int Xp { get; set; }
         public int Level { get; set; }
         public int Skill { get; set; }
-        public CharacterClass CharacterClass { get; set; }
+        public CharacterClass CharacterClass { get; set; } = new CharacterClass();
         public Entity Entity { get; set; } = new Entity();
-        
+
         // Items
         public Item? ItemWeapon { get; set; }
         public Item? ItemBoots { get; set; }
@@ -19,22 +20,6 @@ namespace ZoneRpg.Shared
 
         public Character() { }
 
-
-        // här sätter jag spelarens stats (attack och health) beroende på vilken klass spelaren har valt
-
-        public void CharacterClassSet()
-        {
-            // if (CharacterClass == "Warrior")
-            // {
-            //     Attack = 5;
-            //     Health = 10;
-            // }
-            // else if (CharacterClass == "Hitter")
-            // {
-            //     Attack = 3;
-            //     Health = 5;
-            // }
-        }
 
         //funktion för att levela upp spelaren.
         public void PlayerLevelUp()
@@ -111,25 +96,29 @@ namespace ZoneRpg.Shared
             }
         }
 
+
+        //
+        // Nedan implementerar vi "IFighter" interfacet.
+        // --------------------------------------------
         public int GetAttack()
         {
-            return CharacterClass.GetBaseAttack();// + ItemIdWeapon?.AttackBonus ?? 0;
-            
+            return CharacterClass.BaseAttack;// + ItemIdWeapon?.AttackBonus ?? 0;  
+        }
+
+        public int GetDefense()
+        {
+            // return CharacterClass.BaseDefense;// + ItemIdHelm?.DefenseBonus ?? 0;
+            return 0;
+        }
+
+        public string GetClassReadable()
+        {
+            return CharacterClass.Name;
         }
 
         public void TakeDamage(int damage)
         {
             Hp -= damage;
-        }
-
-        public string GetName()
-        {
-            return Name;
-        }
-
-        public int GetHp()
-        {
-            return Hp;
         }
 
         public int GetX()

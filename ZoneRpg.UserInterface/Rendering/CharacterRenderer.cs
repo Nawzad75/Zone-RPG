@@ -12,7 +12,7 @@ namespace ZoneRpg.UserInterface
             SetAccentColor(accentColor);
         }
 
-        public void SetCharacter(Character character)
+        public void SetCharacter(IFighter? character)
         {
             _character = character;
         }
@@ -22,11 +22,15 @@ namespace ZoneRpg.UserInterface
             _accentColor = color;
         }
 
+        public bool hasCharacter()
+        {
+            return _character != null;
+        }
 
         public override void Draw()
         {
             base.Draw();
-
+           
             Console.ForegroundColor = ConsoleColor.Yellow;
             Console.Write("Name:   ");
             Console.ForegroundColor = _accentColor;
@@ -34,11 +38,17 @@ namespace ZoneRpg.UserInterface
 
             Console.SetCursorPosition(_x + 2, _y + 2);
             Console.ForegroundColor = ConsoleColor.Yellow;
+            Console.Write("Class:  ");
+            Console.ForegroundColor = _accentColor;
+            Console.Write(_character?.GetClassReadable() ?? "");
+
+            Console.SetCursorPosition(_x + 2, _y + 3);
+            Console.ForegroundColor = ConsoleColor.Yellow;
             Console.Write("HP:     ");
             Console.ForegroundColor = _accentColor;
             Console.Write(_character?.Hp.ToString() ?? "");
 
-            Console.SetCursorPosition(_x + 2, _y + 3);
+            Console.SetCursorPosition(_x + 2, _y + 4);
             Console.ForegroundColor = ConsoleColor.Yellow;
             Console.Write("Attack: ");
             Console.ForegroundColor = _accentColor;

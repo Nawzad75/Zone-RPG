@@ -36,15 +36,15 @@ namespace ZoneRpg.UserInterface
             Console.Clear();
 
             // Rektangeln som visar spelarens stats
-            _playerRenderer.SetRect(2, _game.Zone.Height + 3, 19, 3);
+            _playerRenderer.SetRect(2, _game.Zone.Height + 3, 30, 4);
             _playerRenderer.SetAccentColor(ConsoleColor.Cyan);
 
             // Rektangeln som visar monstrets stats
-            _monsterRenderer.SetRect(24, _game.Zone.Height + 3, 19, 3);
+            _monsterRenderer.SetRect(34, _game.Zone.Height + 3, 30, 4);
             _monsterRenderer.SetAccentColor(ConsoleColor.Red);
 
             // Rektangel som visard  battle-meddelanden
-            _battleRenderer.SetRect(2, _game.Zone.Height + 8, 60, 5);
+            _battleRenderer.SetRect(2, _game.Zone.Height + 8, 64, 5);
         }
 
         //
@@ -79,8 +79,14 @@ namespace ZoneRpg.UserInterface
                     _monsterRenderer.Draw();
                     break;
 
-                case GameState.Battle:
+                case GameState.Battle:                    
                     DrawZone();
+                    // cast IRenderer to CharacterRender, so we can get/set the current Monster
+                    CharacterRenderer monsterRenderer = (CharacterRenderer) _monsterRenderer;
+                    if (!monsterRenderer.hasCharacter())
+                    {
+                        monsterRenderer.SetCharacter(_game.BattleManager.GetMonster());
+                    }
                     _playerRenderer.Draw();
                     _monsterRenderer.Draw();
                     _battleRenderer.Draw();
@@ -115,7 +121,7 @@ namespace ZoneRpg.UserInterface
                 Player player = CreatePlayer();
                 _db.InsertCharacter(player);
                 return player;
-            }
+            }            
             return ChoosePlayer();
         }
 
@@ -152,6 +158,11 @@ namespace ZoneRpg.UserInterface
             string[] options = players.Select(c => $"{c.Name}  (id: {c.id})").ToArray();
             int index = new Menu<int>("Choose a character:", options).Run();
 
+            Console.WriteLine($"Name {players[index].Name}");
+            Console.WriteLine($"class {players[index].CharacterClass.Name}");
+            Console.WriteLine($"hp {players[index].CharacterClass.MaxHp}");
+            Console.WriteLine($"attack {players[index].CharacterClass.BaseAttack}");
+            Console.ReadKey();
             return players[index];
         }
 

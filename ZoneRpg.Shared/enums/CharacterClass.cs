@@ -1,27 +1,16 @@
 namespace ZoneRpg.Shared
 {
-
-    //
-    // Denna klass skall vara synkad med databas tabellen "character_class"
-    //
-    public enum CharacterClass
+    public class CharacterClass
     {
-        Warrior = 1,
-        Mage = 2,
-        Rogue = 3
+        public int Id { get; set; }
+        public string Name { get; set; } = "<Not set>";
+        public int BaseAttack { get; set; }
+        public int BaseAttackPerLevel;
+        public int MaxHp { get; set; }
+        public int MaxHpPerLevel { get; set; }
+
+        public CharacterClass() { }
     }
 
-    public static class CharacterClassExtensions
-    {
-        public static int GetBaseAttack(this CharacterClass cClass)
-        {
-            return cClass switch
-            {
-                CharacterClass.Warrior => 10,
-                CharacterClass.Mage => 5,
-                CharacterClass.Rogue => 7,
-                _ => 0
-            };
-        }
-    }
+
 }

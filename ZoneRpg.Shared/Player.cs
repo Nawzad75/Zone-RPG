@@ -14,20 +14,6 @@ namespace ZoneRpg.Shared
             Entity.Y = Constants.StartPositionY;
             Entity.Symbol = "😱";
             Entity.EntityType = EntityType.Player;
-            switch (characterClass)
-            {
-                case CharacterClass.Warrior:
-                    MaxHp = 100;
-                    break;
-
-                case CharacterClass.Mage:
-                    MaxHp = 50;
-                    break;
-
-                case CharacterClass.Rogue:
-                    MaxHp = 75;
-                    break;
-            }
         }
 
         public bool IsDead()
