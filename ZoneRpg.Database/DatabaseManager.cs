@@ -114,7 +114,7 @@ namespace ZoneRpg.Database
             string sql = @"
                 SELECT * FROM `character` c 
                 INNER JOIN entity e ON e.id = c.entity_id
-                WHERE c.is_monster = 0";
+                WHERE entity_type_id = 1";
 
             List<Player> players = _connection.Query<Player, Entity, Player>(sql, (player, entity) =>
             {
