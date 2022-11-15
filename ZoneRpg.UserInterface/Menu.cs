@@ -17,7 +17,7 @@ namespace ZoneRpg.UserInterface
         public void DisplayOptions()
 
         {
-
+            Console.Clear();
             Console.WriteLine(Prompt);
             for (int i = 0; i < Options.Length; i++)
             {

@@ -110,7 +110,8 @@ namespace ZoneRpg.UserInterface
         private Player CreateOrChoosePlayer()
         {
             string prompt = "Create or choose a character!";
-            CreateChooseMenu createOption = new MenuEnum<CreateChooseMenu>(prompt).Run();
+            string[] options = new string[] { "Create", "Choose" };
+            CreateChooseMenu createOption = (CreateChooseMenu) new Menu(prompt, options).Run();
 
             if (createOption == CreateChooseMenu.Create)
             {
@@ -137,10 +138,17 @@ namespace ZoneRpg.UserInterface
             else
             {
                 // Todo: get all classes from db, and let the player choose
+                
+                // --- TA BORT
                 CharacterClass characterClass = new CharacterClass();
                 characterClass.Name = "Warrior";
                 characterClass.MaxHp = 100;
                 characterClass.BaseAttack = 10;
+                //  ------
+
+                // 1. Hämta alla klasser från databasen
+                // 2. Visa meny
+                // 3. Välj klass
                 return new Player(name, characterClass);
             }
 

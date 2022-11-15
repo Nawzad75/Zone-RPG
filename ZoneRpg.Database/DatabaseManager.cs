@@ -45,17 +45,6 @@ namespace ZoneRpg.Database
         }
 
 
-        //
-        // Seedar databasen (och skapar vissa tabller på nytt)
-        //
-        public void SeedDatabase()
-        {
-            DatabaseSeeder seeder = new DatabaseSeeder(_connection);
-            /* seeder.SeedMonster();
-            seeder.SeedItemType();
-            seeder.SeedItemInfo(); */
-        }
-
 
 
         //
