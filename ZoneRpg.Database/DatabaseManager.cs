@@ -174,9 +174,11 @@ namespace ZoneRpg.Database
             //  Character 
             string sql = @"
                 INSERT INTO `character` 
-                    (name, hp, max_hp, xp, is_monster, character_class_id, entity_id)
+                    (name, hp, max_hp, xp, character_class_id, entity_id)
                 VALUES 
-                    (@name, @hp, @max_hp, @xp, @is_monster, @character_class_id, @entity_id)";
+                    (@name, @hp, @max_hp, @xp, @character_class_id, @entity_id)";
+
+            // INSERT INTO `character` 
 
             var parameters = new
             {
@@ -184,7 +186,7 @@ namespace ZoneRpg.Database
                 hp = character.Hp,
                 max_hp = character.MaxHp,
                 xp = character.Xp,
-                is_monster = character.Is_Monster,
+                // is_monster = character.Is_Monster,
                 skill = character.Skill,
                 character_class_id = (int)character.CharacterClass,
                 entity_id = character.Entity.Id
@@ -193,6 +195,37 @@ namespace ZoneRpg.Database
             _connection.Execute(sql, parameters);
 
         }
+        public void  InsertMessage(Message message)
+        {
+            string sql = @"
+            INSERT INTO `message`( character_id , character_name , text) 
 
+            VALUES( @character_id , @character_name , @text )";
+
+            var parameters = new
+            {
+                character_id = message.character.id,
+                character_name= message.character.Name,
+                text = message.Text,
+            };
+
+            _connection.Execute(sql, parameters);
+        }
+        public List<Message> GetMessages()
+        {
+            string sql = @"
+                SELECT * FROM `message` m 
+                INNER JOIN `character` c ON c.name = m.character_name";
+
+            List<Message> messages = _connection.Query<Message, Character, Message>(sql, (message, character) =>
+            {
+                message.character = character;
+                return message;
+            }).ToList();
+
+            return messages;
+        }
+        
+          
     }
 }

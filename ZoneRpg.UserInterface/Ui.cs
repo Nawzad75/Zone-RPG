@@ -96,6 +96,7 @@ namespace ZoneRpg.UserInterface
                     _playerRenderer.Draw();
                     _monsterRenderer.Draw();
                     _battleRenderer.Draw();
+                    _zoneRenderer.DrawMessageBox(_game.MessageBox, _game.Zone);
                     break;
 
             }
@@ -131,10 +132,19 @@ namespace ZoneRpg.UserInterface
         {
             Console.Clear();
             Console.WriteLine("Enter Character Name");
-            string name = Console.ReadLine()!; //här skickar vi in namnet som spelaren skriver in
-            CharacterClass characterClass = new Menu<CharacterClass>("Choose class").Run();
-
-            return new Player(name, characterClass);
+            
+            string name = Console.ReadLine(); //här skickar vi in namnet som spelaren skriver in
+            if (string.IsNullOrEmpty(name))
+            {
+                Console.WriteLine("Your entery was blank, press enter & try again");
+                Console.ReadKey();
+                return CreatePlayer();
+            }else
+            {
+                CharacterClass characterClass = new Menu<CharacterClass>("Choose class").Run();
+                return new Player(name, characterClass);   
+            }
+            
         }
 
         //
@@ -225,7 +235,30 @@ namespace ZoneRpg.UserInterface
                         _game.RespawnPlayer();
                     }
                     break;
+
+
             }
+            //Chat start.
+            string input = cki.KeyChar.ToString().ToLower();
+            if (input == "t")
+            {
+                Chat();
+            }
+
+        }
+        public void Chat()
+        {
+            Console.Clear();
+            CreateMessage();
+        }
+        // Create a message
+        public void CreateMessage()
+        {
+            Console.Clear();
+            Console.WriteLine("Write a message");
+            string message = Console.ReadLine()!;
+            Message message1 = new Message(message, character: _game.GetPlayer());
+            _db.InsertMessage(message1);
         }
     }
 }

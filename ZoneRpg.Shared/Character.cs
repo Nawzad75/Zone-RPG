@@ -10,7 +10,6 @@ namespace ZoneRpg.Shared
         public int Level { get; set; }
         public int Skill { get; set; }
         public CharacterClass CharacterClass { get; set; }
-        public bool Is_Monster { get; set; } = false;
         public Entity Entity { get; set; } = new Entity();
         
         // Items
