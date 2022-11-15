@@ -13,8 +13,8 @@ namespace ZoneRpg.UserInterface
         {
             Console.SetCursorPosition(0, 0);
             ConsoleUtils.DrawBox(0, 0, zone.Width, zone.Height);
-            Console.WriteLine("\n                Zone: " + zone.Name);
-            Console.WriteLine("           To send a message press t. ");
+            Console.WriteLine("\n Zone: " + zone.Name+"    *To send a message press t.*");
+            Console.WriteLine();
         }
         public void DrawMessageBox(MessageBox messageBox, Zone zone)
         {
