@@ -3,7 +3,7 @@ using ZoneRpg.Shared;
 
 namespace ZoneRpg.UserInterface
 {
-    internal class ZoneRendererAscii : IZoneRenderer
+    internal class ZoneRenderer
     {
 
         //
@@ -16,18 +16,18 @@ namespace ZoneRpg.UserInterface
             Console.WriteLine("\n                Zone: " + zone.Name);
             Console.WriteLine("           To send a message press t. ");
         }
-        public void DrawMessageBox(MessageBox messageBox,Zone zone)
+        public void DrawMessageBox(MessageBox messageBox, Zone zone)
         {
             int y = 0;
-            
-            foreach (var message in zone.Messages.TakeLast (12))
+
+            foreach (var message in zone.Messages.TakeLast(12))
             {
-                Console.SetCursorPosition(60,y++);
-                Console.Write(message.character.Name +" "+ message.Text);
+                Console.SetCursorPosition(60, y++);
+                Console.Write(message.character.Name + " " + message.Text);
             }
 
         }
-      
+
         //
         // Draws all entities in the zone
         //
@@ -50,6 +50,6 @@ namespace ZoneRpg.UserInterface
             Console.WriteLine(playerEntity.Symbol);
         }
 
-      
+
     }
 }

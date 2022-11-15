@@ -5,6 +5,7 @@ using Console = Colorful.Console;
 using ZoneRpg.Database;
 using ZoneRpg.GameLogic;
 using ZoneRpg.Shared;
+using System.Collections.Concurrent;
 
 namespace ZoneRpg.UserInterface
 {
@@ -12,7 +13,7 @@ namespace ZoneRpg.UserInterface
     {
         // Ui Members
         private DatabaseManager _db;
-        private IZoneRenderer _zoneRenderer = new ZoneRendererAscii();
+        private ZoneRenderer _zoneRenderer = new ZoneRenderer();
         private IRenderer _playerRenderer = new CharacterRenderer();
         private IRenderer _monsterRenderer = new CharacterRenderer();
         private IRenderer _battleRenderer;
@@ -24,35 +25,25 @@ namespace ZoneRpg.UserInterface
             _db = db;
             _game = game;
             _battleRenderer = new BattleRenderer(game.BattleManager);
-
-
-            List<char> chars = new List<char>()
-{
-    'r', 'e', 'x', 's', 'z', 'q', 'j', 'w', 't', 'a', 'b', 'c', 'l', 'm',
-    'r', 'e', 'x', 's', 'z', 'q', 'j', 'w', 't', 'a', 'b', 'c', 'l', 'm',
-    'r', 'e', 'x', 's', 'z', 'q', 'j', 'w', 't', 'a', 'b', 'c', 'l', 'm',
-    'r', 'e', 'x', 's', 'z', 'q', 'j', 'w', 't', 'a', 'b', 'c', 'l', 'm'
-};
-            Console.WriteWithGradient(chars, Color.Yellow, Color.Fuchsia, 14);
-
             Setup();
         }
 
         // Setup the UI
-        public void Setup()
+        private void Setup()
         {
-            // Prepare the console
             Console.OutputEncoding = Encoding.UTF8;
             Console.CursorVisible = false;
             Console.Clear();
 
-
+            // Rektangeln som visar spelarens stats
             _playerRenderer.SetRect(2, _game.Zone.Height + 3, 19, 3);
             _playerRenderer.SetAccentColor(ConsoleColor.Cyan);
 
+            // Rektangeln som visar monstrets stats
             _monsterRenderer.SetRect(24, _game.Zone.Height + 3, 19, 3);
             _monsterRenderer.SetAccentColor(ConsoleColor.Red);
 
+            // Rektangel som visard  battle-meddelanden
             _battleRenderer.SetRect(2, _game.Zone.Height + 8, 60, 5);
         }
 
@@ -83,27 +74,30 @@ namespace ZoneRpg.UserInterface
                     break;
 
                 case GameState.Zone:
-                    _zoneRenderer.DrawZone(_game.Zone);
-                    _zoneRenderer.DrawEntities(_game.Zone.Entities);
-                    _zoneRenderer.DrawPlayerEntity(_game.GetPlayerEntity());
+                    DrawZone();
+                    _playerRenderer.Draw();
+                    _monsterRenderer.Draw();
                     break;
 
                 case GameState.Battle:
-                    _zoneRenderer.DrawZone(_game.Zone);
-                    _zoneRenderer.DrawEntities(_game.Zone.Entities);
-                    _zoneRenderer.DrawPlayerEntity(_game.GetPlayerEntity());
-
+                    DrawZone();
                     _playerRenderer.Draw();
                     _monsterRenderer.Draw();
                     _battleRenderer.Draw();
-                    _zoneRenderer.DrawMessageBox(_game.MessageBox, _game.Zone);
                     break;
-
             }
 
             // Är detta UI? (delvis?) 
             // Hur flyttar vi det nån annanstans?
             OpenChest();
+        }
+
+        private void DrawZone()
+        {
+            _zoneRenderer.DrawZone(_game.Zone);
+            _zoneRenderer.DrawEntities(_game.Zone.Entities);
+            _zoneRenderer.DrawPlayerEntity(_game.GetPlayerEntity());
+            _zoneRenderer.DrawMessageBox(_game.MessageBox, _game.Zone);
         }
 
 
@@ -132,19 +126,20 @@ namespace ZoneRpg.UserInterface
         {
             Console.Clear();
             Console.WriteLine("Enter Character Name");
-            
+
             string name = Console.ReadLine(); //här skickar vi in namnet som spelaren skriver in
             if (string.IsNullOrEmpty(name))
             {
                 Console.WriteLine("Your entery was blank, press enter & try again");
                 Console.ReadKey();
                 return CreatePlayer();
-            }else
+            }
+            else
             {
                 CharacterClass characterClass = new Menu<CharacterClass>("Choose class").Run();
-                return new Player(name, characterClass);   
+                return new Player(name, characterClass);
             }
-            
+
         }
 
         //
@@ -235,8 +230,6 @@ namespace ZoneRpg.UserInterface
                         _game.RespawnPlayer();
                     }
                     break;
-
-
             }
             //Chat start.
             string input = cki.KeyChar.ToString().ToLower();
@@ -244,13 +237,15 @@ namespace ZoneRpg.UserInterface
             {
                 Chat();
             }
-
         }
+
+
         public void Chat()
         {
             Console.Clear();
             CreateMessage();
         }
+
         // Create a message
         public void CreateMessage()
         {
