@@ -47,9 +47,7 @@ namespace ZoneRpg.UserInterface
             _battleRenderer.SetRect(2, _game.Zone.Height + 8, 64, 5);
         }
 
-        //
         // Run!
-        //
         public void Render()
         {
             switch (_game.State)
@@ -108,9 +106,7 @@ namespace ZoneRpg.UserInterface
 
 
 
-        //
         // Let the player choose a character or create a new one
-        //
         private Player CreateOrChoosePlayer()
         {
             string prompt = "Create or choose a character!";
@@ -125,9 +121,7 @@ namespace ZoneRpg.UserInterface
             return ChoosePlayer();
         }
 
-        //
         // Create a player
-        //
         public Player CreatePlayer()
         {
             Console.Clear();
@@ -148,27 +142,17 @@ namespace ZoneRpg.UserInterface
 
         }
 
-        //
         // Choose player
-        //
         public Player ChoosePlayer()
         {
             Console.Clear();
             List<Player> players = _db.GetPlayers();
             string[] options = players.Select(c => $"{c.Name}  (id: {c.id})").ToArray();
             int index = new Menu<int>("Choose a character:", options).Run();
-
-            Console.WriteLine($"Name {players[index].Name}");
-            Console.WriteLine($"class {players[index].CharacterClass.Name}");
-            Console.WriteLine($"hp {players[index].CharacterClass.MaxHp}");
-            Console.WriteLine($"attack {players[index].CharacterClass.BaseAttack}");
-            Console.ReadKey();
             return players[index];
         }
 
-        //
         // Create monster
-        //
         public Monster CreateMonster()
         {
             Monster monster = new Monster();
@@ -215,9 +199,7 @@ namespace ZoneRpg.UserInterface
         }
 
         // Reads user input and takes action.
-        //
         // @param zone - We need a zone to restrict the player movement
-        //
         public void ReadInput()
         {
 
