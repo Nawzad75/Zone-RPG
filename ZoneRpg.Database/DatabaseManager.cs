@@ -110,17 +110,33 @@ namespace ZoneRpg.Database
         // Gets a characters from the database
         //
         public List<Player> GetPlayers()
-        {
+        {            
             string sql = @"
-                SELECT * FROM `character` c 
+                SELECT 
+                    c.*,
+                    e.*,
+                    cc.id,
+                    cc.name,
+                    cc.base_attack as BaseAttack,
+                    cc.base_attack_per_level as BaseAttackPerLevel,
+                    cc.max_hp as MaxHp,
+                    cc.max_hp_per_level as MaxHpPerLevel
+                FROM `character` c
                 INNER JOIN entity e ON e.id = c.entity_id
-                WHERE e.entity_type_id = @EntityType_Player";
+                INNER JOIN character_class cc ON cc.id = c.character_class_id
+                WHERE e.entity_type_id = @EntityTypeId";
 
-            List<Player> players = _connection.Query<Player, Entity, Player>(sql, (player, entity) =>
-            {
-                player.Entity = entity;
-                return player;
-            }, new { EntityType_Player = (int)EntityType.Player }).ToList();
+
+            List<Player> players = _connection.Query<Player,  Entity, CharacterClass, Player>(
+                sql,
+                (player, entity, characterClass) =>
+                {
+                    player.Entity = entity;
+                    player.CharacterClass = characterClass;
+                    return player;
+                },
+                new { @EntityTypeId = (int)EntityType.Player }
+            ).ToList();
 
 
             return players;
@@ -188,14 +204,14 @@ namespace ZoneRpg.Database
                 xp = character.Xp,
                 // is_monster = character.Is_Monster,
                 skill = character.Skill,
-                character_class_id = (int)character.CharacterClass,
+                character_class_id = character.CharacterClass.Id,
                 entity_id = character.Entity.Id
             };
 
             _connection.Execute(sql, parameters);
 
         }
-        public void  InsertMessage(Message message)
+        public void InsertMessage(Message message)
         {
             string sql = @"
             INSERT INTO `message`( character_id , character_name , text) 
@@ -205,7 +221,7 @@ namespace ZoneRpg.Database
             var parameters = new
             {
                 character_id = message.character.id,
-                character_name= message.character.Name,
+                character_name = message.character.Name,
                 text = message.Text,
             };
 
@@ -225,7 +241,7 @@ namespace ZoneRpg.Database
 
             return messages;
         }
-        
-          
+
+
     }
 }
