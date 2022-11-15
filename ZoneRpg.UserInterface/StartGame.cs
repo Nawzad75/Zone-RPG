@@ -16,24 +16,22 @@ namespace ZoneRpg.UserInterface
 ███████  ██████  ██   ████ ███████ ██   ██ ██       ██████  
                                                             
                                                             ";
-            // string[] options = { "Start", "About", "Exit" };
-            // Menu mainMenu = new Menu(prompt, options);
-            // int _choice = mainMenu.Run();
+            string[] options = { "Start", "About", "Exit" };
+            int _choice = (int)new Menu(prompt, options).Run();
 
-            StartMenu _choice = new Menu<StartMenu>(prompt).Run();
 
             switch (_choice)
             {
-                case StartMenu.Start:
+                case 1:
                     Start();
                     Console.Clear();
                     break;
 
-                case StartMenu.About:
+                case 2:
                     About();
                     break;
 
-                case StartMenu.Exit:
+                case 3:
                     ExitGame();
                     break;
             }
@@ -43,19 +41,15 @@ namespace ZoneRpg.UserInterface
         //Här skickar vi in funktionen som skapar spelaren
         public void Start()
         {
-
-
-
-
-
-
         }
+
         public void ExitGame()
         {
             Console.WriteLine("Exit Game");
             Console.ReadKey(true);
             Environment.Exit(0);
         }
+
         private void About()
         {
             Console.Clear();

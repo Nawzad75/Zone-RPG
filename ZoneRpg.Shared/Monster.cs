@@ -1,8 +1,9 @@
 namespace ZoneRpg.Shared
 {
-    public class Monster : Character
+    public class Monster : Character, IFighter
     {
-        
+        public MonsterClass MonsterClass { get; set; } = new MonsterClass();
+
         public Monster()
         {
             Name = "Monster";
@@ -14,6 +15,40 @@ namespace ZoneRpg.Shared
         {
             this.Level = Level;
             Hp = Level * 5;
+        }
+
+        //
+        // Nedan implementerar vi "IFighter" interfacet.
+        // --------------------------------------------
+        public int GetAttack()
+        {
+            return MonsterClass.BaseAttack;// + ItemIdWeapon?.AttackBonus ?? 0;  
+        }
+
+        public int GetDefense()
+        {
+            // return CharacterClass.BaseDefense;// + ItemIdHelm?.DefenseBonus ?? 0;
+            return 0;
+        }
+
+        public string GetClassReadable()
+        {
+            return MonsterClass.Name;
+        }
+
+        public void TakeDamage(int damage)
+        {
+            Hp -= damage;
+        }
+
+        public int GetX()
+        {
+            return Entity.X;
+        }
+
+        public int GetY()
+        {
+            return Entity.Y;
         }
     }
 }

@@ -63,7 +63,7 @@ namespace ZoneRpg.Database
         //
         public Zone GetZone(int zoneId)
         {
-            var parameters = new { id = zoneId };            
+            var parameters = new { id = zoneId };
             string sql = "SELECT * FROM zone WHERE id = @id";
             return _connection.Query<Zone>(sql, parameters).First();
         }
@@ -91,7 +91,7 @@ namespace ZoneRpg.Database
         // Gets a characters from the database
         //
         public List<Player> GetPlayers()
-        {            
+        {
             string sql = @"
                 SELECT 
                     c.*,
@@ -108,7 +108,7 @@ namespace ZoneRpg.Database
                 WHERE e.entity_type_id = @EntityTypeId";
 
 
-            List<Player> players = _connection.Query<Player,  Entity, CharacterClass, Player>(
+            List<Player> players = _connection.Query<Player, Entity, CharacterClass, Player>(
                 sql,
                 (player, entity, characterClass) =>
                 {
@@ -128,8 +128,26 @@ namespace ZoneRpg.Database
         //
         public Monster? GetMonsterByEntityId(int id)
         {
-            string sql = "SELECT * FROM `character` WHERE entity_id = @id";
-            var results = _connection.Query<Monster>(sql, new { id });
+            string sql = @"SELECT 
+                c.*,
+                mc.id,
+                mc.name,
+                mc.base_attack as BaseAttack,
+                mc.base_attack_per_level as BaseAttackPerLevel,
+                mc.max_hp as MaxHp,
+                mc.max_hp_per_level as MaxHpPerLevel
+                FROM `character` c
+                    INNER JOIN monster_class mc ON mc.id = c.character_class_id
+                    WHERE entity_id = @id";
+
+            var results = _connection.Query<Monster, MonsterClass, Monster>(
+                sql,
+            (monster, monsterClass) =>
+            {
+                monster.MonsterClass = monsterClass;
+                return monster;
+            },
+             new { id });
             return (results.Count() > 0) ? results.First() : null;
         }
 
@@ -171,9 +189,9 @@ namespace ZoneRpg.Database
             //  Character 
             string sql = @"
                 INSERT INTO `character` 
-                    (name, hp, max_hp, xp, character_class_id, entity_id)
+                    (name, hp, is_monster, xp, character_class_id, entity_id)
                 VALUES 
-                    (@name, @hp, @max_hp, @xp, @character_class_id, @entity_id)";
+                    (@name, @hp, @is_monster, @xp, @character_class_id, @entity_id)";
 
             // INSERT INTO `character` 
 
@@ -183,7 +201,7 @@ namespace ZoneRpg.Database
                 hp = character.Hp,
                 max_hp = character.MaxHp,
                 xp = character.Xp,
-                // is_monster = character.Is_Monster,
+                is_monster = character.IsMonster,
                 skill = character.Skill,
                 character_class_id = character.CharacterClass.Id,
                 entity_id = character.Entity.Id

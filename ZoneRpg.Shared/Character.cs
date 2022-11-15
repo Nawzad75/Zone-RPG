@@ -1,6 +1,6 @@
 namespace ZoneRpg.Shared
 {
-    public class Character : IFighter
+    public class Character
     {
         public int id { get; set; }
         public string Name { get; set; } = "<Unnamed>";
@@ -102,38 +102,6 @@ namespace ZoneRpg.Shared
         }
 
 
-        //
-        // Nedan implementerar vi "IFighter" interfacet.
-        // --------------------------------------------
-        public int GetAttack()
-        {
-            return CharacterClass.BaseAttack;// + ItemIdWeapon?.AttackBonus ?? 0;  
-        }
 
-        public int GetDefense()
-        {
-            // return CharacterClass.BaseDefense;// + ItemIdHelm?.DefenseBonus ?? 0;
-            return 0;
-        }
-
-        public string GetClassReadable()
-        {
-            return CharacterClass.Name;
-        }
-
-        public void TakeDamage(int damage)
-        {
-            Hp -= damage;
-        }
-
-        public int GetX()
-        {
-            return Entity.X;
-        }
-
-        public int GetY()
-        {
-            return Entity.Y;
-        }
     }
 }
