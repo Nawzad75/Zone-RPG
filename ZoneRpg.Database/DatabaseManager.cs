@@ -57,33 +57,15 @@ namespace ZoneRpg.Database
         }
 
 
-        //
-        // Generisk insert-metod
-        //
-        public void Insert<T>(T data) where T : IDbTable
-        {
-            // T.ex. "item_info"
-            string table = data.GetTableName();
-
-            // T.ex. "name, item_type_id, rarity, description"
-            string columns = string.Join(", ", data.GetColumns());
-
-            // T.ex:  "@name, @item_type_id, @rarity, @description"
-            string anonymousColumns = string.Join(", ", data.GetColumns().Select(x => "@" + x));
-
-            string sql = $"INSERT INTO {table} ({columns}) VALUES ({anonymousColumns})";
-
-            _connection.Execute(sql, data.GetValues());
-        }
 
         //
         // Gets a zone from the database
         //
-        public Zone GetZone(int ZoneId)
+        public Zone GetZone(int zoneId)
         {
+            var parameters = new { id = zoneId };            
             string sql = "SELECT * FROM zone WHERE id = @id";
-            Zone zone = _connection.Query<Zone>(sql, new { id = ZoneId }).First();
-            return zone;
+            return _connection.Query<Zone>(sql, parameters).First();
         }
 
         //
@@ -93,8 +75,7 @@ namespace ZoneRpg.Database
         {
             string sql = @"
                 SELECT * FROM entity
-                INNER JOIN entity_type 
-                    ON entity.entity_type_id = entity_type.id
+                INNER JOIN entity_type ON entity_type.id = entity.entity_type_id
                 WHERE entity.zone_id = @zoneId";
 
             List<Entity> entities = _connection.Query<Entity, EntityType, Entity>(sql, (entity, entity_type) =>
@@ -227,6 +208,8 @@ namespace ZoneRpg.Database
 
             _connection.Execute(sql, parameters);
         }
+
+
         public List<Message> GetMessages()
         {
             string sql = @"

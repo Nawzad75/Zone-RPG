@@ -19,6 +19,11 @@ namespace ZoneRpg.Shared
         public Item? ItemHelm { get; set; }
 
         public Character() { }
+        public Character(string name)
+        {
+            Name = name;
+        }
+        
 
 
         //funktion för att levela upp spelaren.

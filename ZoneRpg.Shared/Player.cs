@@ -6,9 +6,8 @@ namespace ZoneRpg.Shared
         public Player() : base() { }
 
         //constructor
-        public Player(string name, CharacterClass characterClass) : base()
+        public Player(string name, CharacterClass characterClass) : base(name)
         {
-            Name = name;
             CharacterClass = characterClass;
             Entity.X = Constants.StartPositionX;
             Entity.Y = Constants.StartPositionY;
