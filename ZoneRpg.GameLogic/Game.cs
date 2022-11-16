@@ -11,7 +11,7 @@ namespace ZoneRpg.GameLogic
         public BattleManager BattleManager { get; set; }
         public GameState State { get; private set; } = GameState.MainMenu;
         private Player _player { get; set; } = new Player(); // Placeholder until we get a real player
-        DatabaseManager _db;
+        private DatabaseManager _db;
         public MessageBox MessageBox { get; set; } = new MessageBox("ZoneRpg");
 
         public Game(DatabaseManager db)

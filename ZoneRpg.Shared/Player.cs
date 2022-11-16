@@ -11,8 +11,10 @@ namespace ZoneRpg.Shared
             CharacterClass = characterClass;
             Entity.X = Constants.StartPositionX;
             Entity.Y = Constants.StartPositionY;
-            Entity.Symbol = "😱";
+            Entity.Symbol = "P";
             Entity.EntityType = EntityType.Player;
+            
+            
         }
 
         public void Respawn()

@@ -140,20 +140,35 @@ namespace ZoneRpg.UserInterface
                 // Todo: get all classes from db, and let the player choose
                 
                 // --- TA BORT
-                CharacterClass characterClass = new CharacterClass();
-                characterClass.Name = "Warrior";
-                characterClass.MaxHp = 100;
-                characterClass.BaseAttack = 10;
+                
                 //  ------
-
+                
                 // 1. Hämta alla klasser från databasen
+                List<CharacterClass> characterClasses = _db.GetClasses();
+                string prompt = "Choose a class!";
+                string [] options = characterClasses.Select(CharacterToString).ToArray();
+
+                
+                int index = new Menu(prompt, options).Run();
+                
+                CharacterClass selectedClass = characterClasses[index];
+
+                Player player = new Player(name, selectedClass);
+                
+                return player;
+
                 // 2. Visa meny
                 // 3. Välj klass
-                return new Player(name, characterClass);
+                
             }
 
         }
-
+                //Lamba funktion omgjord till en metod
+            public string CharacterToString(CharacterClass x)
+            {
+                return x.Name;
+            }
+           
         // Choose player
         public Player ChoosePlayer()
         {

@@ -140,6 +140,21 @@ namespace ZoneRpg.Database
             return (results.Count() > 0) ? results.First() : null;
         }
 
+        public List<CharacterClass> GetClasses()
+        {
+            string sql = @"SELECT 
+                
+                c.id,
+                c.name,
+                c.base_attack as BaseAttack,
+                c.base_attack_per_level as BaseAttackPerLevel,
+                c.max_hp as MaxHp,
+                c.max_hp_per_level as MaxHpPerLevel
+             FROM character_class c";
+            List<CharacterClass> characterClasses = _connection.Query<CharacterClass>(sql).ToList();
+            return characterClasses;
+        }
+
 
         public void UpdateEntityPosition(Entity entity)
         {
