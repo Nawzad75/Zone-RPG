@@ -29,26 +29,32 @@ namespace ZoneRpg.UserInterface
 
         public override void Draw()
         {
+            if (_character == null)
+            {
+                base.Draw();
+                return;
+            }
             base.Draw();
            
-            Console.ForegroundColor = ConsoleColor.Yellow;
-            Console.Write("Name:   ");
+            Console.SetCursorPosition(_x + 2, _y);
             Console.ForegroundColor = _accentColor;
-            Console.Write(_character?.Name ?? "");
+            Console.Write($" {_character?.Name ?? ""} ");
 
-            Console.SetCursorPosition(_x + 2, _y + 2);
+            Console.SetCursorPosition(_x + 2, _y + 1);
             Console.ForegroundColor = ConsoleColor.Yellow;
             Console.Write("Class:  ");
             Console.ForegroundColor = _accentColor;
             Console.Write(_character?.GetClassReadable() ?? "");
 
-            Console.SetCursorPosition(_x + 2, _y + 3);
+            Console.SetCursorPosition(_x + 2, _y + 2);
             Console.ForegroundColor = ConsoleColor.Yellow;
             Console.Write("HP:     ");
             Console.ForegroundColor = _accentColor;
             Console.Write(_character?.Hp.ToString() ?? "");
+            Console.ForegroundColor = ConsoleColor.White;
+            Console.Write(" / " + _character?.GetMaxHp().ToString() ?? "");
 
-            Console.SetCursorPosition(_x + 2, _y + 4);
+            Console.SetCursorPosition(_x + 2, _y + 3);
             Console.ForegroundColor = ConsoleColor.Yellow;
             Console.Write("Attack: ");
             Console.ForegroundColor = _accentColor;

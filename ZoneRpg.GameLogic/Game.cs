@@ -1,4 +1,5 @@
 using ZoneRpg.Database;
+using ZoneRpg.Loot;
 using ZoneRpg.Shared;
 
 namespace ZoneRpg.GameLogic
@@ -8,9 +9,10 @@ namespace ZoneRpg.GameLogic
     public class Game
     {
         public Zone Zone { get; private set; }
-        public BattleManager BattleManager { get; set; }
         public GameState State { get; private set; } = GameState.MainMenu;
-        private Player _player { get; set; } = new Player(); // Placeholder until we get a real player
+        public BattleManager BattleManager { get; set; }
+        private LootGenerator _lootGenerator;
+        private Player _player { get; set; } = new Player();
         DatabaseManager _db;
         public MessageBox MessageBox { get; set; } = new MessageBox("ZoneRpg");
 
@@ -19,6 +21,7 @@ namespace ZoneRpg.GameLogic
             _db = db;
             Zone = _db.GetZone(1);
             BattleManager = new BattleManager(_db);
+            _lootGenerator = new LootGenerator(_db);
         }
 
 
@@ -28,13 +31,22 @@ namespace ZoneRpg.GameLogic
             Zone.Messages = _db.GetMessages();
             BattleManager.LookForMonsters(Zone.Entities);
 
-            if(BattleManager.State == BattleState.InBattle)
+            if (BattleManager.State == BattleState.InBattle)
             {
                 SetState(GameState.Battle);
             }
+            if (BattleManager.State == BattleState.Lost)
+            {
+                SetState(GameState.Dead);
+            }
+            if (BattleManager.State == BattleState.Won)
+            {
+                var loot = _lootGenerator.GenerateLoot();
+                SetState(GameState.Loot);
+            }
 
             BattleManager.ProgressBattle();
-            
+
         }
 
         //
@@ -54,6 +66,7 @@ namespace ZoneRpg.GameLogic
             _player.Entity.X = Constants.StartPositionX;
             _player.Entity.Y = Constants.StartPositionY;
             _db.UpdateEntityPosition(_player.Entity);
+            BattleManager.State = BattleState.NotInBattle;
             SetState(GameState.Zone);
         }
 

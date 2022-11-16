@@ -9,7 +9,8 @@ public interface IFighter
     // Methods
     int GetX();
     int GetY();
-    int GetAttack();   
+    int GetAttack();
+    int GetMaxHp();
     void TakeDamage(int damage);
 
     // Kan vara character class, kan vara Monster class, 

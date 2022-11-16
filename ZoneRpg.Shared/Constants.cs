@@ -4,7 +4,7 @@ namespace ZoneRpg.Shared
     {
         public static int StartPositionX = 22;
         public static int StartPositionY = 6;
-        public static int MaxBattleMessages = 8;
+        public static int MaxBattleMessages = 2;
         public static readonly ConsoleKey[] AllArrowKeys = new ConsoleKey[] {
             ConsoleKey.UpArrow,
             ConsoleKey.DownArrow,

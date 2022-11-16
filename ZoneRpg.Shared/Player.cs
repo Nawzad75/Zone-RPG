@@ -55,5 +55,10 @@ namespace ZoneRpg.Shared
         {
             return Entity.Y;
         }
+
+        public int GetMaxHp()
+        {
+            return CharacterClass.MaxHp;
+        }
     }
 }

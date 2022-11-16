@@ -33,6 +33,10 @@ namespace ZoneRpg.GameLogic
             _player = player;
         }
 
+        public IFighter? GetPlayer()
+        {
+            return _player;
+        }
 
         public void AddMessage(string v)
         {
@@ -57,7 +61,7 @@ namespace ZoneRpg.GameLogic
 
             // Spelaren attackerar
             _monster.TakeDamage(_player.GetAttack());
-            AddMessage($"{_player.Name} attacks {_monster.Name} for {_player.GetAttack()} damage!");
+            AddMessage($"[player] attacks [monster] for [player_attack] damage!");
 
             // B died (_monster)
             if (_monster.Hp <= 0)
@@ -71,7 +75,7 @@ namespace ZoneRpg.GameLogic
 
             // Monstret attackerar
             _player.TakeDamage(_monster.GetAttack());
-            AddMessage($"{_monster.Name} attacks {_player.Name} for {_monster.GetAttack()} damage!");
+            AddMessage($"[monster] attacks [player] for [monster_attack] damage!");
 
             // A died (_player)
             if (_player.Hp <= 0)

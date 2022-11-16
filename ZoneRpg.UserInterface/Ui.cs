@@ -36,15 +36,15 @@ namespace ZoneRpg.UserInterface
             Console.Clear();
 
             // Rektangeln som visar spelarens stats
-            _playerRenderer.SetRect(2, _game.Zone.Height + 3, 30, 4);
+            _playerRenderer.SetRect(2, _game.Zone.Height + 3, 30, 3);
             _playerRenderer.SetAccentColor(ConsoleColor.Cyan);
 
             // Rektangeln som visar monstrets stats
-            _monsterRenderer.SetRect(34, _game.Zone.Height + 3, 30, 4);
+            _monsterRenderer.SetRect(34, _game.Zone.Height + 3, 30, 3);
             _monsterRenderer.SetAccentColor(ConsoleColor.Red);
 
-            // Rektangel som visard  battle-meddelanden
-            _battleRenderer.SetRect(2, _game.Zone.Height + 8, 64, 5);
+            // Rektangel som visar battle-meddelanden
+            _battleRenderer.SetRect(2, _game.Zone.Height + 8, 62, 2);
         }
 
         // Run!
@@ -66,9 +66,6 @@ namespace ZoneRpg.UserInterface
                     break;
 
                 case GameState.Dead:
-                    Console.Clear();
-                    Console.WriteLine("You died!");
-                    Console.WriteLine("Press <Enter> to respawn...");
                     break;
 
                 case GameState.Zone:
@@ -88,6 +85,7 @@ namespace ZoneRpg.UserInterface
                     _playerRenderer.Draw();
                     _monsterRenderer.Draw();
                     _battleRenderer.Draw();
+
                     break;
             }
 
@@ -232,6 +230,7 @@ namespace ZoneRpg.UserInterface
                 case GameState.Dead:
                     if (cki.Key == ConsoleKey.Enter)
                     {
+                        Console.Clear();
                         _game.RespawnPlayer();
                     }
                     break;
