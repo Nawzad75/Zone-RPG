@@ -80,7 +80,7 @@ namespace ZoneRpg.UserInterface
                     CharacterRenderer monsterRenderer = (CharacterRenderer) _monsterRenderer;
                     if (!monsterRenderer.hasCharacter())
                     {
-                        monsterRenderer.SetCharacter(_game.BattleManager.GetMonster());
+                        monsterRenderer.SetCharacter(_game.BattleManager.Monster);
                     }
                     _playerRenderer.Draw();
                     _monsterRenderer.Draw();

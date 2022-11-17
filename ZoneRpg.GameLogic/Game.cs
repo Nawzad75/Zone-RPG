@@ -73,7 +73,7 @@ namespace ZoneRpg.GameLogic
         public void SetPlayer(Player player)
         {
             _player = player;
-            BattleManager.SetPlayer(_player);
+            BattleManager.Player = _player;
         }
 
         public Player GetPlayer()
