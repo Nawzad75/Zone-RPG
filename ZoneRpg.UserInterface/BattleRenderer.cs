@@ -42,8 +42,8 @@ namespace ZoneRpg.UserInterface
             for (int i = count - 1; i >= 0; i--)
             {
                 string message = messages[messages.Count - 1 - i];
-                IFighter player = _battleManager.GetPlayer()!;
-                IFighter monster = _battleManager.GetMonster()!;
+                IFighter player = _battleManager.Player!;
+                IFighter monster = _battleManager.Monster!;
 
                 // De konstiga ascii escape tecknen här, är för att kunna ändra färg på texten
                 message = message
