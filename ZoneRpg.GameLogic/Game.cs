@@ -14,7 +14,7 @@ namespace ZoneRpg.GameLogic
         private LootGenerator _lootGenerator;
         private Player _player { get; set; } = new Player();
         DatabaseManager _db;
-        public MessageBox MessageBox { get; set; } = new MessageBox("ZoneRpg");
+        public ChatBox ChatBox { get; set; } = new ChatBox("ZoneRpg");
 
         public Game(DatabaseManager db)
         {
@@ -28,7 +28,7 @@ namespace ZoneRpg.GameLogic
         public void Update()
         {
             Zone.Entities = _db.GetEntities();
-            Zone.Messages = _db.GetMessages();
+            ChatBox.Messages = _db.GetMessages();
             BattleManager.LookForMonsters(Zone.Entities);
 
             if (BattleManager.State == BattleState.InBattle)

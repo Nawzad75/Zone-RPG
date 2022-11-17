@@ -99,7 +99,7 @@ namespace ZoneRpg.UserInterface
             _zoneRenderer.DrawZone(_game.Zone);
             _zoneRenderer.DrawEntities(_game.Zone.Entities);
             _zoneRenderer.DrawPlayerEntity(_game.GetPlayerEntity());
-            _zoneRenderer.DrawMessageBox(_game.MessageBox, _game.Zone);
+            _zoneRenderer.DrawChatBox(_game.ChatBox, _game);
         }
 
 

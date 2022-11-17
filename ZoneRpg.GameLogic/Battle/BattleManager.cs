@@ -38,9 +38,9 @@ namespace ZoneRpg.GameLogic
             return _player;
         }
 
-        public void AddMessage(string v)
+        public void AddMessage(string message)
         {
-            _messages.Add(v);
+            _messages.Add(message);
         }
 
         public List<string> GetMessages()
@@ -61,7 +61,7 @@ namespace ZoneRpg.GameLogic
 
             // Spelaren attackerar
             _monster.TakeDamage(_player.GetAttack());
-            AddMessage($"[player] attacks [monster] for [player_attack] damage!");
+            AddMessage("[player] attacks [monster] for [player_attack] damage!");
 
             // B died (_monster)
             if (_monster.Hp <= 0)
@@ -72,10 +72,9 @@ namespace ZoneRpg.GameLogic
                 return;
             }
 
-
             // Monstret attackerar
             _player.TakeDamage(_monster.GetAttack());
-            AddMessage($"[monster] attacks [player] for [monster_attack] damage!");
+            AddMessage("[monster] attacks [player] for [monster_attack] damage!");
 
             // A died (_player)
             if (_player.Hp <= 0)
@@ -88,12 +87,12 @@ namespace ZoneRpg.GameLogic
         }
 
 
-        public bool LookForMonsters(List<Entity> entities)
+        public void LookForMonsters(List<Entity> entities)
         {
             // Om vi redan är i en fight, så behöver vi inte leta efter nya fiender
             if (_player == null || State != BattleState.NotInBattle)
             {
-                return false;
+                return ;
             }
 
             // Filtera listan med entities så att vi bara får med de som är monster, och som är nära spelaren
@@ -106,10 +105,9 @@ namespace ZoneRpg.GameLogic
                 {
                     SetMonster(monster);
                     State = BattleState.InBattle;
-                    return true;
+                    return ;
                 }
             }
-            return false;
 
         }
 

@@ -16,11 +16,11 @@ namespace ZoneRpg.UserInterface
             Console.WriteLine("\n Zone: " + zone.Name + "    [T] Send message  [I] Inventory  [Q] Quit");
             Console.WriteLine();
         }
-        public void DrawMessageBox(MessageBox messageBox, Zone zone)
+        public void DrawChatBox(ChatBox chatBox, Game game)
         {
             int y = 0;
 
-            foreach (var message in zone.Messages.TakeLast(12))
+            foreach (var message in game.ChatBox.Messages.TakeLast(12))
             {
                 Console.SetCursorPosition(60, y++);
                 Console.Write(message.character.Name + " " + message.Text);
