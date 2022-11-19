@@ -16,11 +16,11 @@ namespace ZoneRpg.Shared
         public int EntityId { get { return Entity.Id; } }
 
         // Items
-        public Item? ItemWeapon { get; set; }
-        public Item? ItemBoots { get; set; }
-        public Item? ItemHelm { get; set; }
+        public Item? Weapon { get; set; }
+        public Item? Boots { get; set; }
+        public Item? Helm { get; set; }
 
-        public Character() { }
+        public Character(){}
         public Character(string name)
         {
             Name = name;
@@ -33,7 +33,6 @@ namespace ZoneRpg.Shared
         {
             Level++;
             Xp = 0;
-
         }
 
         //Funktion så vi lägger till xp till spelaren, lägger in int xp som parameter för att kunna använda den i andra funktioner

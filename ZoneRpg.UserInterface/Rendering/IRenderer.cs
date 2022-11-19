@@ -1,4 +1,3 @@
-using ZoneRpg.Shared;
 
 namespace ZoneRpg.UserInterface
 {

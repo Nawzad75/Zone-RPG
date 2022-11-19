@@ -13,8 +13,6 @@ namespace ZoneRpg.Shared
         public int Symbol { get; set; }
 
         Zone zone = new Zone();
-       
-       
         public Entity Entity { get; set; } = new Entity();
 
         public Kista(){}

@@ -250,12 +250,30 @@ namespace ZoneRpg.Database
             string sql = @"
                 SELECT COUNT(*) FROM entity e
                 WHERE e.zone_id = @zoneId AND e.entity_type_id = @MonsterType";
-
+        
             return _connection.Query<int>(
                 sql,
                 new { zoneId, MonsterType = EntityType.Monster }
             ).First();
         }
+            
+        public void InsertWeaponUpdatePlayer(Player player)
+        {
+             //Lägg till Item i databasen
+            string sql = @"
+          INSERT INTO `item`(`character_id`, `item_info_id`) VALUES (NULL, @ItemInfoId)";
+            var parameter = new
+            {
+                ItemInfoId = player.Weapon!.ItemInfo.Id
+            };
+            _connection.Execute(sql, parameter);
+
+            
+        }
+
+
+
+
 
         public void InsertMonster(Monster monster)
         {
