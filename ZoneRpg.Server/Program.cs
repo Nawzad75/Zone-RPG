@@ -11,9 +11,9 @@ internal class Program
         while (true)
         {
             Console.WriteLine("Processing: " + DateTime.Now);
-            SpawnMonstersInZone(1, 3);
+            SpawnMonstersInZone(1);
             Console.WriteLine("------------------------\n\n");
-            Thread.Sleep(10000);
+            Thread.Sleep(20000);
         }
     }
 
@@ -30,26 +30,28 @@ internal class Program
         if (monsters.Count < maxMonsters)
         {
             MonsterClass monsterClass = db.GetMonsterClassByName("Dragon");
-            Monster monster = new Monster(monsterClass);
-            monster.Entity.ZoneId = zoneId;
-            // Random position, repeat if position is already taken
+            Monster newMonser = new Monster(monsterClass, zoneId);
+            Zone zone = db.GetZone(zoneId);
+           
+            // Slumpa position, om positionen är upptagen, slumpa igen.
             do
             {
-                monster.Entity.X = rnd.Next(1, 42);
-                monster.Entity.Y = rnd.Next(1, 12);
-            } while (monsters.Any(m => m.Entity.X == monster.Entity.X && m.Entity.Y == monster.Entity.Y));
+                newMonser.Entity.X = rnd.Next(1, zone.Width);
+                newMonser.Entity.Y = rnd.Next(1, zone.Height);
+            } while (monsters.Any(m => m.Entity.X == newMonser.Entity.X && m.Entity.Y == newMonser.Entity.Y));
+
 
             if (zoneId == 1){
                 // Ensure there is a monster at 40, 10
                 if (!monsters.Any(m => m.Entity.X == 40 && m.Entity.Y == 10))
                 {
-                    monster.Entity.X = 40;
-                    monster.Entity.Y = 10;
+                    newMonser.Entity.X = 40;
+                    newMonser.Entity.Y = 10;
                 }
             }
 
-            db.InsertMonster(monster);
-            Console.WriteLine("New monster spawned at: " + monster.Entity.X + ", " + monster.Entity.Y);
+            db.InsertMonster(newMonser);
+            Console.WriteLine("New monster spawned at: " + newMonser.Entity.X + ", " + newMonser.Entity.Y);
         }
     }
 }

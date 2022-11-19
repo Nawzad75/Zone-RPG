@@ -8,7 +8,7 @@ namespace ZoneRpg.Shared
         // Parameterlös konstruktor för dapper
         public Monster() {}
 
-        public Monster(MonsterClass monsterClass)
+        public Monster(MonsterClass monsterClass, int zoneId)
         {
             Name = "Monster";
             Level = 1;
@@ -16,6 +16,7 @@ namespace ZoneRpg.Shared
             Hp = MonsterClass.MaxHp;
             Entity.EntityType = EntityType.Monster; 
             Entity.Symbol = "🐉";
+            Entity.ZoneId = zoneId;
         }
 
         public void SetMonster()

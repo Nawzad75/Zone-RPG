@@ -51,12 +51,14 @@ namespace ZoneRpg.Database
         //
         // Gets a zone from the database
         //
-        public Zone GetZone(int zoneId)
+        public Zone GetZone(int zoneId) 
         {
             var parameters = new { id = zoneId };
             string sql = "SELECT * FROM zone WHERE id = @id";
-            return _connection.Query<Zone>(sql, parameters).First();
+            return _connection.QuerySingle<Zone>(sql, parameters);
         }
+
+
 
         //
         // Gets all entities from the database
@@ -308,9 +310,9 @@ namespace ZoneRpg.Database
             ).ToList();
         }
 
-        public void DeleteMonstersInZone(int zone_id)
+        public void DeleteMonstersInZone(int zoneId)
         {
-            List<Monster> monsters = GetMonsters(zone_id);
+            List<Monster> monsters = GetMonsters(zoneId);
             foreach (Monster monster in monsters)
             {
                 DeleteEntity(monster.Entity.Id);
