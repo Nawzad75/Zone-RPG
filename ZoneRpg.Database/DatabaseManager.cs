@@ -247,6 +247,22 @@ namespace ZoneRpg.Database
             return messages;
         }
 
+        public void InsertWeaponUpdatePlayer(Player player)
+        {
+             //Lägg till Item i databasen
+            string sql = @"
+          INSERT INTO `item`(`character_id`, `item_info_id`) VALUES (NULL, @ItemInfoId)";
+            var parameter = new
+            {
+                ItemInfoId = player.Weapon!.ItemInfo.Id
+            };
+            _connection.Execute(sql, parameter);
+
+            
+        }
+
+
+
 
     }
 }

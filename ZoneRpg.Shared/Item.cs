@@ -5,15 +5,16 @@ namespace ZoneRpg.Shared
     {
         public int Id { get; set; }
         public Character? Player = null; // Om itemet har en ägare, så finns ägaren här:
-        public ItemInfo ItemType { get; set; }
+        public ItemInfo ItemInfo { get; set; }
         public Item(ItemInfo itemType)
         {
-            ItemType = itemType;
+            ItemInfo = itemType;
         }
+        public Item(){}
 
         override public string ToString()
         {
-            return ItemType.Description;
+            return ItemInfo.Description;
         }
     }
 }

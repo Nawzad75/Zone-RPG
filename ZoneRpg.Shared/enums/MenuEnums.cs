@@ -5,7 +5,7 @@ namespace ZoneRpg.Shared
     //
     public enum StartMenu
     {
-        Start,
+        Start, 
         About,
         Exit
     }

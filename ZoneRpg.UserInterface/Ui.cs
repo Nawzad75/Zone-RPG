@@ -214,7 +214,10 @@ namespace ZoneRpg.UserInterface
 
                 if (sword != null)
                 {
-                    // zone.Player.
+                    Item item = new Item();
+                    item.ItemInfo = sword;
+                    _game.Player.Weapon = item;
+                    _db.InsertWeaponUpdatePlayer(_game.Player);
                 }
 
 
