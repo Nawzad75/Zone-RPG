@@ -172,19 +172,11 @@ namespace ZoneRpg.UserInterface
         {
             Console.Clear();
             List<Player> players = _db.GetPlayers();
-            string[] options = players.Select(c => $"{c.Name}  (id: {c.id})").ToArray();
+            string[] options = players.Select(c => $"{c.Name}  (id: {c.Id})").ToArray();
             int index = new Menu("Choose a character:", options).Run();
             return players[index];
         }
 
-        // Create monster
-        public Monster CreateMonster()
-        {
-            Monster monster = new Monster();
-            monster.Entity.Symbol = "🐉";
-            monster.Name = "Monster";
-            return monster;
-        }
 
         public Kista CreateChest()
         {

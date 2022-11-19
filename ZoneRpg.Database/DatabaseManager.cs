@@ -2,6 +2,7 @@
 using MySqlConnector;
 using dotenv.net;
 using ZoneRpg.Shared;
+using System.Diagnostics;
 
 namespace ZoneRpg.Database
 {
@@ -172,23 +173,7 @@ namespace ZoneRpg.Database
         // 
         public void InsertCharacter(Character character)
         {
-            // Entityn först, så vi får ett entity_id att ge till character
-            string entity_sql = @"
-                INSERT INTO entity 
-                    (entity_type_id, symbol, zone_id, x, y)
-                VALUES
-                    (@EntityType, @Symbol, @ZoneId, @X, @Y);
-                SELECT LAST_INSERT_ID();";
-            var enntityParameters = new
-            {
-                EntityType = character.Entity.EntityType,
-                Symbol = character.Entity.Symbol,
-                ZoneId = character.Entity.ZoneId,
-                X = character.Entity.X,
-                Y = character.Entity.Y,
-            };
-
-            character.Entity.Id = _connection.Query<int>(entity_sql, character.Entity).First();
+            character.Entity.Id = InsertEntity(character.Entity);
 
             //  Character 
             string sql = @"
@@ -205,7 +190,6 @@ namespace ZoneRpg.Database
                 hp = character.Hp,
                 max_hp = character.MaxHp,
                 xp = character.Xp,
-                is_monster = character.IsMonster,
                 skill = character.Skill,
                 character_class_id = character.CharacterClass.Id,
                 entity_id = character.Entity.Id
@@ -214,6 +198,20 @@ namespace ZoneRpg.Database
             _connection.Execute(sql, parameters);
 
         }
+
+        public int InsertEntity(Entity entity)
+        {
+            string sql = @"
+                INSERT INTO entity 
+                    (entity_type_id, symbol, zone_id, x,  y)
+                VALUES  
+                    (@EntityTypeId, @Symbol, @ZoneId, @X, @Y );
+                SELECT LAST_INSERT_ID()";
+
+            // (@X, @Y, @Symbol, @ZoneId, @EntityTypeId);
+            return _connection.QuerySingle<int>(sql, entity);
+        }
+
         public void InsertMessage(Message message)
         {
             string sql = @"
@@ -223,7 +221,7 @@ namespace ZoneRpg.Database
 
             var parameters = new
             {
-                character_id = message.character.id,
+                character_id = message.character.Id,
                 character_name = message.character.Name,
                 text = message.Text,
             };
@@ -247,6 +245,95 @@ namespace ZoneRpg.Database
             return messages;
         }
 
+        public int CountMonstersInZone(int zoneId)
+        {
+            string sql = @"
+                SELECT COUNT(*) FROM entity e
+                WHERE e.zone_id = @zoneId AND e.entity_type_id = @MonsterType";
 
+            return _connection.Query<int>(
+                sql,
+                new { zoneId, MonsterType = EntityType.Monster }
+            ).First();
+        }
+
+        public void InsertMonster(Monster monster)
+        {
+            monster.Entity.Id = InsertEntity(monster.Entity);
+
+            //  Character 
+            string sql = @"
+                INSERT INTO `character` 
+                    (name, hp, xp, character_class_id, entity_id)
+                VALUES 
+                    (@Name, @Hp, @Xp, @MonsterClassId, @EntityId)";
+
+            _connection.Execute(sql, monster);
+        }
+
+        public List<Monster> GetMonsters(int zoneId)
+        {
+            string sql = @"
+                SELECT * FROM `character` c
+                INNER JOIN entity e ON e.id = c.entity_id
+                INNER JOIN monster_class mc ON mc.id = c.character_class_id
+                WHERE e.entity_type_id = @EntityTypeId AND e.zone_id = @zoneId";
+
+            return _connection.Query<Monster, Entity, MonsterClass, Monster>(
+                sql, (monster, entity, monsterClass) =>
+                {
+                    monster.Entity = entity;
+                    monster.MonsterClass = monsterClass;
+                    return monster;
+                },
+                new { @EntityTypeId = (int)EntityType.Monster, zoneId }
+            ).ToList();
+        }
+
+        public void DeleteMonstersInZone(int zone_id)
+        {
+            List<Monster> monsters = GetMonsters(zone_id);
+            foreach (Monster monster in monsters)
+            {
+                DeleteEntity(monster.Entity.Id);
+                DeleteMonster(monster.Id);
+            }
+        }
+
+        private void DeleteEntity(int id)
+        {
+            string sql = @"
+                DELETE FROM entity WHERE id = @id;
+                SELECT ROW_COUNT();";
+
+            int numDeletedRows = _connection.QuerySingle<int>(sql, new { id });
+
+            Debug.WriteLine("Deleted " + numDeletedRows + " rows");
+        }
+
+        private void DeleteMonster(int id)
+        {
+            string sql = "DELETE FROM `character` WHERE id = @id";
+            _connection.Execute(sql, new { id });
+        }
+
+        public MonsterClass GetMonsterClassByName(string name)
+        {
+            string sql = @"
+                SELECT * FROM monster_class mc
+                WHERE mc.name = @name";
+            
+            return _connection.QuerySingle<MonsterClass>(sql, new { name });
+        }
+
+        public void UpdatePlayerHp(object player)
+        {
+            throw new NotImplementedException();
+        }
+
+        public void UpdateCharacterHp(IFighter player)
+        {
+            throw new NotImplementedException();
+        }
     }
 }

@@ -12,9 +12,7 @@ namespace ZoneRpg.Shared
             Entity.X = Constants.StartPositionX;
             Entity.Y = Constants.StartPositionY;
             Entity.Symbol = "P";
-            Entity.EntityType = EntityType.Player;
-            
-            
+            Entity.EntityType = EntityType.Player;            
         }
 
         public void Respawn()

@@ -2,9 +2,8 @@ namespace ZoneRpg.Shared
 {
     public class Character
     {
-        public int id { get; set; }
+        public int Id { get; set; }
         public string Name { get; set; } = "<Unnamed>";
-        public bool IsMonster { get; set; } = false;
         public int Hp { get; set; } = 100;
         public int MaxHp { get; set; } = 100;
         public int Xp { get; set; }
@@ -12,6 +11,9 @@ namespace ZoneRpg.Shared
         public int Skill { get; set; }
         public CharacterClass CharacterClass { get; set; } = new CharacterClass();
         public Entity Entity { get; set; } = new Entity();
+
+        // För dapper
+        public int EntityId { get { return Entity.Id; } }
 
         // Items
         public Item? ItemWeapon { get; set; }
