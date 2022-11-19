@@ -36,7 +36,9 @@ namespace ZoneRpg.UserInterface
         public void DrawPlayerEntity(Entity playerEntity)
         {
             Console.SetCursorPosition(playerEntity.X, playerEntity.Y);
+            Console.ForegroundColor= ConsoleColor.Green;
             Console.WriteLine(playerEntity.Symbol);
+            Console.ResetColor();
         }
 
 
