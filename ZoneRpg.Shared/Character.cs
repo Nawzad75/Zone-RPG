@@ -14,6 +14,7 @@ namespace ZoneRpg.Shared
 
         // För dapper
         public int EntityId { get { return Entity.Id; } }
+       
 
         // Items
         public Item? Weapon { get; set; }

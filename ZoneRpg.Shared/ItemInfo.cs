@@ -8,6 +8,8 @@ namespace ZoneRpg.Shared
         public int ItemTypeId { get; set; }
         public int Rarity { get; set; }
         public string Description { get; set; } = "";
+        public int Attack {get; set; }
+        public int Defense {get; set;}
 
 
     }

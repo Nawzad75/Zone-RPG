@@ -51,7 +51,7 @@ namespace ZoneRpg.Database
         //
         // Gets a zone from the database
         //
-        public Zone GetZone(int zoneId) 
+        public Zone GetZone(int zoneId)
         {
             var parameters = new { id = zoneId };
             string sql = "SELECT * FROM zone WHERE id = @id";
@@ -97,6 +97,7 @@ namespace ZoneRpg.Database
                 FROM `character` c
                 INNER JOIN entity e ON e.id = c.entity_id
                 INNER JOIN character_class cc ON cc.id = c.character_class_id
+
                 WHERE e.entity_type_id = @EntityTypeId";
 
 
@@ -252,25 +253,27 @@ namespace ZoneRpg.Database
             string sql = @"
                 SELECT COUNT(*) FROM entity e
                 WHERE e.zone_id = @zoneId AND e.entity_type_id = @MonsterType";
-        
+
             return _connection.Query<int>(
                 sql,
                 new { zoneId, MonsterType = EntityType.Monster }
             ).First();
         }
-            
-        public void InsertWeaponUpdatePlayer(Player player)
+        public int InsertWeapon(Item weapon)
         {
             //Lägg till Item i databasen
             string sql = @"
-          INSERT INTO `item`(`character_id`, `item_info_id`) VALUES (NULL, @ItemInfoId)";
-            var parameter = new
+          INSERT INTO `item`(`character_id`, `item_info_id`) VALUES (NULL, @ItemInfoId);
+                SELECT LAST_INSERT_ID()";
+            var parameters = new
             {
-                ItemInfoId = player.Weapon!.ItemInfo.Id
+
+                ItemInfoId = weapon!.ItemInfo.Id
             };
-            _connection.Execute(sql, parameter);
 
+           
 
+         return _connection.QuerySingle<int>(sql, parameters);
         }
 
 
@@ -287,13 +290,15 @@ namespace ZoneRpg.Database
             if (player.Weapon != null)
             {
                 Weapon = player.Weapon.Id;
+                
             }
-            var parameter = new
+            var parameters = new
             {
-                Weapon
+                Weapon,
+                id = player.Id
             };
 
-            _connection.Execute(sql, parameter);
+            _connection.Execute(sql, parameters);
         }
 
 
@@ -369,7 +374,7 @@ namespace ZoneRpg.Database
             string sql = @"
                 SELECT * FROM monster_class mc
                 WHERE mc.name = @name";
-            
+
             return _connection.QuerySingle<MonsterClass>(sql, new { name });
         }
 

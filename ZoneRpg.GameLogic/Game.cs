@@ -109,12 +109,12 @@ namespace ZoneRpg.GameLogic
                     Item item = new Item();
                     item.ItemInfo = sword;
                     Player.Weapon = item;
-                    _db.InsertWeapon(Player);
+                    Player.Weapon.Id = _db.InsertWeapon(Player.Weapon);
+                    _db.UpdatePlayerWeapon(Player);
+
                 }
 
-
             }
-
 
         }
     }

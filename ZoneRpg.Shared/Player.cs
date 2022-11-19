@@ -27,7 +27,7 @@ namespace ZoneRpg.Shared
         // --------------------------------------------
         public int GetAttack()
         {
-            return CharacterClass.BaseAttack;// + ItemIdWeapon?.AttackBonus ?? 0;  
+            return CharacterClass.BaseAttack + Weapon.ItemInfo.Attack;
         }
 
         public int GetDefense()
