@@ -91,9 +91,7 @@ namespace ZoneRpg.UserInterface
                     break;
             }
 
-            // Är detta UI? (delvis?) 
-            // Hur flyttar vi det nån annanstans?
-            OpenChest();
+         
         }
 
         private void DrawZone()
@@ -197,36 +195,7 @@ namespace ZoneRpg.UserInterface
         }
 
 
-        public void OpenChest()
-        {
-            Entity? chestEntity = _game.Zone.Entities.Find(entity => entity.EntityType == EntityType.Chest);
-            if (chestEntity == null)
-            {
-                return;
-            }
-
-            Entity playerEntity = _game.GetPlayerEntity();
-
-            if (chestEntity.X == playerEntity.X && chestEntity.Y == playerEntity.Y)
-            {
-                //öppnar kistan och får ett svärd från databasen
-                Console.WriteLine("Du har öppnat en kista och fått ett svärd!");
-                List<ItemInfo> allItemInfos = _db.GetAllItemInfos();
-                ItemInfo? sword = allItemInfos.Find(item => item.Name == "Sword");
-
-                if (sword != null)
-                {
-                    Item item = new Item();
-                    item.ItemInfo = sword;
-                    _game.Player.Weapon = item;
-                    _db.InsertWeaponUpdatePlayer(_game.Player);
-                }
-
-
-            }
-
-
-        }
+     
 
         // Reads user input and takes action.
         // @param zone - We need a zone to restrict the player movement

@@ -22,16 +22,16 @@ namespace ZoneRpg.UserInterface
 
             switch (_choice)
             {
-                case 1:
+                case 0:
                     Start();
                     Console.Clear();
                     break;
 
-                case 2:
+                case 1:
                     About();
                     break;
 
-                case 3:
+                case 2:
                     ExitGame();
                     break;
             }

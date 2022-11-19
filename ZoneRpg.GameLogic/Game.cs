@@ -29,7 +29,9 @@ namespace ZoneRpg.GameLogic
         {
             Zone.Entities = _db.GetEntities();
             ChatBox.Messages = _db.GetMessages();
+            OpenChest();
             BattleManager.LookForMonsters(Zone.Entities);
+
 
             if (BattleManager.State == BattleState.InBattle)
             {
@@ -84,6 +86,36 @@ namespace ZoneRpg.GameLogic
         public Entity GetPlayerEntity()
         {
             return Player.Entity;
+        }
+        public void OpenChest()
+        {
+            Entity? chestEntity = Zone.Entities.Find(entity => entity.EntityType == EntityType.Chest);
+            if (chestEntity == null)
+            {
+                return;
+            }
+
+            Entity playerEntity = GetPlayerEntity();
+
+            if (chestEntity.X == playerEntity.X && chestEntity.Y == playerEntity.Y)
+            {
+                //öppnar kistan och får ett svärd från databasen
+                Console.WriteLine("Du har öppnat en kista och fått ett svärd!");
+                List<ItemInfo> allItemInfos = _db.GetAllItemInfos();
+                ItemInfo? sword = allItemInfos.Find(item => item.Name == "Sword");
+
+                if (sword != null)
+                {
+                    Item item = new Item();
+                    item.ItemInfo = sword;
+                    Player.Weapon = item;
+                    _db.InsertWeapon(Player);
+                }
+
+
+            }
+
+
         }
     }
 }

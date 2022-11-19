@@ -247,9 +247,9 @@ namespace ZoneRpg.Database
             return messages;
         }
 
-        public void InsertWeaponUpdatePlayer(Player player)
+        public void InsertWeapon(Player player)
         {
-             //Lägg till Item i databasen
+            //Lägg till Item i databasen
             string sql = @"
           INSERT INTO `item`(`character_id`, `item_info_id`) VALUES (NULL, @ItemInfoId)";
             var parameter = new
@@ -258,8 +258,35 @@ namespace ZoneRpg.Database
             };
             _connection.Execute(sql, parameter);
 
-            
+
         }
+
+
+        public void UpdatePlayerWeapon(Player player)
+        {
+
+            string sql = @"UPDATE `character` 
+           SET
+           item_id_weapon= @Weapon 
+            WHERE id = @id
+           ";
+
+            int? Weapon = null;
+            if (player.Weapon != null)
+            {
+                Weapon = player.Weapon.Id;
+            }
+            var parameter = new
+            {
+                Weapon
+            };
+
+            _connection.Execute(sql, parameter);
+        }
+
+
+
+
 
 
 
