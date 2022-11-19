@@ -18,6 +18,7 @@ namespace ZoneRpg.UserInterface
         private IRenderer _monsterRenderer = new CharacterRenderer();
         private IRenderer _battleRenderer;
         private Game _game;
+        private IRenderer _chatBoxRenderer;
 
         // Constructor
         public Ui(DatabaseManager db, Game game)
@@ -25,6 +26,7 @@ namespace ZoneRpg.UserInterface
             _db = db;
             _game = game;
             _battleRenderer = new BattleRenderer(game.BattleManager);
+            _chatBoxRenderer = new ChatboxRenderer(game.ChatBox);
             Setup();
         }
 
@@ -74,13 +76,13 @@ namespace ZoneRpg.UserInterface
                     _monsterRenderer.Draw();
                     break;
 
-                case GameState.Battle:                    
+                case GameState.Battle:
                     DrawZone();
                     // cast IRenderer to CharacterRender, so we can get/set the current Monster
-                    CharacterRenderer monsterRenderer = (CharacterRenderer) _monsterRenderer;
+                    CharacterRenderer monsterRenderer = (CharacterRenderer)_monsterRenderer;
                     if (!monsterRenderer.hasCharacter())
                     {
-                        monsterRenderer.SetCharacter(_game.BattleManager.GetMonster());
+                        monsterRenderer.SetCharacter(_game.BattleManager.Monster);
                     }
                     _playerRenderer.Draw();
                     _monsterRenderer.Draw();
@@ -99,7 +101,7 @@ namespace ZoneRpg.UserInterface
             _zoneRenderer.DrawZone(_game.Zone);
             _zoneRenderer.DrawEntities(_game.Zone.Entities);
             _zoneRenderer.DrawPlayerEntity(_game.GetPlayerEntity());
-            _zoneRenderer.DrawMessageBox(_game.MessageBox, _game.Zone);
+            _chatBoxRenderer.Draw();
         }
 
 
@@ -109,14 +111,14 @@ namespace ZoneRpg.UserInterface
         {
             string prompt = "Create or choose a character!";
             string[] options = new string[] { "Create", "Choose" };
-            CreateChooseMenu createOption = (CreateChooseMenu) new Menu(prompt, options).Run();
+            CreateChooseMenu createOption = (CreateChooseMenu)new Menu(prompt, options).Run();
 
             if (createOption == CreateChooseMenu.Create)
             {
                 Player player = CreatePlayer();
                 _db.InsertCharacter(player);
                 return player;
-            }            
+            }
             return ChoosePlayer();
         }
 
@@ -136,37 +138,37 @@ namespace ZoneRpg.UserInterface
             else
             {
                 // Todo: get all classes from db, and let the player choose
-                
+
                 // --- TA BORT
-                
+
                 //  ------
-                
+
                 // 1. Hämta alla klasser från databasen
                 List<CharacterClass> characterClasses = _db.GetClasses();
                 string prompt = "Choose a class!";
-                string [] options = characterClasses.Select(CharacterToString).ToArray();
+                string[] options = characterClasses.Select(CharacterToString).ToArray();
 
-                
+
                 int index = new Menu(prompt, options).Run();
-                
+
                 CharacterClass selectedClass = characterClasses[index];
 
                 Player player = new Player(name, selectedClass);
-                
+
                 return player;
 
                 // 2. Visa meny
                 // 3. Välj klass
-                
+
             }
 
         }
-                //Lamba funktion omgjord till en metod
-            public string CharacterToString(CharacterClass x)
-            {
-                return x.Name;
-            }
-           
+        //Lamba funktion omgjord till en metod
+        public string CharacterToString(CharacterClass x)
+        {
+            return x.Name;
+        }
+
         // Choose player
         public Player ChoosePlayer()
         {
