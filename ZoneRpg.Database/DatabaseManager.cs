@@ -240,7 +240,7 @@ namespace ZoneRpg.Database
 
             string sql = @"
                 UPDATE `character` 
-                SET item_id_weapon = @Weapon 
+                SET weapon_id = @Weapon 
                 WHERE id = @id";
 
             int? Weapon = null;
