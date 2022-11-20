@@ -12,7 +12,7 @@ namespace ZoneRpg.Shared
             Entity.X = Constants.StartPositionX;
             Entity.Y = Constants.StartPositionY;
             Entity.Symbol = "P";
-            Entity.EntityType = EntityType.Player;            
+            Entity.EntityType = EntityType.Player;
         }
 
         public void Respawn()
@@ -27,12 +27,15 @@ namespace ZoneRpg.Shared
         // --------------------------------------------
         public int GetAttack()
         {
-            return CharacterClass.BaseAttack + Weapon.ItemInfo.Attack;
+            if( Weapon == null) {
+                return CharacterClass.BaseAttack;
+            } else {
+                return CharacterClass.BaseAttack + Weapon.ItemInfo.Attack;
+            }
         }
 
         public int GetDefense()
         {
-            // return CharacterClass.BaseDefense;// + ItemIdHelm?.DefenseBonus ?? 0;
             return 0;
         }
 
