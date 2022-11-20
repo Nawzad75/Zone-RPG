@@ -31,7 +31,7 @@ namespace ZoneRpg.GameLogic
             ChatBox.Messages = _db.GetMessages();
             OpenChest();
             BattleManager.LookForMonsters(Zone.Entities);
-
+            PlayerMovmentOverOtherEntitys();
 
             if (BattleManager.State == BattleState.InBattle)
             {
@@ -59,6 +59,7 @@ namespace ZoneRpg.GameLogic
 
         public void MovePlayer(ConsoleKey key)
         {
+
             Player.Move(key, Zone);
             _db.UpdateEntityPosition(Player.Entity);
         }
@@ -115,6 +116,92 @@ namespace ZoneRpg.GameLogic
                 }
 
             }
+
+        }
+        public void PlayerMovmentOverOtherEntitys()
+        {
+            // while (EntityType.Player == Player.Entity.EntityType)
+            // {
+            foreach (var entity in Zone.Entities)
+            {
+                if (entity.EntityType == EntityType.Player)
+                {
+                    if ((Player.GetX() - entity.X) == 1 && (Player!.GetY() - entity.Y) == 0)
+                    {
+                        Console.WriteLine("Obstacles, change direction.");
+                        Player.Move(ConsoleKey.RightArrow, Zone);
+                        _db.UpdateEntityPosition(Player.Entity);
+                    }
+                    else if ((Player!.GetX() - entity.X) == -1 && (Player!.GetY() - entity.Y) == 0 )
+                    {
+                        Console.WriteLine("Obstacles, change direction.");
+                        Player.Move(ConsoleKey.LeftArrow, Zone);
+                        _db.UpdateEntityPosition(Player.Entity);
+                    }
+                    else if ((Player!.GetY() - entity.Y) == 1 && (Player!.GetX() - entity.X) == 0)
+                    {
+                        Console.WriteLine("Obstacles, change direction.");
+                        Player.Move(ConsoleKey.DownArrow, Zone);
+                        _db.UpdateEntityPosition(Player.Entity);
+                    }
+                    else if ((Player!.GetY() - entity.X) == -1 && (Player!.GetX() - entity.X) == 0)
+                    {
+                        Console.WriteLine("Obstacles, change direction.");
+                        Player.Move(ConsoleKey.UpArrow, Zone);
+                        _db.UpdateEntityPosition(Player.Entity);
+                    }
+                    if (entity.EntityType == EntityType.Monster)
+                    {
+                      continue;
+                    }
+                    if (entity.EntityType == EntityType.Chest)
+                    {
+                        continue;
+                    }
+                   if (entity.EntityType == EntityType.Door)
+                    {
+                        continue;
+                    }
+                   
+
+                }
+                // }
+
+            }
+            // {
+
+            // }
+            // foreach (var entity in Zone.Entities)
+            // {
+
+
+            //     if ((Player.GetX() - entity.X) == 1)
+            //     {
+            //         Console.WriteLine("Obstacles, change direction.");
+            //         Player.Move(ConsoleKey.LeftArrow, Zone);
+            //         _db.UpdateEntityPosition(Player.Entity);
+            //     }
+            //     else if ((Player!.GetX() - entity.X) == -1)
+            //     {
+            //         Console.WriteLine("Obstacles, change direction.");
+            //         Player.Move(ConsoleKey.RightArrow, Zone);
+            //         _db.UpdateEntityPosition(Player.Entity);
+            //     }
+            //     else if ((Player!.GetY() - entity.Y) == 1)
+            //     {
+            //         Console.WriteLine("Obstacles, change direction.");
+            //         Player.Move(ConsoleKey.DownArrow, Zone);
+            //         _db.UpdateEntityPosition(Player.Entity);
+            //     }
+            //     else if ((Player!.GetY() - entity.X) == -1)
+            //     {
+            //         Console.WriteLine("Obstacles, change direction.");
+            //         Player.Move(ConsoleKey.UpArrow, Zone);
+            //         _db.UpdateEntityPosition(Player.Entity);
+            //     }
+
+
+            // }
 
         }
     }
