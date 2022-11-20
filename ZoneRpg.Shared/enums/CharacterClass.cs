@@ -9,8 +9,16 @@ namespace ZoneRpg.Shared
         public int MaxHp { get; set; }
         public int MaxHpPerLevel { get; set; }
 
+        // Endast för dapper
+        public int base_attack { set { BaseAttack = value; } }
+        public int base_attack_per_level { set { BaseAttackPerLevel = value; } }
+        public int max_hp { set { MaxHp = value; } }
+        public int max_hp_per_level { set { MaxHpPerLevel = value; } }
+
         public CharacterClass() { }
     }
 
 
 }
+
+

@@ -11,9 +11,7 @@ namespace ZoneRpg.Database
         // Database connection
         MySqlConnection _connection;
 
-        //
         // Connect and store away the connection for later use
-        //
         public DatabaseManager()
         {
             // Läs in dovenv filen med databas connection string
@@ -35,22 +33,14 @@ namespace ZoneRpg.Database
 
         }
 
-        //
         // Get's all "ItemInfo's" from the database
-        //
         public List<ItemInfo> GetAllItemInfos()
         {
             string sql = "SELECT * FROM item_info";
-            List<ItemInfo> itemInfos = _connection.Query<ItemInfo>(sql).ToList();
-            return itemInfos;
+            return _connection.Query<ItemInfo>(sql).ToList();
         }
 
-
-
-
-        //
         // Gets a zone from the database
-        //
         public Zone GetZone(int zoneId)
         {
             var parameters = new { id = zoneId };
@@ -58,11 +48,7 @@ namespace ZoneRpg.Database
             return _connection.QuerySingle<Zone>(sql, parameters);
         }
 
-
-
-        //
         // Gets all entities from the database
-        //
         public List<Entity> GetEntities(int zoneId = 1)
         {
             string sql = @"
@@ -70,68 +56,51 @@ namespace ZoneRpg.Database
                 INNER JOIN entity_type ON entity_type.id = entity.entity_type_id
                 WHERE entity.zone_id = @zoneId";
 
-            List<Entity> entities = _connection.Query<Entity, EntityType, Entity>(sql, (entity, entity_type) =>
-            {
-                entity.EntityType = entity_type;
-                return entity;
-            }, new { zoneId }).ToList();
-
-            return entities;
+            return _connection.Query<Entity, EntityType, Entity>(
+                sql,
+                (entity, entity_type) =>
+                {
+                    entity.EntityType = entity_type;
+                    return entity;
+                },
+                new { zoneId }
+            ).ToList();
         }
 
-        //
         // Gets a characters from the database
-        //
         public List<Player> GetPlayers()
         {
             string sql = @"
-                SELECT 
-                    c.*,
-                    e.*,
-                    cc.id,
-                    cc.name,
-                    cc.base_attack as BaseAttack,
-                    cc.base_attack_per_level as BaseAttackPerLevel,
-                    cc.max_hp as MaxHp,
-                    cc.max_hp_per_level as MaxHpPerLevel
-                FROM `character` c
+                SELECT * FROM `character` c
                 INNER JOIN entity e ON e.id = c.entity_id
                 INNER JOIN character_class cc ON cc.id = c.character_class_id
-
+                INNER JOIN item i ON i.id = c.weapon_id
+                INNER JOIN item_info ii ON ii.id = i.item_info_id
                 WHERE e.entity_type_id = @EntityTypeId";
 
-
-            List<Player> players = _connection.Query<Player, Entity, CharacterClass, Player>(
+            List<Player> players = _connection.Query<Player, Entity, CharacterClass, Item, ItemInfo, Player>(
                 sql,
-                (player, entity, characterClass) =>
+                (player, entity, characterClass, weapon, weaponInfo) =>
                 {
                     player.Entity = entity;
                     player.CharacterClass = characterClass;
+                    player.Weapon = weapon;
+                    player.Weapon.ItemInfo = weaponInfo;
                     return player;
                 },
                 new { @EntityTypeId = (int)EntityType.Player }
             ).ToList();
 
-
             return players;
         }
 
-        //
-        //
-        //
+        // Hämtar ett specifikt monster utifrån dess entity-id
         public Monster? GetMonsterByEntityId(int id)
         {
-            string sql = @"SELECT 
-                c.*,
-                mc.id,
-                mc.name,
-                mc.base_attack as BaseAttack,
-                mc.base_attack_per_level as BaseAttackPerLevel,
-                mc.max_hp as MaxHp,
-                mc.max_hp_per_level as MaxHpPerLevel
-                FROM `character` c
-                    INNER JOIN monster_class mc ON mc.id = c.character_class_id
-                    WHERE entity_id = @id";
+            string sql = @"
+                SELECT * FROM `character` c
+                INNER JOIN monster_class mc ON mc.id = c.character_class_id
+                WHERE entity_id = @id";
 
             var results = _connection.Query<Monster, MonsterClass, Monster>(
                 sql,
@@ -144,22 +113,14 @@ namespace ZoneRpg.Database
             return (results.Count() > 0) ? results.First() : null;
         }
 
+        // Hämtar alla "chaaracter classes"
         public List<CharacterClass> GetClasses()
         {
-            string sql = @"SELECT 
-                
-                c.id,
-                c.name,
-                c.base_attack as BaseAttack,
-                c.base_attack_per_level as BaseAttackPerLevel,
-                c.max_hp as MaxHp,
-                c.max_hp_per_level as MaxHpPerLevel
-             FROM character_class c";
-            List<CharacterClass> characterClasses = _connection.Query<CharacterClass>(sql).ToList();
-            return characterClasses;
+            string sql = @"SELECT * FROM character_class c";
+            return _connection.Query<CharacterClass>(sql).ToList();
         }
 
-
+        // Uppdaterar en entity's position 
         public void UpdateEntityPosition(Entity entity)
         {
             string sql = "UPDATE entity SET x = @x, y = @y WHERE id = @id";
@@ -171,9 +132,7 @@ namespace ZoneRpg.Database
             });
         }
 
-        //
         // Inserts a player into the database
-        // 
         public void InsertCharacter(Character character)
         {
             character.Entity.Id = InsertEntity(character.Entity);
@@ -202,6 +161,7 @@ namespace ZoneRpg.Database
 
         }
 
+        // Lägger till en entity
         public int InsertEntity(Entity entity)
         {
             string sql = @"
@@ -219,7 +179,6 @@ namespace ZoneRpg.Database
         {
             string sql = @"
             INSERT INTO `message`( character_id , character_name , text) 
-
             VALUES( @character_id , @character_name , @text )";
 
             var parameters = new
@@ -259,38 +218,36 @@ namespace ZoneRpg.Database
                 new { zoneId, MonsterType = EntityType.Monster }
             ).First();
         }
+        
+        //Lägg till vapen i databasen
         public int InsertWeapon(Item weapon)
         {
-            //Lägg till Item i databasen
             string sql = @"
-          INSERT INTO `item`(`character_id`, `item_info_id`) VALUES (NULL, @ItemInfoId);
+                INSERT INTO `item`(`character_id`, `item_info_id`) VALUES (NULL, @ItemInfoId);
                 SELECT LAST_INSERT_ID()";
+
             var parameters = new
             {
-
                 ItemInfoId = weapon!.ItemInfo.Id
             };
 
-           
-
-         return _connection.QuerySingle<int>(sql, parameters);
+            return _connection.QuerySingle<int>(sql, parameters);
         }
 
 
         public void UpdatePlayerWeapon(Player player)
         {
 
-            string sql = @"UPDATE `character` 
-           SET
-           item_id_weapon= @Weapon 
-            WHERE id = @id
-           ";
+            string sql = @"
+                UPDATE `character` 
+                SET item_id_weapon = @Weapon 
+                WHERE id = @id";
 
             int? Weapon = null;
             if (player.Weapon != null)
             {
                 Weapon = player.Weapon.Id;
-                
+
             }
             var parameters = new
             {
@@ -300,14 +257,6 @@ namespace ZoneRpg.Database
 
             _connection.Execute(sql, parameters);
         }
-
-
-
-
-
-
-
-
 
         public void InsertMonster(Monster monster)
         {
