@@ -120,8 +120,6 @@ namespace ZoneRpg.GameLogic
         }
         public void PlayerMovmentOverOtherEntitys()
         {
-            // while (EntityType.Player == Player.Entity.EntityType)
-            // {
             foreach (var entity in Zone.Entities)
             {
                 if (entity.EntityType == EntityType.Player)
@@ -165,43 +163,8 @@ namespace ZoneRpg.GameLogic
                    
 
                 }
-                // }
 
             }
-            // {
-
-            // }
-            // foreach (var entity in Zone.Entities)
-            // {
-
-
-            //     if ((Player.GetX() - entity.X) == 1)
-            //     {
-            //         Console.WriteLine("Obstacles, change direction.");
-            //         Player.Move(ConsoleKey.LeftArrow, Zone);
-            //         _db.UpdateEntityPosition(Player.Entity);
-            //     }
-            //     else if ((Player!.GetX() - entity.X) == -1)
-            //     {
-            //         Console.WriteLine("Obstacles, change direction.");
-            //         Player.Move(ConsoleKey.RightArrow, Zone);
-            //         _db.UpdateEntityPosition(Player.Entity);
-            //     }
-            //     else if ((Player!.GetY() - entity.Y) == 1)
-            //     {
-            //         Console.WriteLine("Obstacles, change direction.");
-            //         Player.Move(ConsoleKey.DownArrow, Zone);
-            //         _db.UpdateEntityPosition(Player.Entity);
-            //     }
-            //     else if ((Player!.GetY() - entity.X) == -1)
-            //     {
-            //         Console.WriteLine("Obstacles, change direction.");
-            //         Player.Move(ConsoleKey.UpArrow, Zone);
-            //         _db.UpdateEntityPosition(Player.Entity);
-            //     }
-
-
-            // }
 
         }
     }
