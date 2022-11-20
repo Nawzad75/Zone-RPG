@@ -181,9 +181,9 @@ namespace ZoneRpg.Database
             //  Character 
             string sql = @"
                 INSERT INTO `character` 
-                    (name, hp, is_monster, xp, character_class_id, entity_id)
+                    (name, hp, xp, character_class_id, entity_id)
                 VALUES 
-                    (@name, @hp, @is_monster, @xp, @character_class_id, @entity_id)";
+                    (@name, @hp, @xp, @character_class_id, @entity_id)";
 
             // INSERT INTO `character` 
 
