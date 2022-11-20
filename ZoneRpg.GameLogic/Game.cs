@@ -148,15 +148,15 @@ namespace ZoneRpg.GameLogic
                         Player.Move(ConsoleKey.UpArrow, Zone);
                         _db.UpdateEntityPosition(Player.Entity);
                     }
-                    if (entity.EntityType == EntityType.Monster)
+                    else if (entity.EntityType == EntityType.Monster)
                     {
                       continue;
                     }
-                    if (entity.EntityType == EntityType.Chest)
+                    else if (entity.EntityType == EntityType.Chest)
                     {
                         continue;
                     }
-                   if (entity.EntityType == EntityType.Door)
+                   else if(entity.EntityType == EntityType.Door)
                     {
                         continue;
                     }
