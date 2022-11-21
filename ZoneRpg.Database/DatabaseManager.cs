@@ -138,8 +138,8 @@ namespace ZoneRpg.Database
             return (results.Count() > 0) ? results.First() : null;
         }
 
-        // Hämtar alla "chaaracter classes"
-        public List<CharacterClass> GetClasses()
+        // Hämtar alla "character classes"
+        public List<CharacterClass> GetClasses() 
         {
             string sql = @"SELECT * FROM character_class c";
             return _connection.Query<CharacterClass>(sql).ToList();
@@ -203,14 +203,14 @@ namespace ZoneRpg.Database
         public void InsertMessage(Message message)
         {
             string sql = @"
-            INSERT INTO `message`( character_id , character_name , text) 
-            VALUES( @character_id , @character_name , @text )";
+            INSERT INTO `message`( character_id , text, datetime) 
+            VALUES( @CharacterId , @Text , @Datetime)";
 
             var parameters = new
             {
-                character_id = message.character.Id,
-                character_name = message.character.Name,
-                text = message.Text,
+                CharacterId = message.Character.Id,
+                Text = message.Text,
+                Datetime = message.DateTime
             };
 
             _connection.Execute(sql, parameters);
@@ -221,11 +221,11 @@ namespace ZoneRpg.Database
         {
             string sql = @"
                 SELECT * FROM `message` m 
-                INNER JOIN `character` c ON c.name = m.character_name";
+                INNER JOIN `character` c ON c.id = m.character_id";
 
             List<Message> messages = _connection.Query<Message, Character, Message>(sql, (message, character) =>
             {
-                message.character = character;
+                message.Character = character;
                 return message;
             }).ToList();
 

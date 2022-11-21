@@ -205,7 +205,7 @@ namespace ZoneRpg.UserInterface
             string input = cki.KeyChar.ToString().ToLower();
             if (input == "t")
             {
-                Chat();
+                CreateMessage();
             }
             
             string input1 = cki.KeyChar.ToString().ToLower();
@@ -214,25 +214,15 @@ namespace ZoneRpg.UserInterface
                 Inventory();
             }
             
-
-            
         }
-
-
-        public void Chat()
-        {
-            Console.Clear();
-            CreateMessage();
-        }
-
         // Create a message
         public void CreateMessage()
         {
             Console.Clear();
             Console.WriteLine("Write a message");
-            string message = Console.ReadLine()!;
-            Message message1 = new Message(message, character: _game.GetPlayer());
-            _db.InsertMessage(message1);
+            string input = Console.ReadLine()!;
+            Message message = new Message(input, character: _game.GetPlayer());
+            _db.InsertMessage(message);
         }
 
         public void Inventory()

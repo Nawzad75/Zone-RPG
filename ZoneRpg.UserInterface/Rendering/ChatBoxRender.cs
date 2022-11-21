@@ -19,11 +19,19 @@ namespace ZoneRpg.UserInterface
         {
            
             int y = 0;
-
-            foreach (var message in _chatBox.Messages.TakeLast(12))
+            List<Message> messages = _chatBox.Messages.TakeLast(12).ToList();
+            messages.AddRange(_chatBox.LootMessages);
+            messages.Sort((a,b)=> (int)(a.DateTime.Ticks - b.DateTime.Ticks));
+            foreach (var message in messages)
             {
                 Console.SetCursorPosition(60, y++);
-                Console.Write( message.character.Name + " " + message.Text);
+                Console.Write( message.Character.Name + " : ");
+                Console.ForegroundColor = message.Color;
+                Console.Write(message.Text);
+                Console.ResetColor();
+                
+                
+
             }
 
         }

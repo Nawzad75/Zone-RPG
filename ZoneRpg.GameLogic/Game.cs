@@ -101,9 +101,12 @@ namespace ZoneRpg.GameLogic
             if (chestEntity.X == playerEntity.X && chestEntity.Y == playerEntity.Y)
             {
                 //öppnar kistan och får ett svärd från databasen
-                Console.WriteLine("Du har öppnat en kista och fått ett svärd!");
+
+
+
                 List<ItemInfo> allItemInfos = _db.GetAllItemInfos();
                 ItemInfo? sword = allItemInfos.Find(item => item.Name == "Sword");
+
 
                 if (sword != null)
                 {
@@ -112,7 +115,8 @@ namespace ZoneRpg.GameLogic
                     Player.Weapon = item;
                     Player.Weapon.Id = _db.InsertWeapon(Player.Weapon);
                     _db.UpdatePlayerWeapon(Player);
-
+                    Message message = new Message("Du har hittat " + item.ItemInfo.Name, Player, ConsoleColor.Yellow);
+                    ChatBox.LootMessages.Add(message);
                 }
 
             }
