@@ -38,15 +38,15 @@ namespace ZoneRpg.UserInterface
             Console.Clear();
 
             // Rektangeln som visar spelarens stats
-            _playerRenderer.SetRect(2, _game.Zone.Height + 3, 30, 3);
+            _playerRenderer.SetRect(0, _game.Zone.Height + 5, 30, 3);
             _playerRenderer.SetAccentColor(ConsoleColor.Cyan);
 
             // Rektangeln som visar monstrets stats
-            _monsterRenderer.SetRect(34, _game.Zone.Height + 3, 30, 3);
+            _monsterRenderer.SetRect(33, _game.Zone.Height + 5, 30, 3);
             _monsterRenderer.SetAccentColor(ConsoleColor.Red);
 
             // Rektangel som visar battle-meddelanden
-            _battleRenderer.SetRect(2, _game.Zone.Height + 8, 62, 2);
+            _battleRenderer.SetRect(1, _game.Zone.Height + 10, 62, 2);
         }
 
         // Run!
@@ -160,7 +160,7 @@ namespace ZoneRpg.UserInterface
         {
             Console.Clear();
             List<Player> players = _db.GetPlayers();
-            Console.WriteLine("players.Count:" + players.Count);
+            Console.WriteLine("players.Count: " + players.Count);
             
             // options kommer se ut t.ex. så här: ["Namn  (id: 1)", "namn  (id: 2), "namn  (id: 3)"]
             // "Select" kör lamda-funktionen för varje element i listan.
@@ -169,13 +169,7 @@ namespace ZoneRpg.UserInterface
             return players[index];
         }
 
-
- 
-
-     
-
-        // Reads user input and takes action.
-        // @param zone - We need a zone to restrict the player movement
+        // Läster user input (och skickar till game)
         public void ReadInput()
         {
 

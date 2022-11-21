@@ -12,9 +12,7 @@ namespace ZoneRpg.Loot
             _db = db;
         }
 
-        //
-        // Generate loot
-        //
+        // Generera loot
         public List<Item> GenerateLoot(int rarity = 0)
         {
             Random random = new Random();

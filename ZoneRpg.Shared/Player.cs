@@ -22,9 +22,8 @@ namespace ZoneRpg.Shared
             Hp = MaxHp;
         }
 
-        //
-        // Nedan implementerar vi "IFighter" interfacet.
-        // --------------------------------------------
+        // Implementation av "IFighter" interface.
+        // ---------------------------------------
         public int GetAttack()
         {
             if (Weapon == null) 

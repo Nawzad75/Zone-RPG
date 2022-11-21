@@ -24,7 +24,6 @@ namespace ZoneRpg.GameLogic
             _lootGenerator = new LootGenerator(_db);
         }
 
-
         public void Update()
         {
             Zone.Entities = _db.GetEntities();
@@ -32,6 +31,7 @@ namespace ZoneRpg.GameLogic
             OpenChest();
             BattleManager.LookForMonsters(Zone.Entities);
 
+            // Propagera "BattleState" --> "GameState"
             if (BattleManager.State == BattleState.InBattle)
             {
                 SetState(GameState.Battle);
@@ -40,6 +40,7 @@ namespace ZoneRpg.GameLogic
             {
                 SetState(GameState.Dead);
             }
+
             if (BattleManager.State == BattleState.Won)
             {
                 var loot = _lootGenerator.GenerateLoot();

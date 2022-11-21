@@ -29,9 +29,7 @@ namespace ZoneRpg.GameLogic
             return _messages;
         }
 
-        //
-        //
-        //
+        // Kör en "tur" frammåt i striden. (Spelaren attackerar och monstret attackerar 1 gång)
         public void ProgressBattle()
         {
             if (Player == null || Monster == null)
@@ -92,9 +90,7 @@ namespace ZoneRpg.GameLogic
 
         }
 
-        //
-        // Checks if a monster is next to the player
-        //
+        // Kontrollerar om en entity är en monster, och om den är nära spelaren
         private bool WhereNearbyMonster(Entity entity)
         {            // Om entityn inte är ett monster:
             if (entity.EntityType != EntityType.Monster)
