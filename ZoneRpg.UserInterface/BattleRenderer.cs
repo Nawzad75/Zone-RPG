@@ -30,6 +30,9 @@ namespace ZoneRpg.UserInterface
                 Console.SetCursorPosition(_x + 2, _y + 2);
                 Console.ForegroundColor = ConsoleColor.Green;
                 Console.Write("You won!");
+                Console.ForegroundColor = ConsoleColor.White;
+                Console.Write("\t\t\t Press any key to continue...");
+                Console.ReadKey();
                 return;
             }
 

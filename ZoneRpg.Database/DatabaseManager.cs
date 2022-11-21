@@ -174,7 +174,7 @@ namespace ZoneRpg.Database
                 INSERT INTO `character` 
                     (name, hp, xp, character_class_id, entity_id)
                 VALUES 
-                    (@name, @hp, @xp, @character_class_id, @EntityId)";
+                    (@Name, @Hp, @Xp, @CharacterClassId, @EntityId)";
 
             _connection.Execute(sql, character);
 
@@ -197,8 +197,8 @@ namespace ZoneRpg.Database
         public void InsertMessage(Message message)
         {
             string sql = @"
-            INSERT INTO `message`( character_id , text, datetime) 
-            VALUES( @CharacterId , @Text , @Datetime)";
+                INSERT INTO `message`( character_id , text, datetime) 
+                VALUES( @CharacterId , @Text , @Datetime)";
 
             var parameters = new
             {

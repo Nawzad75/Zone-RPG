@@ -111,7 +111,9 @@ namespace ZoneRpg.GameLogic
 
         internal void Reset()
         {
-            // throw new NotImplementedException();
+            State = BattleState.NotInBattle;
+            Player = null;
+            Monster = null;
         }
     }
 }

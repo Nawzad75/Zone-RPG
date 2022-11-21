@@ -18,6 +18,7 @@ namespace ZoneRpg.Shared
         public Item? Helm { get; set; }
 
         // För dapper
+        public int CharacterClassId { get { return CharacterClass.Id; } }
         public int EntityId { get { return Entity.Id; } }
         public int? weapon_id { get; set; }
         public int? helm_id { get; set; }
