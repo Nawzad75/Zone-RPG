@@ -7,5 +7,6 @@ namespace ZoneRpg.Shared
         Monster = 2,
         Chest = 3,
         Door = 4,
+        Stone = 5,
     }
 }
