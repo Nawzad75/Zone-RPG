@@ -32,7 +32,7 @@ namespace ZoneRpg.GameLogic
         // Kör en "tur" frammåt i striden. (Spelaren attackerar och monstret attackerar 1 gång)
         public void ProgressBattle()
         {
-            if (Player == null || Monster == null)
+            if (Player == null || Monster == null || State != BattleState.InBattle)
             {
                 return;
             }

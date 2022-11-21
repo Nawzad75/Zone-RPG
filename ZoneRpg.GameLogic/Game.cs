@@ -67,7 +67,7 @@ namespace ZoneRpg.GameLogic
         //
         public void SetState(GameState state)
         {
-            this.State = state;
+            State = state;
         }
 
         public void SetPlayer(Player player)
@@ -88,8 +88,9 @@ namespace ZoneRpg.GameLogic
             Player.Entity.X = Constants.StartPositionX;
             Player.Entity.Y = Constants.StartPositionY;
             Player.Hp = Player.CharacterClass.MaxHp;
+            _db.UpdateCharacterHp(Player);
             _db.UpdateEntityPosition(Player.Entity);
-            BattleManager.State = BattleState.NotInBattle;
+            BattleManager.Reset();
             SetState(GameState.Zone);
         }
 
