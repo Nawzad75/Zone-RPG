@@ -4,8 +4,8 @@ namespace ZoneRpg.Shared
     {
         public int Id { get; set; }
         public string Name { get; set; } = "<Unnamed>";
-        public int Hp { get; set; } = 100;
-        public int MaxHp { get; set; } = 100;
+        public int Hp { get; set; }
+        public int MaxHp { get; set; }
         public int Xp { get; set; }
         public int Level { get; set; }
         public int Skill { get; set; }

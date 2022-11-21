@@ -86,7 +86,7 @@ namespace ZoneRpg.UserInterface
                     break;
             }
 
-         
+
         }
 
         private void DrawZone()
@@ -130,7 +130,7 @@ namespace ZoneRpg.UserInterface
             {
                 // 1. Hämta alla klasser från databasen
                 List<CharacterClass> characterClasses = _db.GetClasses();
-             
+
                 // 2. Visa meny med alla klasser, låt spelaren välja en
                 string prompt = "Choose a class!";
                 string[] options = characterClasses.Select(CharacterToString).ToArray();
@@ -156,7 +156,7 @@ namespace ZoneRpg.UserInterface
             Console.Clear();
             List<Player> players = _db.GetPlayers();
             Console.WriteLine("players.Count: " + players.Count);
-            
+
             // options kommer se ut t.ex. så här: ["Namn  (id: 1)", "namn  (id: 2), "namn  (id: 3)"]
             // "Select" kör lamda-funktionen för varje element i listan.
             string[] options = players.Select(c => $"{c.Name}  (id: {c.Id})").ToArray();
@@ -176,10 +176,20 @@ namespace ZoneRpg.UserInterface
                     {
                         _game.MovePlayer(cki.Key);
                     }
+
+                    if (cki.Key == ConsoleKey.T)
+                    {
+                        CreateMessage();
+                    }
+
+                    if (cki.Key == ConsoleKey.I)
+                    {
+                        Inventory();
+                    }
+
                     break;
 
                 case GameState.Battle:
-
                     break;
 
                 case GameState.Dead:
@@ -190,19 +200,7 @@ namespace ZoneRpg.UserInterface
                     }
                     break;
             }
-            //Chat start.
-            string input = cki.KeyChar.ToString().ToLower();
-            if (input == "t")
-            {
-                CreateMessage();
-            }
-            
-            string input1 = cki.KeyChar.ToString().ToLower();
-            if (input1 == "i")
-            {
-                Inventory();
-            }
-            
+
         }
         // Create a message
         public void CreateMessage()
@@ -217,9 +215,10 @@ namespace ZoneRpg.UserInterface
         public void Inventory()
         {
             Console.Clear();
-            Console.WriteLine( _game.Player.Boots);
-            Console.WriteLine(_game.Player.Weapon);
-            // Console.WriteLine(_game.Player.Helmet);
+            Console.WriteLine("Weapon: " + _game.Player.Weapon);
+            Console.WriteLine("Boots : " + _game.Player.Boots);
+            Console.WriteLine("Helmet: " + _game.Player.Helm);
+            
             Console.WriteLine("Press enter to continue");
             Console.ReadLine();
         }

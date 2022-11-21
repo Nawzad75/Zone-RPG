@@ -315,8 +315,7 @@ namespace ZoneRpg.Database
             List<Monster> monsters = GetMonsters(zoneId);
             foreach (Monster monster in monsters)
             {
-                DeleteEntity(monster.Entity.Id);
-                DeleteMonster(monster.Id);
+                DeleteCharacter(monster);
             }
         }
 
@@ -361,10 +360,16 @@ namespace ZoneRpg.Database
             _connection.Execute(sql, parameters);
         }
 
-        // Removes a character from the database
+        // Removes a character (and entity!) from the database
         public void DeleteCharacter(Character? character)
         {
-            
+            if (character == null)
+            {
+                return;
+            }
+            DeleteEntity(character.Entity.Id);
+            string sql = "DELETE FROM `character` WHERE id = @id";
+            _connection.Execute(sql, new { id = character.Id });           
         }
     }
 }

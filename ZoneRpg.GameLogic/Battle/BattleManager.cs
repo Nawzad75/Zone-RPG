@@ -112,7 +112,6 @@ namespace ZoneRpg.GameLogic
         internal void Reset()
         {
             State = BattleState.NotInBattle;
-            Player = null;
             Monster = null;
         }
     }

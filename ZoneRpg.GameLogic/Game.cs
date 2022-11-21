@@ -57,9 +57,9 @@ namespace ZoneRpg.GameLogic
 
             if (BattleManager.State == BattleState.Won)
             {
+                _db.DeleteCharacter((Character)BattleManager.Monster!);
                 var loot = _lootGenerator.GenerateLoot();
                 SetState(GameState.Loot);
-                // _db.DeleteCharacter((Character)BattleManager.Monster);
                 BattleManager.Reset();
             }
         }
