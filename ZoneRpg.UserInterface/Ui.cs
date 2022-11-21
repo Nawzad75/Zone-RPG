@@ -179,14 +179,7 @@ namespace ZoneRpg.UserInterface
         }
 
 
-        public Kista CreateChest()
-        {
-            Kista kista = new Kista();
-            kista.Entity.Symbol = "K";
-            kista.Name = "Kista";
-            return kista;
-        }
-
+ 
 
      
 
