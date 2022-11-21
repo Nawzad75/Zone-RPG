@@ -74,25 +74,50 @@ namespace ZoneRpg.Database
                 SELECT * FROM `character` c
                 INNER JOIN entity e ON e.id = c.entity_id
                 INNER JOIN character_class cc ON cc.id = c.character_class_id
-                INNER JOIN item i ON i.id = c.weapon_id
-                INNER JOIN item_info ii ON ii.id = i.item_info_id
                 WHERE e.entity_type_id = @EntityTypeId";
 
-            List<Player> players = _connection.Query<Player, Entity, CharacterClass, Item, ItemInfo, Player>(
+            List<Player> players = _connection.Query<Player, Entity, CharacterClass, Player>(
                 sql,
-                (player, entity, characterClass, weapon, weaponInfo) =>
+                (player, entity, characterClass) =>
                 {
                     player.Entity = entity;
                     player.CharacterClass = characterClass;
-                    player.Weapon = weapon;
-                    player.Weapon.ItemInfo = weaponInfo;
                     return player;
                 },
                 new { @EntityTypeId = (int)EntityType.Player }
             ).ToList();
 
+            // hämta vapen, hjälm, stövlar
+            foreach (Player player in players)
+            {
+                player.Weapon = GetItem(player.weapon_id);
+                player.Boots = GetItem(player.boots_id);
+                player.Helm = GetItem(player.helm_id);
+            }
+
+
             return players;
         }
+
+        public Item? GetItem(int? itemId)
+        {
+            string sql = @"
+                SELECT * FROM item
+                INNER JOIN item_info ON item_info.id = item.item_info_id
+                WHERE item.id = @itemId";
+
+            return _connection.Query<Item, ItemInfo, Item>(
+                sql,
+                (item, itemInfo) =>
+                {
+                    item.ItemInfo = itemInfo;
+                    return item;
+                },
+                new { itemId }
+            ).FirstOrDefault();
+        }
+
+
 
         // Hämtar ett specifikt monster utifrån dess entity-id
         public Monster? GetMonsterByEntityId(int id)
@@ -218,7 +243,7 @@ namespace ZoneRpg.Database
                 new { zoneId, MonsterType = EntityType.Monster }
             ).First();
         }
-        
+
         //Lägg till vapen i databasen
         public int InsertWeapon(Item weapon)
         {
