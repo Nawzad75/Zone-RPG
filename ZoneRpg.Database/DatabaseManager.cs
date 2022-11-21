@@ -21,7 +21,7 @@ namespace ZoneRpg.Database
             // anslut till databasen
             _connection = new MySqlConnection(envVars["DB_CONNECTION_STRING"]);
 
-            // Om det blir ett mysql-fel, skrivs det inte ut i konsolen automatiskt
+            // Se till att mysql-fel skrivs ut i konsolen. 
             try
             {
                 _connection.Open();
@@ -43,9 +43,8 @@ namespace ZoneRpg.Database
         // Gets a zone from the database
         public Zone GetZone(int zoneId)
         {
-            var parameters = new { id = zoneId };
-            string sql = "SELECT * FROM zone WHERE id = @id";
-            return _connection.QuerySingle<Zone>(sql, parameters);
+            string sql = "SELECT * FROM zone WHERE id = @zoneId";
+            return _connection.QuerySingle<Zone>(sql, new { zoneId });
         }
 
         // Gets all entities from the database
@@ -90,9 +89,23 @@ namespace ZoneRpg.Database
             // hämta vapen, hjälm, stövlar
             foreach (Player player in players)
             {
-                player.Weapon = GetItem(player.weapon_id);
-                player.Boots = GetItem(player.boots_id);
-                player.Helm = GetItem(player.helm_id);
+                Console.WriteLine(player.weapon_id);
+                Item? weapon = GetItem(player.weapon_id);
+                if (weapon != null)
+                {
+                    player.Weapon = weapon;
+                }
+                Console.WriteLine("player.boots_id" + player.boots_id);
+                Item? boots = GetItem(player.boots_id);
+                if (boots != null)
+                {
+                    player.Boots = boots;
+                }
+                Item? helm = GetItem(player.helm_id);
+                if (helm != null)
+                {
+                    player.Helm = helm;
+                }
             }
 
 
@@ -101,12 +114,18 @@ namespace ZoneRpg.Database
 
         public Item? GetItem(int? itemId)
         {
+            if (itemId == null)
+            {
+                return null;
+            }
             string sql = @"
                 SELECT * FROM item
                 INNER JOIN item_info ON item_info.id = item.item_info_id
                 WHERE item.id = @itemId";
 
-            return _connection.Query<Item, ItemInfo, Item>(
+
+            
+            IEnumerable<Item>? results = _connection.Query<Item, ItemInfo, Item>(
                 sql,
                 (item, itemInfo) =>
                 {
@@ -114,7 +133,11 @@ namespace ZoneRpg.Database
                     return item;
                 },
                 new { itemId }
-            ).FirstOrDefault();
+            );
+
+            // Vi vill ha null om det inte finns något item med det id:t
+            // därför använder vi "FirstOrDefault".
+            return results.FirstOrDefault();
         }
 
 
@@ -138,7 +161,7 @@ namespace ZoneRpg.Database
             return (results.Count() > 0) ? results.First() : null;
         }
 
-        // Hämtar alla "chaaracter classes"
+        // Hämtar alla "character classes"
         public List<CharacterClass> GetClasses()
         {
             string sql = @"SELECT * FROM character_class c";
@@ -167,22 +190,9 @@ namespace ZoneRpg.Database
                 INSERT INTO `character` 
                     (name, hp, xp, character_class_id, entity_id)
                 VALUES 
-                    (@name, @hp, @xp, @character_class_id, @entity_id)";
+                    (@name, @hp, @xp, @character_class_id, @EntityId)";
 
-            // INSERT INTO `character` 
-
-            var parameters = new
-            {
-                name = character.Name,
-                hp = character.Hp,
-                max_hp = character.MaxHp,
-                xp = character.Xp,
-                skill = character.Skill,
-                character_class_id = character.CharacterClass.Id,
-                entity_id = character.Entity.Id
-            };
-
-            _connection.Execute(sql, parameters);
+            _connection.Execute(sql, character);
 
         }
 
@@ -193,7 +203,7 @@ namespace ZoneRpg.Database
                 INSERT INTO entity 
                     (entity_type_id, symbol, zone_id, x,  y)
                 VALUES  
-                    (@EntityTypeId, @Symbol, @ZoneId, @X, @Y );
+                    (@EntityTypeId, @Symbol, @ZoneId, @X, @Y);
                 SELECT LAST_INSERT_ID()";
 
             // (@X, @Y, @Symbol, @ZoneId, @EntityTypeId);
@@ -203,8 +213,8 @@ namespace ZoneRpg.Database
         public void InsertMessage(Message message)
         {
             string sql = @"
-            INSERT INTO `message`( character_id , character_name , text) 
-            VALUES( @character_id , @character_name , @text )";
+                INSERT INTO `message`( character_id  , text) 
+                VALUES( @character_id , @text )";
 
             var parameters = new
             {
@@ -221,7 +231,7 @@ namespace ZoneRpg.Database
         {
             string sql = @"
                 SELECT * FROM `message` m 
-                INNER JOIN `character` c ON c.name = m.character_name";
+                INNER JOIN `character` c ON c.id = m.character_id";
 
             List<Message> messages = _connection.Query<Message, Character, Message>(sql, (message, character) =>
             {

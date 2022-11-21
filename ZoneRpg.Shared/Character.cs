@@ -19,9 +19,9 @@ namespace ZoneRpg.Shared
 
         // För dapper
         public int EntityId { get { return Entity.Id; } }
-        public int weapon_id { get; set; }
-        public int helm_id { get; set; }
-        public int boots_id { get; set; }
+        public int? weapon_id { get; set; }
+        public int? helm_id { get; set; }
+        public int? boots_id { get; set; }
 
 
 

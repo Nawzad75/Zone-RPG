@@ -1,8 +1,6 @@
 namespace ZoneRpg.Shared
 {
-    //
-    // Menu which is displayed when the game starts
-    //
+    // Start-meny alternativ
     public enum StartMenu
     {
         Start, 
@@ -10,9 +8,7 @@ namespace ZoneRpg.Shared
         Exit
     }
 
-    //
-    // Used when the user gets to pick to create a new character or load an existing one
-    //
+    // Alternativ för menyn där man skall skapa eller ladda spelare
     public enum CreateChooseMenu
     {
         Create,

@@ -2,9 +2,7 @@ namespace ZoneRpg.UserInterface
 {
     public class ConsoleUtils
     {
-        //
-        // 
-        //
+        //  Ritar en ascii-box
         public static void DrawBox(int x, int y, int width, int height)
         {
             
