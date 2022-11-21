@@ -172,6 +172,7 @@ namespace ZoneRpg.UserInterface
         {
             Console.Clear();
             List<Player> players = _db.GetPlayers();
+            Console.WriteLine("players.Count:" + players.Count);
             string[] options = players.Select(c => $"{c.Name}  (id: {c.Id})").ToArray();
             int index = new Menu("Choose a character:", options).Run();
             return players[index];

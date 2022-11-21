@@ -12,21 +12,26 @@ namespace ZoneRpg.Shared
         public CharacterClass CharacterClass { get; set; } = new CharacterClass();
         public Entity Entity { get; set; } = new Entity();
 
-        // För dapper
-        public int EntityId { get { return Entity.Id; } }
-       
-
         // Items
         public Item? Weapon { get; set; }
         public Item? Boots { get; set; }
         public Item? Helm { get; set; }
 
-        public Character(){}
+        // För dapper
+        public int EntityId { get { return Entity.Id; } }
+        public int weapon_id { get; set; }
+        public int helm_id { get; set; }
+        public int boots_id { get; set; }
+
+
+
+
+        public Character() { }
         public Character(string name)
         {
             Name = name;
         }
-        
+
 
 
         //funktion för att levela upp spelaren.
@@ -52,24 +57,36 @@ namespace ZoneRpg.Shared
               PlayerAddXp(monster.Loot);
           } */
 
-        public void Move(ConsoleKey key, Zone zone)
+        public void Move(ConsoleKey key, Zone zone, Collisions collisions)
         {
             switch (key)
             {
                 case ConsoleKey.UpArrow:
-                    MoveUp(1);
+                    if (collisions.Up == false)
+                    {
+                        MoveUp(1);
+                    }
                     break;
 
                 case ConsoleKey.DownArrow:
-                    MoveDown(zone.Height);
+                    if (collisions.Down == false)
+                    {
+                        MoveDown(zone.Height);
+                    }
                     break;
 
                 case ConsoleKey.LeftArrow:
-                    MoveLeft(1);
+                    if (collisions.Left == false)
+                    {
+                        MoveLeft(1);
+                    }
                     break;
 
                 case ConsoleKey.RightArrow:
-                    MoveRight(zone.Width);
+                    if (collisions.Right == false)
+                    {
+                        MoveRight(zone.Width);
+                    }
                     break;
             }
         }
