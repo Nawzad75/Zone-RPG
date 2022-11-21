@@ -12,7 +12,7 @@ namespace ZoneRpg.GameLogic
         public GameState State { get; private set; } = GameState.MainMenu;
         public BattleManager BattleManager { get; set; }
         private LootGenerator _lootGenerator;
-        public Player Player { get; set; } = new Player();
+        public Player Player { get; private set; } = new Player();
         DatabaseManager _db;
         public ChatBox ChatBox { get; set; } = new ChatBox("ZoneRpg");
 
@@ -57,11 +57,16 @@ namespace ZoneRpg.GameLogic
             this.State = state;
         }
 
+        public void SetPlayer(Player player)
+        {
+            Player = player;
+            BattleManager.Player = Player;
+        }
+
+        // Flyttar en spelare
         public void MovePlayer(ConsoleKey key)
         {
-            Collisions collisions = CheckCollisions();
-
-            Player.Move(key, Zone, collisions);
+            Player.Move(key, Zone, CheckCollisions());
             _db.UpdateEntityPosition(Player.Entity);
         }
 
@@ -74,16 +79,7 @@ namespace ZoneRpg.GameLogic
             SetState(GameState.Zone);
         }
 
-        public void SetPlayer(Player player)
-        {
-            Player = player;
-            BattleManager.Player = Player;
-        }
 
-        public Player GetPlayer()
-        {
-            return Player;
-        }
 
         public Entity GetPlayerEntity()
         {

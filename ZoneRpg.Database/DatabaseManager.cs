@@ -28,7 +28,7 @@ namespace ZoneRpg.Database
             }
             catch (Exception e)
             {
-                Console.WriteLine(e);
+                Debug.WriteLine(e);
             }
 
         }

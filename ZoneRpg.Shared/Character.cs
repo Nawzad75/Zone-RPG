@@ -51,39 +51,36 @@ namespace ZoneRpg.Shared
             }
         }
 
-        //När vi dödar en monster så ska vi få xp och levela upp. Samt få loot.
-        /*   public void PlayerKillMonster(Monster monster)
-          {
-              PlayerAddXp(monster.Loot);
-          } */
-
+        // Flyttar en spelare beroende på knapptryck
+        // @param zone - Tar emot en zone för att kunna kolla om spelaren kolliderar med väggar
+        // @param collsions - Tar emot ett "collisions" objekt för att kunna kolla om spelaren kolliderar med andra entiteter
         public void Move(ConsoleKey key, Zone zone, Collisions collisions)
         {
             switch (key)
             {
                 case ConsoleKey.UpArrow:
-                    if (collisions.Up == false)
+                    if (!collisions.Up)
                     {
                         MoveUp(1);
                     }
                     break;
 
                 case ConsoleKey.DownArrow:
-                    if (collisions.Down == false)
+                    if (!collisions.Down)
                     {
                         MoveDown(zone.Height);
                     }
                     break;
 
                 case ConsoleKey.LeftArrow:
-                    if (collisions.Left == false)
+                    if (!collisions.Left)
                     {
                         MoveLeft(1);
                     }
                     break;
 
                 case ConsoleKey.RightArrow:
-                    if (collisions.Right == false)
+                    if (!collisions.Right)
                     {
                         MoveRight(zone.Width);
                     }
