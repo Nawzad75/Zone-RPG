@@ -102,8 +102,6 @@ namespace ZoneRpg.UserInterface
             _chatBoxRenderer.Draw();
         }
 
-
-
         // Let the player choose a character or create a new one
         private Player CreateOrChoosePlayer()
         {
@@ -135,44 +133,37 @@ namespace ZoneRpg.UserInterface
             }
             else
             {
-                // Todo: get all classes from db, and let the player choose
-
-                // --- TA BORT
-
-                //  ------
-
                 // 1. Hämta alla klasser från databasen
                 List<CharacterClass> characterClasses = _db.GetClasses();
+             
+                // 2. Visa meny med alla klasser, låt spelaren välja en
                 string prompt = "Choose a class!";
                 string[] options = characterClasses.Select(CharacterToString).ToArray();
-
-
                 int index = new Menu(prompt, options).Run();
-
                 CharacterClass selectedClass = characterClasses[index];
 
+                // 3. Skapa och returnera en ny Player med vald namn och klass:
                 Player player = new Player(name, selectedClass);
-
                 return player;
-
-                // 2. Visa meny
-                // 3. Välj klass
-
             }
 
         }
-        //Lamba funktion omgjord till en metod
-        public string CharacterToString(CharacterClass x)
+
+        // Lamba-funktion omgjord till en metod (x => x.Name)
+        private string CharacterToString(CharacterClass x)
         {
             return x.Name;
         }
 
-        // Choose player
+        // Välj en existerande player från en lista
         public Player ChoosePlayer()
         {
             Console.Clear();
             List<Player> players = _db.GetPlayers();
             Console.WriteLine("players.Count:" + players.Count);
+            
+            // options kommer se ut t.ex. så här: ["Namn  (id: 1)", "namn  (id: 2), "namn  (id: 3)"]
+            // "Select" kör lamda-funktionen för varje element i listan.
             string[] options = players.Select(c => $"{c.Name}  (id: {c.Id})").ToArray();
             int index = new Menu("Choose a character:", options).Run();
             return players[index];
