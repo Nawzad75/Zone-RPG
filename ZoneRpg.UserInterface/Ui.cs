@@ -223,6 +223,15 @@ namespace ZoneRpg.UserInterface
             {
                 Chat();
             }
+            
+            string input1 = cki.KeyChar.ToString().ToLower();
+            if (input1 == "i")
+            {
+                Inventory();
+            }
+            
+
+            
         }
 
 
@@ -240,6 +249,16 @@ namespace ZoneRpg.UserInterface
             string message = Console.ReadLine()!;
             Message message1 = new Message(message, character: _game.GetPlayer());
             _db.InsertMessage(message1);
+        }
+
+        public void Inventory()
+        {
+            Console.Clear();
+            Console.WriteLine( _game.Player.Boots);
+            Console.WriteLine(_game.Player.Weapon);
+            // Console.WriteLine(_game.Player.Helmet);
+            Console.WriteLine("Press enter to continue");
+            Console.ReadLine();
         }
     }
 }

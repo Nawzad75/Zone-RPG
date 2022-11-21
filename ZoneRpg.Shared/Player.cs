@@ -27,9 +27,12 @@ namespace ZoneRpg.Shared
         // --------------------------------------------
         public int GetAttack()
         {
-            if( Weapon == null) {
+            if (Weapon == null) 
+            {
                 return CharacterClass.BaseAttack;
-            } else {
+            } 
+            else 
+            {
                 return CharacterClass.BaseAttack + Weapon.ItemInfo.Attack;
             }
         }
