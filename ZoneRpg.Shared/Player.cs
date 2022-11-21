@@ -11,7 +11,7 @@ namespace ZoneRpg.Shared
             CharacterClass = characterClass;
             Entity.X = Constants.StartPositionX;
             Entity.Y = Constants.StartPositionY;
-            Entity.Symbol = name.Substring(0, 2);
+            Entity.Symbol = name.Substring(0, 1).ToUpper();
             Entity.EntityType = EntityType.Player;            
         }
 
