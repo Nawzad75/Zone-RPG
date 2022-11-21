@@ -47,7 +47,6 @@ namespace ZoneRpg.GameLogic
             {
                 AddMessage($"{Monster.Name} has died!");
                 State = BattleState.Won;
-                Monster = null;
                 return;
             }
 
@@ -71,7 +70,7 @@ namespace ZoneRpg.GameLogic
             // Om vi redan är i en fight, så behöver vi inte leta efter nya fiender
             if (Player == null || State != BattleState.NotInBattle)
             {
-                return ;
+                return;
             }
 
             // Filtera listan med entities så att vi bara får med de som är monster, och som är nära spelaren
@@ -84,7 +83,7 @@ namespace ZoneRpg.GameLogic
                 {
                     Monster = monster;
                     State = BattleState.InBattle;
-                    return ;
+                    return;
                 }
             }
 
@@ -110,8 +109,10 @@ namespace ZoneRpg.GameLogic
             return true;
         }
 
-
-
+        internal void Reset()
+        {
+            // throw new NotImplementedException();
+        }
     }
 }
 

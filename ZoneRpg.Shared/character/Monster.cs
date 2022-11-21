@@ -21,7 +21,7 @@ namespace ZoneRpg.Shared
 
         public void SetMonster()
         {
-            this.Level = Level;
+            Level = Level;
             Hp = Level * 5;
         }
 

@@ -346,14 +346,25 @@ namespace ZoneRpg.Database
             return _connection.QuerySingle<MonsterClass>(sql, new { name });
         }
 
-        public void UpdatePlayerHp(object player)
+
+        // Uppdatera karaktärens liv
+        public void UpdateCharacterHp(Character character)
         {
-            throw new NotImplementedException();
+            string sql = @"UPDATE `character` SET hp = @Hp WHERE id = @id";
+
+            var parameters = new
+            {
+                Hp = character.Hp,
+                id = character.Id
+            };
+
+            _connection.Execute(sql, parameters);
         }
 
-        public void UpdateCharacterHp(IFighter player)
+        // Removes a character from the database
+        public void DeleteCharacter(Character? character)
         {
-            throw new NotImplementedException();
+            
         }
     }
 }

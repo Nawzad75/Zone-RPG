@@ -30,25 +30,38 @@ namespace ZoneRpg.GameLogic
             ChatBox.Messages = _db.GetMessages();
             OpenChest();
             BattleManager.LookForMonsters(Zone.Entities);
+            PropagateBattleState();
 
+            BattleManager.ProgressBattle();
+            _db.UpdateCharacterHp(Player);
+            if (BattleManager.Monster != null)
+            {
+                _db.UpdateCharacterHp((Character)BattleManager.Monster);
+            }
+
+        }
+
+        private void PropagateBattleState()
+        {
             // Propagera "BattleState" --> "GameState"
             if (BattleManager.State == BattleState.InBattle)
             {
                 SetState(GameState.Battle);
             }
+
             if (BattleManager.State == BattleState.Lost)
             {
                 SetState(GameState.Dead);
+                BattleManager.Reset();
             }
 
             if (BattleManager.State == BattleState.Won)
             {
                 var loot = _lootGenerator.GenerateLoot();
                 SetState(GameState.Loot);
+                // _db.DeleteCharacter((Character)BattleManager.Monster);
+                BattleManager.Reset();
             }
-
-            BattleManager.ProgressBattle();
-
         }
 
         //
@@ -74,6 +87,7 @@ namespace ZoneRpg.GameLogic
         {
             Player.Entity.X = Constants.StartPositionX;
             Player.Entity.Y = Constants.StartPositionY;
+            Player.Hp = Player.CharacterClass.MaxHp;
             _db.UpdateEntityPosition(Player.Entity);
             BattleManager.State = BattleState.NotInBattle;
             SetState(GameState.Zone);
