@@ -64,9 +64,6 @@ namespace ZoneRpg.UserInterface
                     Render(); // Render again to show the new state before we read input
                     break;
 
-                case GameState.Dead:
-                    break;
-
                 case GameState.Zone:
                     DrawZone();
                     _playerRenderer.Draw();
@@ -75,6 +72,7 @@ namespace ZoneRpg.UserInterface
 
                 case GameState.Battle:
                     DrawZone();
+
                     // cast IRenderer to CharacterRender, so we can get/set the current Monster
                     CharacterRenderer monsterRenderer = (CharacterRenderer)_monsterRenderer;
                     if (!monsterRenderer.hasCharacter())

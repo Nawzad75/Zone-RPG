@@ -7,7 +7,6 @@ internal class Program
     static DatabaseManager db = new DatabaseManager();
     private static void Main(string[] args)
     {
-        db.DeleteMonstersInZone(1);
         while (true)
         {
             Console.WriteLine("Processing: " + DateTime.Now);
@@ -23,7 +22,7 @@ internal class Program
         List<Monster> monsters = db.GetMonsters(zoneId);
         foreach (Monster monster in monsters)
         {
-            Console.WriteLine($"Monster: {monster.Name} ({monster.Hp}/{monster.MaxHp})");
+            Console.WriteLine($"Monster: {monster.Name} ({monster.Hp}/{monster.MonsterClass.MaxHp})");
         }
 
         Random rnd = new Random();
@@ -42,7 +41,7 @@ internal class Program
 
 
             if (zoneId == 1){
-                // Ensure there is a monster at 40, 10
+                // Ser till att det finns ett monster framför dörren!
                 if (!monsters.Any(m => m.Entity.X == 40 && m.Entity.Y == 10))
                 {
                     newMonser.Entity.X = 40;
