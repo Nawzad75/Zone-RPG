@@ -1,15 +1,14 @@
-using ZoneRpg.Shared;
-
 namespace ZoneRpg.UserInterface
 {
 
-    public class StartGame
+    public class StartScreen
     {
         public void RunMainMenu()
         {
 
 
-            string prompt = @"███████  ██████  ███    ██ ███████ ██████  ██████   ██████  
+            string prompt = @"
+███████  ██████  ███    ██ ███████ ██████  ██████   ██████  
    ███  ██    ██ ████   ██ ██      ██   ██ ██   ██ ██       
   ███   ██    ██ ██ ██  ██ █████   ██████  ██████  ██   ███ 
  ███    ██    ██ ██  ██ ██ ██      ██   ██ ██      ██    ██ 

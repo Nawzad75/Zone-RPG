@@ -1,4 +1,6 @@
-namespace ZoneRpg.Shared
+using ZoneRpg.Shared;
+
+namespace ZoneRpg.Models
 {
     public class Character
     {
@@ -24,16 +26,11 @@ namespace ZoneRpg.Shared
         public int? helm_id { get; set; }
         public int? boots_id { get; set; }
 
-
-
-
         public Character() { }
         public Character(string name)
         {
             Name = name;
         }
-
-
 
         //funktion för att levela upp spelaren.
         public void PlayerLevelUp()

@@ -1,4 +1,4 @@
-﻿using ZoneRpg.Shared;
+﻿using ZoneRpg.Models;
 using ZoneRpg.Database;
 
 namespace ZoneRpg.Loot

@@ -1,6 +1,6 @@
 ﻿
 using ZoneRpg.Database;
-using ZoneRpg.Shared;
+using ZoneRpg.Models;
 
 internal class Program
 {
@@ -22,7 +22,7 @@ internal class Program
         List<Monster> monsters = db.GetMonsters(zoneId);
         foreach (Monster monster in monsters)
         {
-            Console.WriteLine($"Monster: {monster.Name} ({monster.Hp}/{monster.MonsterClass.MaxHp})");
+            Console.WriteLine($"Monster: {monster.Name} ({monster.Hp}/{monster.MonsterClass!.MaxHp})");
         }
 
         Random rnd = new Random();

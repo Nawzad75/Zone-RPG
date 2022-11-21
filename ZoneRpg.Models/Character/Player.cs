@@ -1,4 +1,6 @@
-namespace ZoneRpg.Shared
+using ZoneRpg.Shared;
+
+namespace ZoneRpg.Models
 {
     public class Player : Character, IFighter
     {
@@ -26,14 +28,11 @@ namespace ZoneRpg.Shared
         // ---------------------------------------
         public int GetAttack()
         {
-            if (Weapon == null) 
-            {
-                return CharacterClass.BaseAttack;
-            } 
-            else 
+            if (Weapon != null && Weapon.ItemInfo != null) 
             {
                 return CharacterClass.BaseAttack + Weapon.ItemInfo.Attack;
             }
+            return CharacterClass.BaseAttack;
         }
 
         public int GetDefense()

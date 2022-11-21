@@ -1,7 +1,6 @@
-﻿using System.Text;
-using Console = Colorful.Console;
-using ZoneRpg.Database;
+﻿using ZoneRpg.Database;
 using ZoneRpg.GameLogic;
+using ZoneRpg.Models;
 using ZoneRpg.Shared;
 
 namespace ZoneRpg.UserInterface
@@ -10,11 +9,11 @@ namespace ZoneRpg.UserInterface
     {
         // Ui Members
         private DatabaseManager _db;
+        private Game _game;
         private ZoneRenderer _zoneRenderer = new ZoneRenderer();
         private IRenderer _playerRenderer = new CharacterRenderer();
         private IRenderer _monsterRenderer = new CharacterRenderer();
         private IRenderer _battleRenderer;
-        private Game _game;
         private IRenderer _chatBoxRenderer;
 
         // Constructor
@@ -30,7 +29,7 @@ namespace ZoneRpg.UserInterface
         // Setup the UI
         private void Setup()
         {
-            Console.OutputEncoding = Encoding.UTF8;
+            Console.OutputEncoding = System.Text.Encoding.UTF8;
             Console.CursorVisible = false;
             Console.Clear();
 
@@ -52,7 +51,7 @@ namespace ZoneRpg.UserInterface
             switch (_game.State)
             {
                 case GameState.MainMenu:
-                    new StartGame().RunMainMenu();
+                    new StartScreen().RunMainMenu();
                     _game.SetState(GameState.GetPlayer);
                     Render(); // Render again to show the new state before we read input
                     break;
@@ -68,6 +67,11 @@ namespace ZoneRpg.UserInterface
                     DrawZone();
                     _playerRenderer.Draw();
                     _monsterRenderer.Draw();
+                    break;
+
+                case GameState.Dead:
+                    Console.Clear();
+                    Console.WriteLine("You died! Press <Enter> to respawn!");
                     break;
 
                 case GameState.Battle:
@@ -119,7 +123,8 @@ namespace ZoneRpg.UserInterface
             Console.Clear();
             Console.WriteLine("Enter Character Name");
 
-            string name = Console.ReadLine(); //här skickar vi in namnet som spelaren skriver in
+            // Här skickar vi in namnet som spelaren skriver in
+            string name = Console.ReadLine()!;
             if (string.IsNullOrEmpty(name))
             {
                 Console.WriteLine("Your entery was blank, press enter & try again");
@@ -196,12 +201,13 @@ namespace ZoneRpg.UserInterface
                     if (cki.Key == ConsoleKey.Enter)
                     {
                         Console.Clear();
+                        (_monsterRenderer as CharacterRenderer)!.SetCharacter(null);
                         _game.RespawnPlayer();
                     }
                     break;
             }
-
         }
+
         // Create a message
         public void CreateMessage()
         {
@@ -212,13 +218,13 @@ namespace ZoneRpg.UserInterface
             _db.InsertMessage(message);
         }
 
+        // Show inventory
         public void Inventory()
         {
             Console.Clear();
             Console.WriteLine("Weapon: " + _game.Player.Weapon);
             Console.WriteLine("Boots : " + _game.Player.Boots);
             Console.WriteLine("Helmet: " + _game.Player.Helm);
-            
             Console.WriteLine("Press enter to continue");
             Console.ReadLine();
         }

@@ -1,4 +1,4 @@
-namespace ZoneRpg.Shared
+namespace ZoneRpg.Models
 {
     public class Zone
     {
@@ -16,5 +16,4 @@ namespace ZoneRpg.Shared
             Name = name;
         }
     }
-
 }
