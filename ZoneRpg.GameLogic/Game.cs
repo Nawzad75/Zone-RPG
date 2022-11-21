@@ -161,7 +161,6 @@ namespace ZoneRpg.GameLogic
                         continue;
                     }
                    
-
                 }
 
             }
