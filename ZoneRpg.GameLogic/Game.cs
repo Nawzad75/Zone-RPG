@@ -124,7 +124,8 @@ namespace ZoneRpg.GameLogic
             Collisions collisions = new();
             foreach (var entity in Zone.Entities)
             {
-                if (entity.EntityType == EntityType.Player)
+                if (entity.EntityType == EntityType.Player || entity.EntityType == EntityType.Monster || entity.EntityType == EntityType.Stone)
+                
                 {
                     if ((Player.GetX() - entity.X) == 1 && (Player!.GetY() - entity.Y) == 0)
                     {
