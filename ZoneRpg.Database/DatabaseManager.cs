@@ -89,23 +89,9 @@ namespace ZoneRpg.Database
             // hämta vapen, hjälm, stövlar
             foreach (Player player in players)
             {
-                Console.WriteLine(player.weapon_id);
-                Item? weapon = GetItem(player.weapon_id);
-                if (weapon != null)
-                {
-                    player.Weapon = weapon;
-                }
-                Console.WriteLine("player.boots_id" + player.boots_id);
-                Item? boots = GetItem(player.boots_id);
-                if (boots != null)
-                {
-                    player.Boots = boots;
-                }
-                Item? helm = GetItem(player.helm_id);
-                if (helm != null)
-                {
-                    player.Helm = helm;
-                }
+                player.Weapon = GetItem(player.weapon_id);
+                player.Boots = GetItem(player.boots_id);
+                player.Helm = GetItem(player.helm_id);
             }
 
 
@@ -123,8 +109,6 @@ namespace ZoneRpg.Database
                 INNER JOIN item_info ON item_info.id = item.item_info_id
                 WHERE item.id = @itemId";
 
-
-            
             IEnumerable<Item>? results = _connection.Query<Item, ItemInfo, Item>(
                 sql,
                 (item, itemInfo) =>
