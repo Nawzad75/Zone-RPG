@@ -1,11 +1,8 @@
 ﻿using System.Text;
-using System.Drawing;
-using Colorful;
 using Console = Colorful.Console;
 using ZoneRpg.Database;
 using ZoneRpg.GameLogic;
 using ZoneRpg.Shared;
-using System.Collections.Concurrent;
 
 namespace ZoneRpg.UserInterface
 {
@@ -62,7 +59,7 @@ namespace ZoneRpg.UserInterface
 
                 case GameState.GetPlayer:
                     _game.SetPlayer(CreateOrChoosePlayer());
-                    ((CharacterRenderer)_playerRenderer).SetCharacter(_game.GetPlayer());
+                    ((CharacterRenderer)_playerRenderer).SetCharacter(_game.Player);
                     _game.SetState(GameState.Zone);
                     Render(); // Render again to show the new state before we read input
                     break;
@@ -215,7 +212,7 @@ namespace ZoneRpg.UserInterface
             Console.Clear();
             Console.WriteLine("Write a message");
             string input = Console.ReadLine()!;
-            Message message = new Message(input, character: _game.GetPlayer());
+            Message message = new Message(input, character: _game.Player);
             _db.InsertMessage(message);
         }
 
