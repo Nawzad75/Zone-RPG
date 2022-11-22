@@ -34,7 +34,7 @@ namespace ZoneRpg.GameLogic
             ChatBox.Messages = _db.GetAllMessages();
             OpenChest();
             BattleManager.LookForMonsters(Zone.Entities);
-            BattleManager.ProgressBattle(); 
+            BattleManager.ProgressBattle();
             PropagateBattleState();
             _db.UpdateCharacterHp(Player);
             if (BattleManager.Monster != null)
@@ -134,14 +134,26 @@ namespace ZoneRpg.GameLogic
             Collisions collisions = new();
             foreach (var entity in Zone.Entities)
             {
-                if (entity.EntityType == EntityType.Player
-                 || entity.EntityType == EntityType.Monster
-                 || entity.EntityType == EntityType.Stone)
+                if (  entity.EntityType == EntityType.Player 
+                   || entity.EntityType == EntityType.Monster 
+                   || entity.EntityType == EntityType.Stone)
                 {
-                    collisions.Left = (Player.GetX() - entity.X) == 1 && (Player!.GetY() - entity.Y) == 0;
-                    collisions.Right = (Player!.GetX() - entity.X) == -1 && (Player!.GetY() - entity.Y) == 0;
-                    collisions.Up = (Player!.GetY() - entity.Y) == 1 && (Player!.GetX() - entity.X) == 0;
-                    collisions.Down = (Player!.GetY() - entity.Y) == -1 && (Player!.GetX() - entity.X) == 0;
+                    if ((Player.GetX() - entity.X) == 1 && (Player!.GetY() - entity.Y) == 0)
+                    {
+                        collisions.Left = true;
+                    }
+                    if ((Player!.GetX() - entity.X) == -1 && (Player!.GetY() - entity.Y) == 0)
+                    {
+                        collisions.Right = true;
+                    }
+                    if ((Player!.GetY() - entity.Y) == 1 && (Player!.GetX() - entity.X) == 0)
+                    {
+                        collisions.Up = true;
+                    }
+                    if ((Player!.GetY() - entity.Y) == -1 && (Player!.GetX() - entity.X) == 0)
+                    {
+                        collisions.Down = true;
+                    }
                 }
             }
             return collisions;
