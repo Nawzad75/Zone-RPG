@@ -39,14 +39,7 @@ namespace ZoneRpg.Database
         public List<ItemInfo> GetAllItemInfos()
         {
             string sql = "SELECT * FROM item_info";
-            var results = _connection.Query<ItemInfo>(sql).ToList();
-
-            foreach (var item in results)
-            {
-                Console.WriteLine(item);
-            }
-
-            return results;
+            return _connection.Query<ItemInfo>(sql).ToList();
         }
 
         // Hämtar en zon från databasen
@@ -250,10 +243,6 @@ namespace ZoneRpg.Database
         // Uppdatera en spelare's vapen
         public void UpdatePlayerEquipment(Player player)
         {
-            Console.WriteLine("Weapon id: " + player.Weapon?.Id);
-            Console.WriteLine("Helm id: " + player.Helm?.Id);
-            Console.WriteLine("Boots id: " + player.Boots?.Id);
-
             string sql = @"
                 UPDATE `character` SET 
                     weapon_id = @WeaponId, 
