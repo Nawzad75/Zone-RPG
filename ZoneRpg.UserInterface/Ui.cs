@@ -80,14 +80,6 @@ namespace ZoneRpg.UserInterface
                     Console.WriteLine("You died! Press <Enter> to respawn!");
                     break;
 
-                case GameState.Loot:
-                    Console.Clear();
-                    Console.WriteLine("You found loot!");
-                    string[] menuOptions = _game.CurrentLoot.Select(x => x.ItemInfo!.Name).ToArray();
-                    menuOptions.Append("Leave");
-                    new Menu("Choose to equip loot", menuOptions);
-                    break;
-
                 case GameState.Battle:
                     DrawZone();
 
@@ -104,6 +96,34 @@ namespace ZoneRpg.UserInterface
                     break;
             }
 
+        }
+
+        //
+        private void EquipLootUi()
+        {
+            bool isDoneLooting = false;
+            string prompt = "You have found loot! Choose to equip:";
+            while (!isDoneLooting)
+            {
+
+                string[] menuOptions = _game.CurrentLoot.Select(x => x.ItemInfo.Name).ToArray();
+                menuOptions = menuOptions.Append("Done").ToArray();
+                int selected = new Menu(prompt, menuOptions).Run();
+
+                if (selected == menuOptions.Length - 1)
+                {
+                    isDoneLooting = true;
+                }
+                else
+                {
+                    Item item = _game.CurrentLoot[selected];
+                    item.Id = _db.InsertItem(item);
+                    _game.Player.EquipItem(item);
+                    _db.UpdatePlayerEquipment(_game.Player);
+                    prompt = "You have equipped " + item.ItemInfo.Name + ".";
+                    _game.CurrentLoot.RemoveAt(selected);
+                }
+            }
         }
 
         private void DrawZone()
@@ -205,22 +225,18 @@ namespace ZoneRpg.UserInterface
                     {
                         Inventory();
                     }
-                     
-                     if (cki.Key == ConsoleKey.Q)
-                     {
+
+                    if (cki.Key == ConsoleKey.Q)
+                    {
                         Environment.Exit(0);
-                     }
+                    }
 
                     break;
 
                 case GameState.Loot:
-                    if (cki.Key == ConsoleKey.Enter)
-                    {
-                        Console.Clear();
-                        _game.SetState(GameState.Zone);
-                    }
+                    EquipLootUi();
+                    _game.SetState(GameState.Zone);
                     break;
-
 
                 case GameState.Battle:
                     break;

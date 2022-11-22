@@ -9,7 +9,7 @@ namespace ZoneRpg.Main
         private static void Main(string[] args)
         {
             DatabaseManager db = new DatabaseManager();
-            
+                        
             Game game = new Game(db);
 
             Ui ui = new Ui(db, game);
