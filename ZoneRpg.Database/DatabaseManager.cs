@@ -101,6 +101,7 @@ namespace ZoneRpg.Database
             return players;
         }
 
+        // Hämta ett item från databasen
         public Item? GetItem(int? itemId)
         {
             if (itemId == null)
@@ -122,8 +123,7 @@ namespace ZoneRpg.Database
                 new { itemId }
             );
 
-            // Vi vill ha null om det inte finns något item med det id:t
-            // därför använder vi "FirstOrDefault".
+            // Vi VILL ha null om item inte finns, därför använder vi "FirstOrDefault".
             return results.FirstOrDefault();
         }
 
@@ -151,30 +151,25 @@ namespace ZoneRpg.Database
         }
 
         // Hämtar alla "character classes"
-        public List<CharacterClass> GetClasses()
+        public List<CharacterClass> GetAllCharacterClasses()
         {
-            string sql = @"SELECT * FROM character_class c";
+            string sql = @"SELECT * FROM character_class";
             return _connection.Query<CharacterClass>(sql).ToList();
         }
 
         // Uppdaterar en entity's position 
         public void UpdateEntityPosition(Entity entity)
         {
-            string sql = "UPDATE entity SET x = @x, y = @y WHERE id = @id";
-            _connection.Execute(sql, new
-            {
-                x = entity.X,
-                y = entity.Y,
-                id = entity.Id
-            });
+            string sql = "UPDATE entity SET x = @X, y = @Y WHERE id = @Id";
+            _connection.Execute(sql, entity);
         }
 
         // För in en spelare i databasen
         public void InsertCharacter(Character character)
         {
+            // Skapa entity för spelaren först. (Vi behöver entity-id)
             character.Entity.Id = InsertEntity(character.Entity);
 
-            //  Karaktär
             string sql = @"
                 INSERT INTO `character` 
                     (name, hp, xp, character_class_id, entity_id)
@@ -182,7 +177,6 @@ namespace ZoneRpg.Database
                     (@Name, @Hp, @Xp, @CharacterClassId, @EntityId)";
 
             _connection.Execute(sql, character);
-
         }
 
         // Adds a new entity
@@ -198,24 +192,18 @@ namespace ZoneRpg.Database
             return _connection.QuerySingle<int>(sql, entity);
         }
 
+        // Lägg till ett "Message" i databasen
         public void InsertMessage(Message message)
         {
             string sql = @"
                 INSERT INTO `message`( character_id , text, datetime) 
                 VALUES( @CharacterId , @Text , @Datetime)";
 
-            var parameters = new
-            {
-                CharacterId = message.Character.Id,
-                Text = message.Text,
-                Datetime = message.DateTime
-            };
-
-            _connection.Execute(sql, parameters);
+            _connection.Execute(sql, message);
         }
 
-
-        public List<Message> GetMessages()
+        // Hämta alla meddelanden
+        public List<Message> GetAllMessages()
         {
             string sql = @"
                 SELECT * FROM `message` m 
@@ -230,6 +218,7 @@ namespace ZoneRpg.Database
             return messages;
         }
 
+        // Räkna antalet monster i en zon.
         public int CountMonstersInZone(int zoneId)
         {
             string sql = @"
@@ -248,39 +237,30 @@ namespace ZoneRpg.Database
             string sql = @"
                 INSERT INTO `item`(`character_id`, `item_info_id`) VALUES (NULL, @ItemInfoId);
                 SELECT LAST_INSERT_ID()";
-                
+
             return _connection.QuerySingle<int>(sql, weapon);
         }
 
-
+        // Uppdatera en spelare's vapen
         public void UpdatePlayerWeapon(Player player)
         {
 
-            string sql = @"
-                UPDATE `character` 
-                SET weapon_id = @Weapon 
-                WHERE id = @id";
+            string sql = @"UPDATE `character` SET weapon_id = @WeaponId WHERE id = @id";
 
-            int? Weapon = null;
-            if (player.Weapon != null)
-            {
-                Weapon = player.Weapon.Id;
-
-            }
+            // Vi VILL spara null om spelaren har förlorat sitt vapen.
             var parameters = new
             {
-                Weapon,
+                WeaponId = player.Weapon?.Id,
                 id = player.Id
             };
 
             _connection.Execute(sql, parameters);
         }
 
+        // Skapa ett nytt monster + entity
         public void InsertMonster(Monster monster)
         {
             monster.Entity.Id = InsertEntity(monster.Entity);
-
-            
             string sql = @"
                 INSERT INTO `character` 
                     (name, hp, xp, character_class_id, entity_id)
@@ -290,7 +270,8 @@ namespace ZoneRpg.Database
             _connection.Execute(sql, monster);
         }
 
-        public List<Monster> GetMonsters(int zoneId)
+        // Hämta alla monster i en zon
+        public List<Monster> GetAllMonsters(int zoneId)
         {
             string sql = @"
                 SELECT * FROM `character` c
@@ -309,9 +290,10 @@ namespace ZoneRpg.Database
             ).ToList();
         }
 
+        // Ta bort alla monster i en zon
         public void DeleteMonstersInZone(int zoneId)
         {
-            List<Monster> monsters = GetMonsters(zoneId);
+            List<Monster> monsters = GetAllMonsters(zoneId);
             foreach (Monster monster in monsters)
             {
                 DeleteCharacter(monster);
@@ -366,14 +348,6 @@ namespace ZoneRpg.Database
             {
                 return;
             }
-            if (character.Entity.Id == 0)
-            {
-                Console.WriteLine("Character entity 0!!");
-                Console.ReadKey();
-                return;
-            }
-
-
             DeleteEntity(character.Entity.Id);
             string sql = "DELETE FROM `character` WHERE id = @id";
             _connection.Execute(sql, new { id = character.Id });

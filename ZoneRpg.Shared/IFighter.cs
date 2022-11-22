@@ -1,5 +1,3 @@
-using ZoneRpg.Shared;
-
 public interface IFighter
 {
     // Properties    

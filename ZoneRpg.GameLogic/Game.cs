@@ -9,12 +9,15 @@ namespace ZoneRpg.GameLogic
 
     public class Game
     {
+        DatabaseManager _db;
         public Zone Zone { get; private set; }
         public GameState State { get; private set; } = GameState.MainMenu;
-        public BattleManager BattleManager { get; set; }
-        private LootGenerator _lootGenerator;
+        public BattleManager BattleManager { get; private set; }
         public Player Player { get; private set; } = new Player();
-        DatabaseManager _db;
+        private LootGenerator _lootGenerator;
+        public List<Item> CurrentLoot = new List<Item>();
+
+        // Hanterar meddelanden om vad som händer i spelet. Chat och loot.
         public ChatBox ChatBox { get; set; } = new ChatBox("ZoneRpg");
 
         public Game(DatabaseManager db)
@@ -28,10 +31,10 @@ namespace ZoneRpg.GameLogic
         public void Update()
         {
             Zone.Entities = _db.GetEntities();
-            ChatBox.Messages = _db.GetMessages();
+            ChatBox.Messages = _db.GetAllMessages();
             OpenChest();
             BattleManager.LookForMonsters(Zone.Entities);
-            BattleManager.ProgressBattle();
+            BattleManager.ProgressBattle(); 
             PropagateBattleState();
             _db.UpdateCharacterHp(Player);
             if (BattleManager.Monster != null)
@@ -50,12 +53,12 @@ namespace ZoneRpg.GameLogic
             }
             else if (BattleManager.State == BattleState.Lost)
             {
-                SetState(GameState.Dead);                
+                SetState(GameState.Dead);
             }
             else if (BattleManager.State == BattleState.Won)
             {
                 _db.DeleteCharacter((Character)BattleManager.Monster!);
-                var loot = _lootGenerator.GenerateLoot();
+                CurrentLoot = _lootGenerator.GenerateLoot();
                 SetState(GameState.Loot);
                 BattleManager.Reset();
             }
@@ -66,6 +69,7 @@ namespace ZoneRpg.GameLogic
             State = state;
         }
 
+        // Player setter
         public void SetPlayer(Player player)
         {
             Player = player;
@@ -79,6 +83,7 @@ namespace ZoneRpg.GameLogic
             _db.UpdateEntityPosition(Player.Entity);
         }
 
+        // Respawnar en spelare, nollställer states
         public void RespawnPlayer()
         {
             Player.Entity.X = Constants.StartPositionX;
@@ -93,6 +98,7 @@ namespace ZoneRpg.GameLogic
         {
             return Player.Entity;
         }
+
         public void OpenChest()
         {
             Entity? chestEntity = Zone.Entities.Find(entity => entity.EntityType == EntityType.Chest);
@@ -105,9 +111,9 @@ namespace ZoneRpg.GameLogic
 
             if (chestEntity.X == playerEntity.X && chestEntity.Y == playerEntity.Y)
             {
+                //öppnar kistan och får ett svärd från databasen
                 List<ItemInfo> allItemInfos = _db.GetAllItemInfos();
                 ItemInfo? sword = allItemInfos.Find(item => item.Name == "Sword");
-
 
                 if (sword != null)
                 {
@@ -120,32 +126,22 @@ namespace ZoneRpg.GameLogic
                     ChatBox.LootMessages.Add(message);
                 }
             }
-
         }
+
+        // Kollar om spelaren kan kollidera med något
         public Collisions CheckCollisions()
         {
             Collisions collisions = new();
             foreach (var entity in Zone.Entities)
             {
-                if (entity.EntityType == EntityType.Player || entity.EntityType == EntityType.Monster || entity.EntityType == EntityType.Stone)
-
+                if (entity.EntityType == EntityType.Player
+                 || entity.EntityType == EntityType.Monster
+                 || entity.EntityType == EntityType.Stone)
                 {
-                    if ((Player.GetX() - entity.X) == 1 && (Player!.GetY() - entity.Y) == 0)
-                    {
-                        collisions.Left = true;
-                    }
-                    if ((Player!.GetX() - entity.X) == -1 && (Player!.GetY() - entity.Y) == 0)
-                    {
-                        collisions.Right = true;
-                    }
-                    if ((Player!.GetY() - entity.Y) == 1 && (Player!.GetX() - entity.X) == 0)
-                    {
-                        collisions.Up = true;
-                    }
-                    if ((Player!.GetY() - entity.Y) == -1 && (Player!.GetX() - entity.X) == 0)
-                    {
-                        collisions.Down = true;
-                    }
+                    collisions.Left = (Player.GetX() - entity.X) == 1 && (Player!.GetY() - entity.Y) == 0;
+                    collisions.Right = (Player!.GetX() - entity.X) == -1 && (Player!.GetY() - entity.Y) == 0;
+                    collisions.Up = (Player!.GetY() - entity.Y) == 1 && (Player!.GetX() - entity.X) == 0;
+                    collisions.Down = (Player!.GetY() - entity.Y) == -1 && (Player!.GetX() - entity.X) == 0;
                 }
             }
             return collisions;

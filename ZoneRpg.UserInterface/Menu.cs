@@ -45,7 +45,7 @@ namespace ZoneRpg.UserInterface
             {
                 DisplayOptions();
 
-                ConsoleKeyInfo keyInfo = Console.ReadKey(true);
+                ConsoleKeyInfo keyInfo = Console.ReadKey();
                 keyPressed = keyInfo.Key;
                 if (keyPressed == ConsoleKey.UpArrow)
                 {
