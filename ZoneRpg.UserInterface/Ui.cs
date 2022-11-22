@@ -43,7 +43,7 @@ namespace ZoneRpg.UserInterface
             Console.Clear();
         }
 
-        // Kör !
+        // The big render function!
         public void Render()
         {
             switch (_game.State)
@@ -57,8 +57,7 @@ namespace ZoneRpg.UserInterface
                 case GameState.GetPlayer:
                     _game.SetPlayer(CreateOrChoosePlayer());
                     ((CharacterRenderer)_playerRenderer).SetCharacter(_game.Player);
-                    _game.SetState(GameState.Zone);
-                    Render(); // Renderar igen för att visa det nya statet innan vi läser inmatning
+                    _game.SetState(GameState.ZoneTransition);
                     break;
 
                 case GameState.Zone:
@@ -66,6 +65,14 @@ namespace ZoneRpg.UserInterface
                     _playerRenderer.Draw();
                     _monsterRenderer.Draw();
                     _chatBoxRenderer.Draw();
+                    break;
+
+
+                case GameState.ZoneTransition:
+                    _playerRenderer.SetRect(0, _game.Zone.Height + 5, 30, 4);
+                    _monsterRenderer.SetRect(33, _game.Zone.Height + 5, 30, 4);
+                    _battleRenderer.SetRect(0, _game.Zone.Height + 11, 63, 2);
+                    Console.Clear();
                     break;
 
                 case GameState.Dead:
@@ -169,6 +176,13 @@ namespace ZoneRpg.UserInterface
         // Läster user input (och skickar till game)
         public void ReadInput()
         {
+            // Hoppa över input (som blockar) om vi inte är i är i ett transition-state.
+            if (_game.State == GameState.ZoneTransition)
+            {
+                _game.SetState(GameState.Zone);
+                return;
+            }
+
             ConsoleKeyInfo cki = Console.ReadKey();
             switch (_game.State)
             {
@@ -197,7 +211,7 @@ namespace ZoneRpg.UserInterface
 
                 case GameState.Loot:
                     EquipLootUi();
-                    _game.SetState(GameState.Zone);
+                    _game.SetState(GameState.ZoneTransition);
                     (_monsterRenderer as CharacterRenderer)!.SetCharacter(null);
                     break;
 

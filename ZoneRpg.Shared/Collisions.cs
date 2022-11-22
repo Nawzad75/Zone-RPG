@@ -1,6 +1,6 @@
 namespace ZoneRpg.Shared
 {
-    public class Collisions
+    public class CollisionMap
     {
         public bool Right { get; set; }
         public bool Left { get; set; }

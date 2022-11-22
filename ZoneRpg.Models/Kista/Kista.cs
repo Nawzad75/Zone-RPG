@@ -1,5 +1,8 @@
 namespace ZoneRpg.Models
 {
+
+    // Denna klass finns ännu inte i databasen (och används inte än). 
+    // Kan någon göra en git issue på detta?
     public class Kista
     {
         public int Id { get; set; }

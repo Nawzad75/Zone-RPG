@@ -6,6 +6,7 @@ namespace ZoneRpg.Shared
         CharacterCreation,
         GetPlayer,
         Zone,
+        ZoneTransition,
         Battle,
         Loot,
         Dead

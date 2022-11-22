@@ -10,11 +10,8 @@
         public int Attack { get; set; }
         public int Defense { get; set; }
 
-        // Genväg för att få ItemTypeId som en enum
+        // En liten genväg för att få ItemTypeId som ett "ItemType-enum" värde
         public ItemType ItemType { get { return (ItemType)ItemTypeId; } }
-        // Setter för att dapper inte hittar "ItemTypeId"
-        public int item_type_id { set { ItemTypeId = value; } } 
-
 
         public override string ToString()
         {

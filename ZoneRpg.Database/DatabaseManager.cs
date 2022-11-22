@@ -11,7 +11,7 @@ namespace ZoneRpg.Database
         // Databas anslutning
         MySqlConnection _connection;
 
-       
+
         // Ansluter och sparar bort anslutningen för senare användning
         public DatabaseManager()
         {
@@ -20,6 +20,7 @@ namespace ZoneRpg.Database
             IDictionary<string, string> envVars = DotEnv.Read();
 
             // Ansluter till databasen
+            Dapper.DefaultTypeMap.MatchNamesWithUnderscores = true;
             _connection = new MySqlConnection(envVars["DB_CONNECTION_STRING"]);
 
             // Kollar så att vi är anslutna till databasen
@@ -49,7 +50,7 @@ namespace ZoneRpg.Database
         }
 
         // Hämtar alla entities från databasen
-        public List<Entity> GetAllEntities(int zoneId = 1)
+        public List<Entity> GetZoneEntities(int zoneId)
         {
             string sql = @"
                 SELECT * FROM entity
@@ -87,13 +88,13 @@ namespace ZoneRpg.Database
                 new { @EntityTypeId = (int)EntityType.Player }
             ).ToList();
 
-            
+
             // Hämtar vapen, skor och hjälm från databasen
             foreach (Player player in players)
             {
-                player.Weapon = GetItem(player.weapon_id);
-                player.Boots = GetItem(player.boots_id);
-                player.Helm = GetItem(player.helm_id);
+                player.Weapon = GetItem(player.WeaponId);
+                player.Boots = GetItem(player.BootsId);
+                player.Helm = GetItem(player.HelmId);
             }
 
 
@@ -158,7 +159,12 @@ namespace ZoneRpg.Database
         // Uppdaterar en entity's position 
         public void UpdateEntityPosition(Entity entity)
         {
-            string sql = "UPDATE entity SET x = @X, y = @Y WHERE id = @Id";
+            string sql = @"
+                UPDATE entity 
+                SET zone_id = @ZoneId, 
+                    x = @X, 
+                    y = @Y 
+                WHERE id = @Id";
             _connection.Execute(sql, entity);
         }
 
@@ -304,6 +310,7 @@ namespace ZoneRpg.Database
             }
         }
 
+        // Tar bort en entity
         private void DeleteEntity(int id)
         {
             string sql = @"
@@ -313,12 +320,6 @@ namespace ZoneRpg.Database
             int numDeletedRows = _connection.QuerySingle<int>(sql, new { id });
 
             Debug.WriteLine("Deleted " + numDeletedRows + " rows");
-        }
-
-        private void DeleteMonster(int id)
-        {
-            string sql = "DELETE FROM `character` WHERE id = @id";
-            _connection.Execute(sql, new { id });
         }
 
         public MonsterClass GetMonsterClassByName(string name)
@@ -356,6 +357,12 @@ namespace ZoneRpg.Database
             string sql = "DELETE FROM `character` WHERE id = @id";
             _connection.Execute(sql, new { id = character.Id });
 
+        }
+
+        public Door GetDoorByEntity(Entity entity)
+        {
+            string sql = @"SELECT * FROM door WHERE door.entity_id = @Id";            
+            return _connection.QuerySingle<Door>(sql, entity);
         }
     }
 }

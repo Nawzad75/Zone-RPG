@@ -11,6 +11,8 @@ internal class Program
         {
             Console.WriteLine("Processing: " + DateTime.Now);
             SpawnMonstersInZone(1);
+            SpawnMonstersInZone(2,1);
+            SpawnMonstersInZone(3,10);
             Console.WriteLine("------------------------\n\n");
             Thread.Sleep(20000);
         }
@@ -19,11 +21,8 @@ internal class Program
     private static void SpawnMonstersInZone(int zoneId, int maxMonsters = 3)
     {
         List<Monster> monsters = db.GetAllMonsters(zoneId);
-        List<Entity> entites = db.GetAllEntities();
-        foreach (Monster monster in monsters)
-        {
-            Console.WriteLine($"Monster: {monster.Name} ({monster.Hp}/{monster.MonsterClass!.MaxHp})");
-        }
+        List<Entity> entites = db.GetZoneEntities(zoneId);
+        Console.WriteLine($"There are {monsters.Count} monsters in zone {zoneId}.");
 
         Random rnd = new Random();
         if (monsters.Count < maxMonsters)

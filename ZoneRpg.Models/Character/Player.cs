@@ -9,11 +9,12 @@ namespace ZoneRpg.Models
 
         public Player(string name, CharacterClass characterClass) : base(name)
         {
-            CharacterClass = characterClass;
+            // Vi använder första bokstaven i spelarens namn som symbol
+            Entity.Symbol = name.Substring(0, 1).ToUpper();
             Entity.X = Constants.StartPositionX;
             Entity.Y = Constants.StartPositionY;
-            Entity.Symbol = name.Substring(0, 1).ToUpper();
             Entity.EntityType = EntityType.Player;
+            CharacterClass = characterClass;
         }
 
         public void Respawn()

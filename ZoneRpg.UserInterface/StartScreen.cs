@@ -42,8 +42,9 @@ namespace ZoneRpg.UserInterface
 
         public void ExitGame()
         {
-            Console.WriteLine("Exit Game");
-            Console.ReadKey();
+            Console.Clear();
+            Console.WriteLine("Thanks for playing!");
+            Thread.Sleep(500);
             Environment.Exit(0);
         }
 

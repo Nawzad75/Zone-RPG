@@ -19,12 +19,14 @@ namespace ZoneRpg.Models
         public Item? Boots { get; set; }
         public Item? Helm { get; set; }
 
+        // Vi sparar item idn här tillfälligt innan vi har hämtat itemen från databasen.
+        public int? WeaponId { get; set; }
+        public int? HelmId { get; set; }
+        public int? BootsId { get; set; }
+
         // För dapper
         public int CharacterClassId { get { return CharacterClass.Id; } }
         public int EntityId { get { return Entity.Id; } }
-        public int? weapon_id { get; set; }
-        public int? helm_id { get; set; }
-        public int? boots_id { get; set; }
 
         public Character() { }
         public Character(string name)
@@ -52,7 +54,7 @@ namespace ZoneRpg.Models
         // Flyttar en spelare beroende på knapptryck
         // @param zone - Tar emot en zone för att kunna kolla om spelaren kolliderar med väggar
         // @param collsions - Tar emot ett "collisions" objekt för att kunna kolla om spelaren kolliderar med andra entiteter
-        public void Move(ConsoleKey key, Zone zone, Collisions collisions)
+        public void Move(ConsoleKey key, Zone zone, CollisionMap collisions)
         {
             switch (key)
             {

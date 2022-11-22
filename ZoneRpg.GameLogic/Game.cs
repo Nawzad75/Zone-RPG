@@ -3,30 +3,18 @@ using ZoneRpg.Loot;
 using ZoneRpg.Models;
 using ZoneRpg.Shared;
 
+
 namespace ZoneRpg.GameLogic
 {
-
-
     public class Game
     {
         DatabaseManager _db;
-        public Zone Zone { get; private set; }
+        public Zone Zone { get; private set; } = new Zone();
         public GameState State { get; private set; } = GameState.MainMenu;
         public BattleManager BattleManager { get; private set; }
         public Player Player { get; private set; } = new Player();
         private LootGenerator _lootGenerator;
         public List<Item> CurrentLoot = new List<Item>();
-
-        // Hanterar meddelanden om vad som händer i spelet. Chat och loot.
-        public ChatBox ChatBox { get; set; } = new ChatBox("ZoneRpg");
-
-        public Game(DatabaseManager db)
-        {
-            _db = db;
-            Zone = _db.GetZone(1);
-            BattleManager = new BattleManager(_db);
-            _lootGenerator = new LootGenerator(_db);
-        }
 
         // Gamestate setter. Så att ui:t kan driva spelet.
         public void SetState(GameState state)
@@ -38,15 +26,33 @@ namespace ZoneRpg.GameLogic
         public void SetPlayer(Player player)
         {
             Player = player;
-            BattleManager.Player = Player;
+            BattleManager.Player = player;
+            SetZone(player.Entity.ZoneId);
+        }
+
+        private void SetZone(int targetZoneId)
+        {
+            Zone = _db.GetZone(targetZoneId);
+            SetState(GameState.ZoneTransition);
+        }
+
+        // Hanterar meddelanden om vad som händer i spelet. Chat och loot.
+        public ChatBox ChatBox { get; set; } = new ChatBox("ZoneRpg");
+
+        public Game(DatabaseManager db)
+        {
+            _db = db;
+            BattleManager = new BattleManager(_db);
+            _lootGenerator = new LootGenerator(_db);
         }
 
         // Den stora gameloopen!
         public void Update()
         {
-            Zone.Entities = _db.GetAllEntities();
+            Zone.Entities = _db.GetZoneEntities(Player.Entity.ZoneId);
             ChatBox.Messages = _db.GetAllMessages();
             FindAndOpenChests();
+            FindAndOpenDoors();
             BattleManager.LookForMonsters(Zone.Entities);
             BattleManager.ProgressBattle();
             PropagateBattleState();
@@ -55,7 +61,6 @@ namespace ZoneRpg.GameLogic
             {
                 _db.UpdateCharacterHp((Character)BattleManager.Monster);
             }
-
         }
 
         // Här kommer "BatteState" att påverka "GameState"
@@ -71,19 +76,19 @@ namespace ZoneRpg.GameLogic
             }
             else if (BattleManager.State == BattleState.Won)
             {
-                _db.DeleteCharacter((Character)BattleManager.Monster!);
                 CurrentLoot = _lootGenerator.GenerateLoot();
                 SetState(GameState.Loot);
+                // Monstret är besegrat, ta bort det från databasen!
+                _db.DeleteCharacter((Character)BattleManager.Monster!);
                 BattleManager.Reset();
             }
         }
 
-
-
-        // Flyttar en spelare
+        // "Ber" en spelare att flytta på sig, och uppdaterar databasen med den nya positionen.
         public void MovePlayer(ConsoleKey key)
         {
-            Player.Move(key, Zone, GetCollisions());
+            CollisionMap collisions = EntityUtils.GetCollisions(Player, Zone.Entities);
+            Player.Move(key, Zone, collisions);
             _db.UpdateEntityPosition(Player.Entity);
         }
 
@@ -92,14 +97,16 @@ namespace ZoneRpg.GameLogic
         {
             Player.Entity.X = Constants.StartPositionX;
             Player.Entity.Y = Constants.StartPositionY;
+            Player.Entity.ZoneId = Constants.StartingZoneId;
             Player.Hp = Player.CharacterClass.MaxHp;
             _db.UpdateCharacterHp(Player);
             _db.UpdateEntityPosition(Player.Entity);
             BattleManager.Reset();
+            SetZone(Player.Entity.ZoneId);
             SetState(GameState.Zone);
         }
 
-        // Letar efter chests som spelaren står på och öppnar dem.
+        // Letar efter chests som spelaren står på och öppnar dem.  (Bug!, Se git issue #48)
         public void FindAndOpenChests()
         {
             Entity? chestEntity = Zone.Entities.Find(entity => entity.EntityType == EntityType.Chest);
@@ -132,35 +139,28 @@ namespace ZoneRpg.GameLogic
             }
         }
 
-        // Kollar om spelaren kan kollidera med något
-        public Collisions GetCollisions()
+        // Letar efter dörrar som spelaren står på och använder dem för att byta zon. 
+        public void FindAndOpenDoors()
         {
-            Collisions collisions = new();
-            foreach (var entity in Zone.Entities)
+            // Hitta entities av typen "Door" som finns på samma position som spelaren.
+            Entity? doorEntity = Zone.Entities.Find(e =>
+                (e.X == Player.Entity.X && e.Y == Player.Entity.Y)
+                && (e.EntityType == EntityType.Door)
+            );
+
+            if (doorEntity == null)
             {
-                if (entity.EntityType == EntityType.Player
-                   || entity.EntityType == EntityType.Monster
-                   || entity.EntityType == EntityType.Stone)
-                {
-                    if ((Player.GetX() - entity.X) == 1 && (Player!.GetY() - entity.Y) == 0)
-                    {
-                        collisions.Left = true;
-                    }
-                    if ((Player!.GetX() - entity.X) == -1 && (Player!.GetY() - entity.Y) == 0)
-                    {
-                        collisions.Right = true;
-                    }
-                    if ((Player!.GetY() - entity.Y) == 1 && (Player!.GetX() - entity.X) == 0)
-                    {
-                        collisions.Up = true;
-                    }
-                    if ((Player!.GetY() - entity.Y) == -1 && (Player!.GetX() - entity.X) == 0)
-                    {
-                        collisions.Down = true;
-                    }
-                }
+                return;
             }
-            return collisions;
+
+            Door door = _db.GetDoorByEntity(doorEntity);
+            Player.Entity.ZoneId = door.TargetZoneId;
+            Player.Entity.X = door.TargetX;
+            Player.Entity.Y = door.TargetY;
+            _db.UpdateEntityPosition(Player.Entity);
+            SetZone(door.TargetZoneId);
         }
+
+
     }
 }
