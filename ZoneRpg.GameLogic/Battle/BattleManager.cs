@@ -1,4 +1,5 @@
 ﻿using ZoneRpg.Database;
+using ZoneRpg.Models;
 using ZoneRpg.Shared;
 
 namespace ZoneRpg.GameLogic
@@ -6,7 +7,6 @@ namespace ZoneRpg.GameLogic
     public class BattleManager
     {
         public BattleState State { get; set; }
-
         public IFighter? Player { get; set; }
         public IFighter? Monster { get; set; }
         private DatabaseManager _db;
@@ -32,7 +32,7 @@ namespace ZoneRpg.GameLogic
         // Kör en "tur" frammåt i striden. (Spelaren attackerar och monstret attackerar 1 gång)
         public void ProgressBattle()
         {
-            if (Player == null || Monster == null)
+            if (Player == null || Monster == null || State != BattleState.InBattle)
             {
                 return;
             }
@@ -41,6 +41,8 @@ namespace ZoneRpg.GameLogic
             // Spelaren attackerar
             Monster.TakeDamage(Player.GetAttack());
             AddMessage("[player] attacks [monster] for [player_attack] damage!");
+            _db.UpdateCharacterHp((Character)Monster);
+            
 
             // B died (_monster)
             if (Monster.Hp <= 0)
@@ -53,13 +55,13 @@ namespace ZoneRpg.GameLogic
             // Monstret attackerar
             Player.TakeDamage(Monster.GetAttack());
             AddMessage("[monster] attacks [player] for [monster_attack] damage!");
+            _db.UpdateCharacterHp((Character)Player);
 
-            // A died (_player)
+            // Spelaren dog
             if (Player.Hp <= 0)
             {
                 AddMessage($"{Player.Name} has died!");
                 State = BattleState.Lost;
-                Monster = null;
             }
 
         }

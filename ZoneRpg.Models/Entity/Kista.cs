@@ -1,10 +1,5 @@
-
-
-namespace ZoneRpg.Shared
-
+namespace ZoneRpg.Models
 {
-
-    
     public class Kista
     {
         public int Id { get; set; }
@@ -15,7 +10,7 @@ namespace ZoneRpg.Shared
         Zone zone = new Zone();
         public Entity Entity { get; set; } = new Entity();
 
-        public Kista(){}
+        public Kista() { }
     }
 }
 

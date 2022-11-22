@@ -13,7 +13,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\ZoneRpg.Shared\ZoneRpg.Shared.csproj" />
+    <ProjectReference Include="..\ZoneRpg.Models\ZoneRpg.Models.csproj" />
   </ItemGroup>
 
 </Project>

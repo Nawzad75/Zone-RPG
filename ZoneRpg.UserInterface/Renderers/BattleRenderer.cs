@@ -37,7 +37,7 @@ namespace ZoneRpg.UserInterface
             }
 
             Console.SetCursorPosition(_x + 2, _y);
-            Console.Write(" Battle ");
+            Console.Write(" Battle:  " + _battleManager.State + " ");
 
             // Skriv ut de senaste 5 meddelandena, nyast först
             List<string> messages = _battleManager.GetMessages();

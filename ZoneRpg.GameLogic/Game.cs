@@ -1,5 +1,6 @@
 using ZoneRpg.Database;
 using ZoneRpg.Loot;
+using ZoneRpg.Models;
 using ZoneRpg.Shared;
 
 namespace ZoneRpg.GameLogic
@@ -30,9 +31,8 @@ namespace ZoneRpg.GameLogic
             ChatBox.Messages = _db.GetMessages();
             OpenChest();
             BattleManager.LookForMonsters(Zone.Entities);
-            PropagateBattleState();
-
             BattleManager.ProgressBattle();
+            PropagateBattleState();
             _db.UpdateCharacterHp(Player);
             if (BattleManager.Monster != null)
             {
@@ -48,14 +48,11 @@ namespace ZoneRpg.GameLogic
             {
                 SetState(GameState.Battle);
             }
-
-            if (BattleManager.State == BattleState.Lost)
+            else if (BattleManager.State == BattleState.Lost)
             {
-                SetState(GameState.Dead);
-                BattleManager.Reset();
+                SetState(GameState.Dead);                
             }
-
-            if (BattleManager.State == BattleState.Won)
+            else if (BattleManager.State == BattleState.Won)
             {
                 _db.DeleteCharacter((Character)BattleManager.Monster!);
                 var loot = _lootGenerator.GenerateLoot();
@@ -67,7 +64,7 @@ namespace ZoneRpg.GameLogic
         //
         public void SetState(GameState state)
         {
-            this.State = state;
+            State = state;
         }
 
         public void SetPlayer(Player player)
@@ -88,8 +85,9 @@ namespace ZoneRpg.GameLogic
             Player.Entity.X = Constants.StartPositionX;
             Player.Entity.Y = Constants.StartPositionY;
             Player.Hp = Player.CharacterClass.MaxHp;
+            _db.UpdateCharacterHp(Player);
             _db.UpdateEntityPosition(Player.Entity);
-            BattleManager.State = BattleState.NotInBattle;
+            BattleManager.Reset();
             SetState(GameState.Zone);
         }
 
@@ -139,7 +137,7 @@ namespace ZoneRpg.GameLogic
             foreach (var entity in Zone.Entities)
             {
                 if (entity.EntityType == EntityType.Player || entity.EntityType == EntityType.Monster || entity.EntityType == EntityType.Stone)
-                
+
                 {
                     if ((Player.GetX() - entity.X) == 1 && (Player!.GetY() - entity.Y) == 0)
                     {

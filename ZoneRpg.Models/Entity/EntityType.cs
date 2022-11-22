@@ -1,4 +1,4 @@
-namespace ZoneRpg.Shared
+namespace ZoneRpg.Models
 {
     // Denna klass skall vara synkad med databas-tabellen "entity_type"
     public enum EntityType

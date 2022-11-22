@@ -1,13 +1,15 @@
-namespace ZoneRpg.Shared
+namespace ZoneRpg.Models
 {
     public class Monster : Character, IFighter
     {
-        public MonsterClass MonsterClass { get; set; }
+        public MonsterClass? MonsterClass { get; set; }
+        
         // För dapper
-        public int MonsterClassId { get { return MonsterClass.Id; } }
-        // Parameterlös konstruktor för dapper
+        public int MonsterClassId { get { return MonsterClass!.Id; } }
         public Monster() {}
 
+
+        // Konstruktor
         public Monster(MonsterClass monsterClass, int zoneId)
         {
             Name = "Monster";
@@ -30,7 +32,7 @@ namespace ZoneRpg.Shared
         // --------------------------------------------
         public int GetAttack()
         {
-            return MonsterClass.BaseAttack;// + ItemIdWeapon?.AttackBonus ?? 0;  
+            return MonsterClass!.BaseAttack;// + ItemIdWeapon?.AttackBonus ?? 0;  
         }
 
         public int GetDefense()
@@ -41,7 +43,7 @@ namespace ZoneRpg.Shared
 
         public string GetClassReadable()
         {
-            return MonsterClass.Name;
+            return MonsterClass!.Name;
         }
 
         public void TakeDamage(int damage)
@@ -61,7 +63,7 @@ namespace ZoneRpg.Shared
 
         public int GetMaxHp()
         {
-            return MonsterClass.MaxHp;
+            return MonsterClass!.MaxHp;
         }
     }
 }

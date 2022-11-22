@@ -1,7 +1,7 @@
 ﻿using Dapper;
 using MySqlConnector;
 using dotenv.net;
-using ZoneRpg.Shared;
+using ZoneRpg.Models;
 using System.Diagnostics;
 
 namespace ZoneRpg.Database
@@ -131,13 +131,15 @@ namespace ZoneRpg.Database
         {
             string sql = @"
                 SELECT * FROM `character` c
+                INNER JOIN entity e ON e.id = c.entity_id
                 INNER JOIN monster_class mc ON mc.id = c.character_class_id
                 WHERE entity_id = @id";
 
-            var results = _connection.Query<Monster, MonsterClass, Monster>(
+            var results = _connection.Query<Monster, Entity, MonsterClass, Monster>(
                 sql,
-            (monster, monsterClass) =>
+            (monster, entity, monsterClass) =>
             {
+                monster.Entity = entity;
                 monster.MonsterClass = monsterClass;
                 return monster;
             },
@@ -146,7 +148,7 @@ namespace ZoneRpg.Database
         }
 
         // Hämtar alla "character classes"
-        public List<CharacterClass> GetClasses() 
+        public List<CharacterClass> GetClasses()
         {
             string sql = @"SELECT * FROM character_class c";
             return _connection.Query<CharacterClass>(sql).ToList();
@@ -244,13 +246,8 @@ namespace ZoneRpg.Database
             string sql = @"
                 INSERT INTO `item`(`character_id`, `item_info_id`) VALUES (NULL, @ItemInfoId);
                 SELECT LAST_INSERT_ID()";
-
-            var parameters = new
-            {
-                ItemInfoId = weapon!.ItemInfo.Id
-            };
-
-            return _connection.QuerySingle<int>(sql, parameters);
+                
+            return _connection.QuerySingle<int>(sql, weapon);
         }
 
 
@@ -367,9 +364,18 @@ namespace ZoneRpg.Database
             {
                 return;
             }
+            if (character.Entity.Id == 0)
+            {
+                Console.WriteLine("Character entity 0!!");
+                Console.ReadKey();
+                return;
+            }
+
+
             DeleteEntity(character.Entity.Id);
             string sql = "DELETE FROM `character` WHERE id = @id";
-            _connection.Execute(sql, new { id = character.Id });           
+            _connection.Execute(sql, new { id = character.Id });
+
         }
     }
 }

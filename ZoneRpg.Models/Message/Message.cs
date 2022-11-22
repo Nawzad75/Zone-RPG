@@ -1,4 +1,4 @@
-namespace ZoneRpg.Shared
+namespace ZoneRpg.Models
 {
 
     public class Message
@@ -9,7 +9,9 @@ namespace ZoneRpg.Shared
         public Character Character { get; set; } = new Character();
         public string Text { get; set; } = "";
         // public DateTime Time { get; set; } = DateTime.Now;
-        public Message(){}
+        public Message(){
+            Color = ConsoleColor.Cyan;
+        }
         public Message(string text, Character character, ConsoleColor color = ConsoleColor.White)
         {
             Text = text;

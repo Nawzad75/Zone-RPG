@@ -1,5 +1,4 @@
-﻿using ZoneRpg.Database;
-namespace ZoneRpg.Shared
+﻿namespace ZoneRpg.Models
 {
     public class ItemInfo
     {
@@ -10,7 +9,5 @@ namespace ZoneRpg.Shared
         public string Description { get; set; } = "";
         public int Attack {get; set; }
         public int Defense {get; set;}
-
-
     }
 }

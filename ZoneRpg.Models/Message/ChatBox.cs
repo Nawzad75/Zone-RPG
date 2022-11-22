@@ -1,4 +1,4 @@
-namespace ZoneRpg.Shared
+namespace ZoneRpg.Models
 {
     public class ChatBox
     {

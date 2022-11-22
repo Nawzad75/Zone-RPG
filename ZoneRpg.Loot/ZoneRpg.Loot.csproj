@@ -7,8 +7,7 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\ZoneRpg.Database\ZoneRpg.Database.csproj" />
-    <ProjectReference Include="..\ZoneRpg.Shared\ZoneRpg.Shared.csproj" />
+    <ProjectReference Include="..\ZoneRpg.Database\ZoneRpg.Database.csproj" />    
   </ItemGroup>
 
 </Project>
