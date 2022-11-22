@@ -19,6 +19,7 @@ internal class Program
     private static void SpawnMonstersInZone(int zoneId, int maxMonsters = 3)
     {
         List<Monster> monsters = db.GetAllMonsters(zoneId);
+        List<Entity> entites = db.GetAllEntities();
         foreach (Monster monster in monsters)
         {
             Console.WriteLine($"Monster: {monster.Name} ({monster.Hp}/{monster.MonsterClass!.MaxHp})");
@@ -28,7 +29,7 @@ internal class Program
         if (monsters.Count < maxMonsters)
         {
             MonsterClass monsterClass = db.GetMonsterClassByName("Dragon");
-            Monster newMonser = new Monster(monsterClass, zoneId);
+            Monster newMonser = new Monster(monsterClass, zoneId);            
             Zone zone = db.GetZone(zoneId);
            
             // Slumpa position, om positionen är upptagen, slumpa igen.
@@ -36,7 +37,7 @@ internal class Program
             {
                 newMonser.Entity.X = rnd.Next(1, zone.Width);
                 newMonser.Entity.Y = rnd.Next(1, zone.Height);
-            } while (monsters.Any(m => m.Entity.X == newMonser.Entity.X && m.Entity.Y == newMonser.Entity.Y));
+            } while (entites.Any(e => e.X == newMonser.Entity.X && e.Y == newMonser.Entity.Y));
 
 
             if (zoneId == 1){

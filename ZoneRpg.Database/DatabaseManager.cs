@@ -50,7 +50,7 @@ namespace ZoneRpg.Database
         }
 
         // Hämtar alla entities från databasen
-        public List<Entity> GetEntities(int zoneId = 1)
+        public List<Entity> GetAllEntities(int zoneId = 1)
         {
             string sql = @"
                 SELECT * FROM entity

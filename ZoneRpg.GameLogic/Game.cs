@@ -30,7 +30,7 @@ namespace ZoneRpg.GameLogic
 
         public void Update()
         {
-            Zone.Entities = _db.GetEntities();
+            Zone.Entities = _db.GetAllEntities();
             ChatBox.Messages = _db.GetAllMessages();
             FindAndOpenChests();
             BattleManager.LookForMonsters(Zone.Entities);
