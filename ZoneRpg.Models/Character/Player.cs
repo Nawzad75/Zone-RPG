@@ -54,9 +54,11 @@ namespace ZoneRpg.Models
             return CharacterClass.Name;
         }
 
-        public void TakeDamage(int damage)
+        public int TakeDamage(int damage)
         {
-            Hp -= Math.Max(damage - GetDefense(), 0);
+            int damageTaken = Math.Max(damage - GetDefense(), 0);
+            Hp -= damageTaken;
+            return damageTaken;            
         }
 
         public int GetX()

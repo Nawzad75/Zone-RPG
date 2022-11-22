@@ -38,8 +38,8 @@ namespace ZoneRpg.GameLogic
             }
 
             // Spelaren attackerar
-            Monster.TakeDamage(Player.GetAttack());
-            AddMessage("[player] attacks [monster] for [player_attack] damage!");
+            int damageTaken = Monster.TakeDamage(Player.GetAttack());
+            AddMessage($"[player] attacks [monster] for {damageTaken} damage!");
             _db.UpdateCharacterHp((Character)Monster);
             
             // B död (_monster)
@@ -51,8 +51,8 @@ namespace ZoneRpg.GameLogic
             }
 
             // Monstret attackerar
-            Player.TakeDamage(Monster.GetAttack());
-            AddMessage("[monster] attacks [player] for [monster_attack] damage!");
+            damageTaken = Player.TakeDamage(Monster.GetAttack());
+            AddMessage($"[monster] attacks [player] for {damageTaken} damage!");
             _db.UpdateCharacterHp((Character)Player);
 
             // Spelaren dog

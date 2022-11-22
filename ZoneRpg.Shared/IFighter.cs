@@ -10,7 +10,7 @@ public interface IFighter
     int GetAttack();
     int GetDefense();
     int GetMaxHp();
-    void TakeDamage(int damage);
+    int TakeDamage(int damage);
 
     // Kan vara character class, kan vara Monster class, 
     // det fina med ett interface är att vi inte bryr oss just nu

@@ -32,7 +32,7 @@ namespace ZoneRpg.GameLogic
         {
             Zone.Entities = _db.GetEntities();
             ChatBox.Messages = _db.GetAllMessages();
-            OpenChest();
+            FindAndOpenChests();
             BattleManager.LookForMonsters(Zone.Entities);
             BattleManager.ProgressBattle();
             PropagateBattleState();
@@ -44,9 +44,9 @@ namespace ZoneRpg.GameLogic
 
         }
 
+        // Här kommer "BatteState" att påverka "GameState"
         private void PropagateBattleState()
         {
-            // Propagera "BattleState" --> "GameState"
             if (BattleManager.State == BattleState.InBattle)
             {
                 SetState(GameState.Battle);
@@ -64,6 +64,7 @@ namespace ZoneRpg.GameLogic
             }
         }
 
+        // Gamestate setter. Så att ui:t kan driva spelet.
         public void SetState(GameState state)
         {
             State = state;
@@ -79,7 +80,7 @@ namespace ZoneRpg.GameLogic
         // Flyttar en spelare
         public void MovePlayer(ConsoleKey key)
         {
-            Player.Move(key, Zone, CheckCollisions());
+            Player.Move(key, Zone, GetCollisions());
             _db.UpdateEntityPosition(Player.Entity);
         }
 
@@ -94,12 +95,9 @@ namespace ZoneRpg.GameLogic
             BattleManager.Reset();
             SetState(GameState.Zone);
         }
-        public Entity GetPlayerEntity()
-        {
-            return Player.Entity;
-        }
 
-        public void OpenChest()
+        // Letar efter chests som spelaren står på och öppnar dem.
+        public void FindAndOpenChests()
         {
             Entity? chestEntity = Zone.Entities.Find(entity => entity.EntityType == EntityType.Chest);
             if (chestEntity == null)
@@ -107,35 +105,38 @@ namespace ZoneRpg.GameLogic
                 return;
             }
 
-            Entity playerEntity = GetPlayerEntity();
-
-            if (chestEntity.X == playerEntity.X && chestEntity.Y == playerEntity.Y)
+            if (chestEntity.X == Player.Entity.X && chestEntity.Y == Player.Entity.Y)
             {
-                //öppnar kistan och får ett svärd från databasen
-                List<ItemInfo> allItemInfos = _db.GetAllItemInfos();
-                ItemInfo? sword = allItemInfos.Find(item => item.Name == "Sword");
+                OpenSwordChest();
+            }
+        }
 
-                if (sword != null)
-                {
-                    Item item = new Item();
-                    item.ItemInfo = sword;
-                    item.Id = _db.InsertItem(item);
-                    Player.EquipItem(item);
-                    _db.UpdatePlayerEquipment(Player);
-                    Message message = new Message("Du har hittat " + item.ItemInfo.Name, Player, ConsoleColor.Yellow);
-                    ChatBox.LootMessages.Add(message);
-                }
+        // Öppnar en kista och ger spelaren en svärd
+        private void OpenSwordChest()
+        {
+            List<ItemInfo> allItemInfos = _db.GetAllItemInfos();
+            ItemInfo? sword = allItemInfos.Find(item => item.Name == "Rusty sword");
+
+            if (sword != null)
+            {
+                Item item = new Item();
+                item.ItemInfo = sword;
+                item.Id = _db.InsertItem(item);
+                Player.EquipItem(item);
+                _db.UpdatePlayerEquipment(Player);
+                Message message = new Message("Du har hittat " + item.ItemInfo.Name, Player, ConsoleColor.Yellow);
+                ChatBox.LootMessages.Add(message);
             }
         }
 
         // Kollar om spelaren kan kollidera med något
-        public Collisions CheckCollisions()
+        public Collisions GetCollisions()
         {
             Collisions collisions = new();
             foreach (var entity in Zone.Entities)
             {
-                if (  entity.EntityType == EntityType.Player 
-                   || entity.EntityType == EntityType.Monster 
+                if (entity.EntityType == EntityType.Player
+                   || entity.EntityType == EntityType.Monster
                    || entity.EntityType == EntityType.Stone)
                 {
                     if ((Player.GetX() - entity.X) == 1 && (Player!.GetY() - entity.Y) == 0)

@@ -16,7 +16,16 @@
 
         override public string ToString()
         {
-            return $"Item id: {Id}, name: {ItemInfo.Name}, type: {ItemInfo.ItemType}, typeid: {ItemInfo.ItemTypeId}";
+            string output = $"{ItemInfo.Name}";
+            if  (ItemInfo.Attack > 0)
+            {
+                output += $"  (Attack: {ItemInfo.Attack})";
+            }
+            if (ItemInfo.Defense > 0)
+            {
+                output += $"  (Defense: {ItemInfo.Defense})";
+            }
+            return output;
         }
     }
 }

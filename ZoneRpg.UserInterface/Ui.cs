@@ -27,7 +27,7 @@ namespace ZoneRpg.UserInterface
         {
             _db = db;
             _game = game;
-            _chatBoxRenderer = new ChatboxRenderer(game.ChatBox, 50 , 0);
+            _chatBoxRenderer = new ChatboxRenderer(game.ChatBox, 50, 0);
             _playerRenderer = new CharacterRenderer(0, _game.Zone.Height + 5, 30, 4, ConsoleColor.Cyan);
             _monsterRenderer = new CharacterRenderer(33, _game.Zone.Height + 5, 30, 4, ConsoleColor.Red);
             _battleRenderer = new BattleRenderer(game.BattleManager, 0, _game.Zone.Height + 11, 63, 2);
@@ -97,7 +97,7 @@ namespace ZoneRpg.UserInterface
             while (!isDoneLooting)
             {
 
-                string[] menuOptions = _game.CurrentLoot.Select(x => x.ItemInfo.Name).ToArray();
+                string[] menuOptions = _game.CurrentLoot.Select(x => x.ToString()).ToArray();
                 menuOptions = menuOptions.Append("Done").ToArray();
                 int selected = new Menu(prompt, menuOptions).Run();
 
@@ -121,7 +121,7 @@ namespace ZoneRpg.UserInterface
         {
             _zoneRenderer.DrawZone(_game.Zone);
             _zoneRenderer.DrawEntities(_game.Zone.Entities);
-            _zoneRenderer.DrawPlayerEntity(_game.GetPlayerEntity());
+            _zoneRenderer.DrawPlayerEntity(_game.Player.Entity);
             _chatBoxRenderer.Draw();
         }
 
@@ -227,6 +227,7 @@ namespace ZoneRpg.UserInterface
                 case GameState.Loot:
                     EquipLootUi();
                     _game.SetState(GameState.Zone);
+                    (_monsterRenderer as CharacterRenderer)!.SetCharacter(null);
                     break;
 
                 case GameState.Battle:

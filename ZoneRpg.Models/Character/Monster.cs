@@ -41,9 +41,11 @@ namespace ZoneRpg.Models
             return MonsterClass!.Name;
         }
 
-        public void TakeDamage(int damage)
+        public int TakeDamage(int damage)
         {
-            Hp -= damage;
+            int damageTaken = Math.Max(damage - GetDefense(), 0);
+            Hp -= damageTaken;
+            return damageTaken;
         }
 
         public int GetX()
