@@ -31,6 +31,7 @@ namespace ZoneRpg.UserInterface
             _playerRenderer = new CharacterRenderer(0, _game.Zone.Height + 5, 30, 4, ConsoleColor.Cyan);
             _monsterRenderer = new CharacterRenderer(33, _game.Zone.Height + 5, 30, 4, ConsoleColor.Red);
             _battleRenderer = new BattleRenderer(game.BattleManager, 0, _game.Zone.Height + 11, 63, 2);
+            
             SetupConsole();
         }
 

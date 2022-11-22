@@ -28,6 +28,20 @@ namespace ZoneRpg.GameLogic
             _lootGenerator = new LootGenerator(_db);
         }
 
+        // Gamestate setter. Så att ui:t kan driva spelet.
+        public void SetState(GameState state)
+        {
+            State = state;
+        }
+
+        // Player setter
+        public void SetPlayer(Player player)
+        {
+            Player = player;
+            BattleManager.Player = Player;
+        }
+
+        // Den stora gameloopen!
         public void Update()
         {
             Zone.Entities = _db.GetAllEntities();
@@ -64,18 +78,7 @@ namespace ZoneRpg.GameLogic
             }
         }
 
-        // Gamestate setter. Så att ui:t kan driva spelet.
-        public void SetState(GameState state)
-        {
-            State = state;
-        }
 
-        // Player setter
-        public void SetPlayer(Player player)
-        {
-            Player = player;
-            BattleManager.Player = Player;
-        }
 
         // Flyttar en spelare
         public void MovePlayer(ConsoleKey key)

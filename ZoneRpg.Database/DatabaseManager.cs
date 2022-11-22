@@ -19,7 +19,6 @@ namespace ZoneRpg.Database
             DotEnv.Load();
             IDictionary<string, string> envVars = DotEnv.Read();
 
-
             // Ansluter till databasen
             _connection = new MySqlConnection(envVars["DB_CONNECTION_STRING"]);
 
@@ -30,7 +29,7 @@ namespace ZoneRpg.Database
             }
             catch (Exception e)
             {
-                Debug.WriteLine(e);
+                Console.WriteLine(e);
             }
 
         }

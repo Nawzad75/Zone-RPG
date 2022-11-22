@@ -16,7 +16,7 @@ namespace ZoneRpg.UserInterface
                                                             
                                                             ";
             string[] options = { "Start", "About", "Exit" };
-            
+
             int _choice = new Menu(prompt, options).Run();
 
             switch (_choice)
@@ -50,7 +50,9 @@ namespace ZoneRpg.UserInterface
         private void About()
         {
             Console.Clear();
-            Console.WriteLine("This is a game about a guy who is trying to find his way home, but he is lost in a strange world. He has to find his way home, but he has to fight monsters and find items to help him on his way. ");
+            Console.WriteLine("This is a game about a guy who is trying to find his way home");
+            Console.WriteLine("but he is lost in a strange world. He has to find his way home,");
+            Console.WriteLine("but he has to fight monsters and find items to help him on his way. ");
             Console.ReadKey();
             Console.Clear();
             RunMainMenu();
