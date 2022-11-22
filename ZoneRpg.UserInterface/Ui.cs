@@ -31,7 +31,7 @@ namespace ZoneRpg.UserInterface
             _playerRenderer = new CharacterRenderer(0, _game.Zone.Height + 5, 30, 4, ConsoleColor.Cyan);
             _monsterRenderer = new CharacterRenderer(33, _game.Zone.Height + 5, 30, 4, ConsoleColor.Red);
             _battleRenderer = new BattleRenderer(game.BattleManager, 0, _game.Zone.Height + 11, 63, 2);
-            
+
             SetupConsole();
         }
 
@@ -65,6 +65,7 @@ namespace ZoneRpg.UserInterface
                     DrawZone();
                     _playerRenderer.Draw();
                     _monsterRenderer.Draw();
+                    _chatBoxRenderer.Draw();
                     break;
 
                 case GameState.Dead:
@@ -90,46 +91,17 @@ namespace ZoneRpg.UserInterface
 
         }
 
-        //
-        private void EquipLootUi()
-        {
-            bool isDoneLooting = false;
-            string prompt = "You have found loot! Choose to equip:";
-            while (!isDoneLooting)
-            {
-
-                string[] menuOptions = _game.CurrentLoot.Select(x => x.ToString()).ToArray();
-                menuOptions = menuOptions.Append("Done").ToArray();
-                int selected = new Menu(prompt, menuOptions).Run();
-
-                if (selected == menuOptions.Length - 1)
-                {
-                    isDoneLooting = true;
-                }
-                else
-                {
-                    Item item = _game.CurrentLoot[selected];
-                    item.Id = _db.InsertItem(item);
-                    _game.Player.EquipItem(item);
-                    _db.UpdatePlayerEquipment(_game.Player);
-                    prompt = "You have equipped " + item.ItemInfo.Name + ".";
-                    _game.CurrentLoot.RemoveAt(selected);
-                }
-            }
-        }
-
+        // Ritar zonen och innehåll
         private void DrawZone()
         {
             _zoneRenderer.DrawZone(_game.Zone);
             _zoneRenderer.DrawEntities(_game.Zone.Entities);
             _zoneRenderer.DrawPlayerEntity(_game.Player.Entity);
-            _chatBoxRenderer.Draw();
         }
 
         // Låter spelaren välja en karaktär eller skapa en ny
         private Player CreateOrChoosePlayer()
         {
-
             string prompt = "Create or choose a character!";
             string[] options = new string[] { "Create", "Choose" };
             GetPlayerMenu createOption = (GetPlayerMenu)new Menu(prompt, options).Run();
@@ -172,10 +144,9 @@ namespace ZoneRpg.UserInterface
                 Player player = new Player(name, selectedClass);
                 return player;
             }
-
         }
 
-        // Lamba-funktion omgjord till en metod (x => x.Name)
+        // Lambda-funktion omgjord till en metod (x => x.Name)
         private string CharacterToString(CharacterClass x)
         {
             return x.Name;
@@ -198,7 +169,6 @@ namespace ZoneRpg.UserInterface
         // Läster user input (och skickar till game)
         public void ReadInput()
         {
-
             ConsoleKeyInfo cki = Console.ReadKey();
             switch (_game.State)
             {
@@ -244,6 +214,35 @@ namespace ZoneRpg.UserInterface
                     break;
             }
         }
+
+        // UI for equipping loot
+        private void EquipLootUi()
+        {
+            bool isDoneLooting = false;
+            string prompt = "You have found loot! Choose to equip:";
+            while (!isDoneLooting)
+            {
+
+                string[] menuOptions = _game.CurrentLoot.Select(x => x.ToString()).ToArray();
+                menuOptions = menuOptions.Append("Done").ToArray();
+                int selected = new Menu(prompt, menuOptions).Run();
+
+                if (selected == menuOptions.Length - 1)
+                {
+                    isDoneLooting = true;
+                }
+                else
+                {
+                    Item item = _game.CurrentLoot[selected];
+                    item.Id = _db.InsertItem(item);
+                    _game.Player.EquipItem(item);
+                    _db.UpdatePlayerEquipment(_game.Player);
+                    prompt = "You have equipped " + item.ItemInfo.Name + ".";
+                    _game.CurrentLoot.RemoveAt(selected);
+                }
+            }
+        }
+
 
         // Skapar meddelande
         public void CreateMessage()
