@@ -27,16 +27,26 @@ namespace ZoneRpg.Models
         // ---------------------------------------
         public int GetAttack()
         {
-            if (Weapon != null && Weapon.ItemInfo != null)
+            int attack = CharacterClass.BaseAttack;
+            if (Weapon != null)
             {
-                return CharacterClass.BaseAttack + Weapon.ItemInfo.Attack;
+                attack += Weapon.ItemInfo.Attack;
             }
-            return CharacterClass.BaseAttack;
+            return attack;
         }
 
         public int GetDefense()
         {
-            return 0;
+            int defense = CharacterClass.BaseDefense;
+            if (Boots != null)
+            {
+                defense += Boots.ItemInfo.Defense;
+            }
+            if (Helm != null)
+            {
+                defense += Helm.ItemInfo.Defense;
+            }
+            return defense;
         }
 
         public string GetClassReadable()
@@ -46,7 +56,7 @@ namespace ZoneRpg.Models
 
         public void TakeDamage(int damage)
         {
-            Hp -= damage;
+            Hp -= Math.Max(damage - GetDefense(), 0);
         }
 
         public int GetX()

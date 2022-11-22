@@ -6,12 +6,16 @@ namespace ZoneRpg.Models
         public string Name { get; set; } = "<Not set>";
         public int BaseAttack { get; set; }
         public int BaseAttackPerLevel;
+        public int BaseDefense { get; set; }
+        public int BaseDefensePerLevel { get; set; }
         public int MaxHp { get; set; }
         public int MaxHpPerLevel { get; set; }
 
         // Endast för dapper
         public int base_attack { set { BaseAttack = value; } }
         public int base_attack_per_level { set { BaseAttackPerLevel = value; } }
+        public int base_defense { set { BaseDefense = value; } }
+        public int base_defense_per_level { set { BaseDefensePerLevel = value; } }
         public int max_hp { set { MaxHp = value; } }
         public int max_hp_per_level { set { MaxHpPerLevel = value; } }
 

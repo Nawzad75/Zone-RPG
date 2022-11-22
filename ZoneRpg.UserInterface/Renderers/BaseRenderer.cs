@@ -7,6 +7,11 @@ namespace ZoneRpg.UserInterface
         protected int _width = 19;
         protected int _height = 3;
 
+        public BaseRenderer(int x, int y, int w, int h)
+        {
+            SetRect(x, y, w, h);
+        }
+
         public void SetRect(int x, int y, int width, int height)
         {
             _x = x;

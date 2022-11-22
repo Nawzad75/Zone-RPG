@@ -7,7 +7,7 @@ namespace ZoneRpg.UserInterface
     {
         private readonly BattleManager _battleManager;
 
-        public BattleRenderer(BattleManager battleManager)
+        public BattleRenderer(BattleManager battleManager, int x, int y, int w, int h) : base(x, y, w, h)
         {
             _battleManager = battleManager;
         }

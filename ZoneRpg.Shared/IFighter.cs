@@ -8,6 +8,7 @@ public interface IFighter
     int GetX();
     int GetY();
     int GetAttack();
+    int GetDefense();
     int GetMaxHp();
     void TakeDamage(int damage);
 

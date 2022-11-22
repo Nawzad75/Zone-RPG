@@ -11,8 +11,8 @@ namespace ZoneRpg.UserInterface
         private DatabaseManager _db;
         private Game _game;
         private ZoneRenderer _zoneRenderer = new ZoneRenderer();
-        private IRenderer _playerRenderer = new CharacterRenderer();
-        private IRenderer _monsterRenderer = new CharacterRenderer();
+        private IRenderer _playerRenderer;
+        private IRenderer _monsterRenderer;
         private IRenderer _battleRenderer;
         private IRenderer _chatBoxRenderer;
 
@@ -27,31 +27,22 @@ namespace ZoneRpg.UserInterface
         {
             _db = db;
             _game = game;
-            _battleRenderer = new BattleRenderer(game.BattleManager);
-            _chatBoxRenderer = new ChatboxRenderer(game.ChatBox);
-            Setup();
+            _chatBoxRenderer = new ChatboxRenderer(game.ChatBox, 50 , 0);
+            _playerRenderer = new CharacterRenderer(0, _game.Zone.Height + 5, 30, 4, ConsoleColor.Cyan);
+            _monsterRenderer = new CharacterRenderer(33, _game.Zone.Height + 5, 30, 4, ConsoleColor.Red);
+            _battleRenderer = new BattleRenderer(game.BattleManager, 0, _game.Zone.Height + 11, 63, 2);
+            SetupConsole();
         }
 
         // Sätter upp UI
-        private void Setup()
+        private void SetupConsole()
         {
             Console.OutputEncoding = System.Text.Encoding.UTF8;
             Console.CursorVisible = false;
             Console.Clear();
-
-            // Rektangeln som visar spelarens stats
-            _playerRenderer.SetRect(0, _game.Zone.Height + 5, 30, 3);
-            _playerRenderer.SetAccentColor(ConsoleColor.Cyan);
-
-            // Rektangeln som visar monstrets stats
-            _monsterRenderer.SetRect(33, _game.Zone.Height + 5, 30, 3);
-            _monsterRenderer.SetAccentColor(ConsoleColor.Red);
-
-            // Rektangel som visar battle-meddelanden
-            _battleRenderer.SetRect(1, _game.Zone.Height + 10, 62, 2);
         }
 
-       // Kör !
+        // Kör !
         public void Render()
         {
             switch (_game.State)

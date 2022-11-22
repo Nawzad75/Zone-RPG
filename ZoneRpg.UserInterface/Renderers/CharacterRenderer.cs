@@ -7,9 +7,10 @@ namespace ZoneRpg.UserInterface
         private IFighter? _character;
         private ConsoleColor _accentColor;
 
-        public CharacterRenderer(ConsoleColor accentColor = ConsoleColor.White)
+
+        public CharacterRenderer(int x, int y, int w, int h, ConsoleColor color = default) : base(x,y,w,h)
         {
-            SetAccentColor(accentColor);
+            SetAccentColor(color);
         }
 
         public void SetCharacter(IFighter? character)
@@ -59,6 +60,12 @@ namespace ZoneRpg.UserInterface
             Console.Write("Attack: ");
             Console.ForegroundColor = _accentColor;
             Console.Write(_character?.GetAttack().ToString() ?? "");
+ 
+            Console.SetCursorPosition(_x + 2, _y + 4);
+            Console.ForegroundColor = ConsoleColor.Yellow;
+            Console.Write("Defense: ");
+            Console.ForegroundColor = _accentColor;
+            Console.Write(_character?.GetDefense().ToString() ?? "");
 
             Console.ResetColor();
         }
