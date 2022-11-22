@@ -7,7 +7,6 @@ namespace ZoneRpg.Models
         // Tom konstruktor för att dappar skall hänga med
         public Player() : base() { }
 
-        //constructor
         public Player(string name, CharacterClass characterClass) : base(name)
         {
             CharacterClass = characterClass;

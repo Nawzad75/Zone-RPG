@@ -13,9 +13,7 @@ namespace ZoneRpg.UserInterface
             Options = options;
             _choice = 0;
         }
-
         public void DisplayOptions()
-
         {
             Console.Clear();
             Console.WriteLine(Prompt);
@@ -28,7 +26,6 @@ namespace ZoneRpg.UserInterface
                     prefix = ">";
                     Console.ForegroundColor = ConsoleColor.Red;
                     Console.BackgroundColor = ConsoleColor.Black;
-
                 }
                 else
                 {
@@ -41,14 +38,11 @@ namespace ZoneRpg.UserInterface
             }
             Console.ResetColor();
         }
-
-
         public int Run()
         {
             ConsoleKey keyPressed;
             do
             {
-
                 DisplayOptions();
 
                 ConsoleKeyInfo keyInfo = Console.ReadKey(true);
@@ -73,7 +67,6 @@ namespace ZoneRpg.UserInterface
                 }
             } while (keyPressed != ConsoleKey.Enter);
             return _choice;
-
         }
     }
 }

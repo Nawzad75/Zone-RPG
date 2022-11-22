@@ -114,8 +114,5 @@ namespace ZoneRpg.Models
                 Entity.X++;
             }
         }
-
-
-
     }
 }

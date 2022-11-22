@@ -61,7 +61,6 @@ namespace ZoneRpg.GameLogic
             }
         }
 
-        //
         public void SetState(GameState state)
         {
             State = state;
@@ -90,9 +89,6 @@ namespace ZoneRpg.GameLogic
             BattleManager.Reset();
             SetState(GameState.Zone);
         }
-
-
-
         public Entity GetPlayerEntity()
         {
             return Player.Entity;
@@ -109,10 +105,6 @@ namespace ZoneRpg.GameLogic
 
             if (chestEntity.X == playerEntity.X && chestEntity.Y == playerEntity.Y)
             {
-                //öppnar kistan och får ett svärd från databasen
-
-
-
                 List<ItemInfo> allItemInfos = _db.GetAllItemInfos();
                 ItemInfo? sword = allItemInfos.Find(item => item.Name == "Sword");
 
@@ -127,7 +119,6 @@ namespace ZoneRpg.GameLogic
                     Message message = new Message("Du har hittat " + item.ItemInfo.Name, Player, ConsoleColor.Yellow);
                     ChatBox.LootMessages.Add(message);
                 }
-
             }
 
         }

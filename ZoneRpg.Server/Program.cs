@@ -16,7 +16,6 @@ internal class Program
         }
     }
 
-    ///
     private static void SpawnMonstersInZone(int zoneId, int maxMonsters = 3)
     {
         List<Monster> monsters = db.GetMonsters(zoneId);

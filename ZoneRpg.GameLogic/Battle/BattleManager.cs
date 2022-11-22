@@ -29,7 +29,7 @@ namespace ZoneRpg.GameLogic
             return _messages;
         }
 
-        // Kör en "tur" frammåt i striden. (Spelaren attackerar och monstret attackerar 1 gång)
+        // Funktion för att slutföra en runda (spelaren attackerar och monster attackerar en gång)
         public void ProgressBattle()
         {
             if (Player == null || Monster == null || State != BattleState.InBattle)
@@ -37,14 +37,12 @@ namespace ZoneRpg.GameLogic
                 return;
             }
 
-
             // Spelaren attackerar
             Monster.TakeDamage(Player.GetAttack());
             AddMessage("[player] attacks [monster] for [player_attack] damage!");
             _db.UpdateCharacterHp((Character)Monster);
             
-
-            // B died (_monster)
+            // B död (_monster)
             if (Monster.Hp <= 0)
             {
                 AddMessage($"{Monster.Name} has died!");
@@ -65,7 +63,6 @@ namespace ZoneRpg.GameLogic
             }
 
         }
-
 
         public void LookForMonsters(List<Entity> entities)
         {

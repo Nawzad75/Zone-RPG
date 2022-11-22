@@ -7,7 +7,7 @@ namespace ZoneRpg.UserInterface
 {
     public class Ui
     {
-        // Ui Members
+        // UI medlämmar
         private DatabaseManager _db;
         private Game _game;
         private ZoneRenderer _zoneRenderer = new ZoneRenderer();
@@ -16,7 +16,6 @@ namespace ZoneRpg.UserInterface
         private IRenderer _battleRenderer;
         private IRenderer _chatBoxRenderer;
 
-        // Constructor
         public Ui(DatabaseManager db, Game game)
         {
             _db = db;
@@ -26,7 +25,7 @@ namespace ZoneRpg.UserInterface
             Setup();
         }
 
-        // Setup the UI
+        // Sätter upp UI
         private void Setup()
         {
             Console.OutputEncoding = System.Text.Encoding.UTF8;
@@ -45,7 +44,7 @@ namespace ZoneRpg.UserInterface
             _battleRenderer.SetRect(1, _game.Zone.Height + 10, 62, 2);
         }
 
-        // Run!
+       // Kör !
         public void Render()
         {
             switch (_game.State)
@@ -53,14 +52,14 @@ namespace ZoneRpg.UserInterface
                 case GameState.MainMenu:
                     new StartScreen().RunMainMenu();
                     _game.SetState(GameState.GetPlayer);
-                    Render(); // Render again to show the new state before we read input
+                    Render();  // Renderar igen för att visa det nya statet innan vi läser inmatning
                     break;
 
                 case GameState.GetPlayer:
                     _game.SetPlayer(CreateOrChoosePlayer());
                     ((CharacterRenderer)_playerRenderer).SetCharacter(_game.Player);
                     _game.SetState(GameState.Zone);
-                    Render(); // Render again to show the new state before we read input
+                    Render(); // Renderar igen för att visa det nya statet innan vi läser inmatning
                     break;
 
                 case GameState.Zone:
@@ -77,7 +76,7 @@ namespace ZoneRpg.UserInterface
                 case GameState.Battle:
                     DrawZone();
 
-                    // cast IRenderer to CharacterRender, so we can get/set the current Monster
+                    // IRenderer till CharacterRenderer, så vi kan hämta/ändra nuvarande Monster
                     CharacterRenderer monsterRenderer = (CharacterRenderer)_monsterRenderer;
                     if (!monsterRenderer.hasCharacter())
                     {
@@ -90,7 +89,6 @@ namespace ZoneRpg.UserInterface
                     break;
             }
 
-
         }
 
         private void DrawZone()
@@ -101,7 +99,7 @@ namespace ZoneRpg.UserInterface
             _chatBoxRenderer.Draw();
         }
 
-        // Let the player choose a character or create a new one
+        // Låter spelaren välja en karaktär eller skapa en ny
         private Player CreateOrChoosePlayer()
         {
             string prompt = "Create or choose a character!";
@@ -117,7 +115,7 @@ namespace ZoneRpg.UserInterface
             return ChoosePlayer();
         }
 
-        // Create a player
+        // Skapar en ny spelare
         public Player CreatePlayer()
         {
             Console.Clear();
@@ -213,7 +211,7 @@ namespace ZoneRpg.UserInterface
             }
         }
 
-        // Create a message
+        // Skapar meddelande
         public void CreateMessage()
         {
             Console.Clear();
@@ -223,7 +221,7 @@ namespace ZoneRpg.UserInterface
             _db.InsertMessage(message);
         }
 
-        // Show inventory
+        // Visar inventory
         public void Inventory()
         {
             Console.Clear();

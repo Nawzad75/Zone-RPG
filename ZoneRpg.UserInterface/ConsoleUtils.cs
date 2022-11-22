@@ -30,7 +30,7 @@ namespace ZoneRpg.UserInterface
                 {                    
                     Console.Write(" ");
                 }
-                Console.Write(vertical + " "); // last space repairs utf8 bug
+                Console.Write(vertical + " "); // Sista space fixar utf8 bug
             }
 
             Console.SetCursorPosition(x, y + height + 1);

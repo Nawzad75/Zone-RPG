@@ -8,20 +8,22 @@ namespace ZoneRpg.Database
 {
     public class DatabaseManager
     {
-        // Database connection
+        // Databas anslutning
         MySqlConnection _connection;
 
-        // Connect and store away the connection for later use
+       
+        // Ansluter och sparar bort anslutningen för senare användning
         public DatabaseManager()
         {
-            // Läs in dovenv filen med databas connection string
+            // läser in .env filen 
             DotEnv.Load();
             IDictionary<string, string> envVars = DotEnv.Read();
 
-            // anslut till databasen
+
+            // Ansluter till databasen
             _connection = new MySqlConnection(envVars["DB_CONNECTION_STRING"]);
 
-            // Se till att mysql-fel skrivs ut i konsolen. 
+            // Kollar så att vi är anslutna till databasen
             try
             {
                 _connection.Open();
@@ -33,21 +35,21 @@ namespace ZoneRpg.Database
 
         }
 
-        // Get's all "ItemInfo's" from the database
+        // Hämtar alla "ItemInfo's" från databasen
         public List<ItemInfo> GetAllItemInfos()
         {
             string sql = "SELECT * FROM item_info";
             return _connection.Query<ItemInfo>(sql).ToList();
         }
 
-        // Gets a zone from the database
+        // Hämtar en zon från databasen
         public Zone GetZone(int zoneId)
         {
             string sql = "SELECT * FROM zone WHERE id = @zoneId";
             return _connection.QuerySingle<Zone>(sql, new { zoneId });
         }
 
-        // Gets all entities from the database
+        // Hämtar alla entities från databasen
         public List<Entity> GetEntities(int zoneId = 1)
         {
             string sql = @"
@@ -66,7 +68,7 @@ namespace ZoneRpg.Database
             ).ToList();
         }
 
-        // Gets a characters from the database
+        // Hämtar karaktärer från databasen
         public List<Player> GetPlayers()
         {
             string sql = @"
@@ -86,7 +88,8 @@ namespace ZoneRpg.Database
                 new { @EntityTypeId = (int)EntityType.Player }
             ).ToList();
 
-            // hämta vapen, hjälm, stövlar
+            
+            // Hämtar vapen, skor och hjälm från databasen
             foreach (Player player in players)
             {
                 player.Weapon = GetItem(player.weapon_id);
@@ -166,12 +169,12 @@ namespace ZoneRpg.Database
             });
         }
 
-        // Inserts a player into the database
+        // För in en spelare i databasen
         public void InsertCharacter(Character character)
         {
             character.Entity.Id = InsertEntity(character.Entity);
 
-            //  Character 
+            //  Karaktär
             string sql = @"
                 INSERT INTO `character` 
                     (name, hp, xp, character_class_id, entity_id)
@@ -182,7 +185,7 @@ namespace ZoneRpg.Database
 
         }
 
-        // Lägger till en entity
+        // Adds a new entity
         public int InsertEntity(Entity entity)
         {
             string sql = @"
@@ -192,7 +195,6 @@ namespace ZoneRpg.Database
                     (@EntityTypeId, @Symbol, @ZoneId, @X, @Y);
                 SELECT LAST_INSERT_ID()";
 
-            // (@X, @Y, @Symbol, @ZoneId, @EntityTypeId);
             return _connection.QuerySingle<int>(sql, entity);
         }
 
@@ -240,7 +242,7 @@ namespace ZoneRpg.Database
             ).First();
         }
 
-        //Lägg till vapen i databasen
+        // Lägg till vapen i databasen
         public int InsertWeapon(Item weapon)
         {
             string sql = @"
@@ -278,7 +280,7 @@ namespace ZoneRpg.Database
         {
             monster.Entity.Id = InsertEntity(monster.Entity);
 
-            //  Character 
+            
             string sql = @"
                 INSERT INTO `character` 
                     (name, hp, xp, character_class_id, entity_id)
@@ -357,7 +359,7 @@ namespace ZoneRpg.Database
             _connection.Execute(sql, parameters);
         }
 
-        // Removes a character (and entity!) from the database
+        // Tar bort en karaktär (och entity!) från databasen
         public void DeleteCharacter(Character? character)
         {
             if (character == null)

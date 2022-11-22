@@ -8,8 +8,6 @@ namespace ZoneRpg.Models
         public int MonsterClassId { get { return MonsterClass!.Id; } }
         public Monster() {}
 
-
-        // Konstruktor
         public Monster(MonsterClass monsterClass, int zoneId)
         {
             Name = "Monster";
@@ -27,17 +25,14 @@ namespace ZoneRpg.Models
             Hp = Level * 5;
         }
 
-        //
         // Nedan implementerar vi "IFighter" interfacet.
-        // --------------------------------------------
         public int GetAttack()
         {
-            return MonsterClass!.BaseAttack;// + ItemIdWeapon?.AttackBonus ?? 0;  
+            return MonsterClass!.BaseAttack;
         }
 
         public int GetDefense()
         {
-            // return CharacterClass.BaseDefense;// + ItemIdHelm?.DefenseBonus ?? 0;
             return 0;
         }
 

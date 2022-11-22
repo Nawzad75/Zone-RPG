@@ -17,13 +17,13 @@ namespace ZoneRpg.Loot
         {
             Random random = new Random();
 
-            // Loot that will be returned (after we have added items to it)
+            // Loot som vi returnerar (efter att vi har lagt till items till den)
             List<Item> loot = new List<Item>();
 
-            // All available items
+            // Alla items som finns i databasen
             List<ItemInfo> allItemInfos = _db.GetAllItemInfos();
 
-            // If we have specified a rarity, filter out all items that are not that rarity
+            // Om vi har specificerat en rarity, filtrera bort alla items som inte är den rarityn
             if (rarity > 0)
             {
                 allItemInfos = allItemInfos.Where(x => x.Rarity == rarity).ToList();
@@ -31,7 +31,7 @@ namespace ZoneRpg.Loot
 
             int lootAmount = random.Next(1, 3);
 
-            // Add random item to the loot
+            // Lägg till ett random item till looten
             for (int i = 0; i < lootAmount; i++)
             {
                 int randomItemIndex = random.Next(0, allItemInfos.Count);

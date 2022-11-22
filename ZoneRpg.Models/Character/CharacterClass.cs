@@ -17,8 +17,6 @@ namespace ZoneRpg.Models
 
         public CharacterClass() { }
     }
-
-
 }
 
 

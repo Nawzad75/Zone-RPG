@@ -18,7 +18,6 @@ namespace ZoneRpg.UserInterface
             string[] options = { "Start", "About", "Exit" };
             int _choice = (int)new Menu(prompt, options).Run();
 
-
             switch (_choice)
             {
                 case 0:
@@ -36,8 +35,6 @@ namespace ZoneRpg.UserInterface
             }
 
         }
-
-        //Här skickar vi in funktionen som skapar spelaren
         public void Start()
         {
         }
