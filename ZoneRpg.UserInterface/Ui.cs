@@ -16,6 +16,12 @@ namespace ZoneRpg.UserInterface
         private IRenderer _battleRenderer;
         private IRenderer _chatBoxRenderer;
 
+        enum GetPlayerMenu
+        {
+            CreatePlayer,
+            ChoosePlayer
+        }
+
         // Constructor
         public Ui(DatabaseManager db, Game game)
         {
@@ -51,7 +57,7 @@ namespace ZoneRpg.UserInterface
             switch (_game.State)
             {
                 case GameState.MainMenu:
-                    new StartScreen().RunMainMenu();
+                    new StartMenu().RunMainMenu();
                     _game.SetState(GameState.GetPlayer);
                     Render(); // Render again to show the new state before we read input
                     break;
@@ -72,6 +78,15 @@ namespace ZoneRpg.UserInterface
                 case GameState.Dead:
                     Console.Clear();
                     Console.WriteLine("You died! Press <Enter> to respawn!");
+                    break;
+
+                case GameState.Loot:
+                    Console.Clear();
+                    Console.WriteLine("You found loot! Press <Enter> to continue!");
+                    foreach (var item in _game.CurrentLoot)
+                    {
+                        Console.WriteLine("* " + item.ItemInfo!.Name);
+                    }
                     break;
 
                 case GameState.Battle:
@@ -101,14 +116,16 @@ namespace ZoneRpg.UserInterface
             _chatBoxRenderer.Draw();
         }
 
+
         // Let the player choose a character or create a new one
         private Player CreateOrChoosePlayer()
         {
+
             string prompt = "Create or choose a character!";
             string[] options = new string[] { "Create", "Choose" };
-            CreateChooseMenu createOption = (CreateChooseMenu)new Menu(prompt, options).Run();
+            GetPlayerMenu createOption = (GetPlayerMenu)new Menu(prompt, options).Run();
 
-            if (createOption == CreateChooseMenu.Create)
+            if (createOption == GetPlayerMenu.CreatePlayer)
             {
                 Player player = CreatePlayer();
                 _db.InsertCharacter(player);
@@ -134,7 +151,7 @@ namespace ZoneRpg.UserInterface
             else
             {
                 // 1. Hämta alla klasser från databasen
-                List<CharacterClass> characterClasses = _db.GetClasses();
+                List<CharacterClass> characterClasses = _db.GetAllCharacterClasses();
 
                 // 2. Visa meny med alla klasser, låt spelaren välja en
                 string prompt = "Choose a class!";
@@ -191,8 +208,16 @@ namespace ZoneRpg.UserInterface
                     {
                         Inventory();
                     }
-
                     break;
+
+                case GameState.Loot:
+                    if (cki.Key == ConsoleKey.Enter)
+                    {
+                        Console.Clear();
+                        _game.SetState(GameState.Zone);
+                    }
+                    break;
+
 
                 case GameState.Battle:
                     break;

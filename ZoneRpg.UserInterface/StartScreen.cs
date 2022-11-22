@@ -1,7 +1,7 @@
 namespace ZoneRpg.UserInterface
 {
 
-    public class StartScreen
+    public class StartMenu
     {
         public void RunMainMenu()
         {
@@ -16,7 +16,8 @@ namespace ZoneRpg.UserInterface
                                                             
                                                             ";
             string[] options = { "Start", "About", "Exit" };
-            int _choice = (int)new Menu(prompt, options).Run();
+            
+            int _choice = new Menu(prompt, options).Run();
 
 
             switch (_choice)
@@ -45,7 +46,7 @@ namespace ZoneRpg.UserInterface
         public void ExitGame()
         {
             Console.WriteLine("Exit Game");
-            Console.ReadKey(true);
+            Console.ReadKey();
             Environment.Exit(0);
         }
 

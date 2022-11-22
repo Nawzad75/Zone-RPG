@@ -27,9 +27,6 @@ namespace ZoneRpg.UserInterface
                 Console.ForegroundColor = message.Color;
                 Console.Write(message.Text);
                 Console.ResetColor();
-                
-                
-
             }
 
         }

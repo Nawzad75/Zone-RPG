@@ -19,7 +19,7 @@ internal class Program
     ///
     private static void SpawnMonstersInZone(int zoneId, int maxMonsters = 3)
     {
-        List<Monster> monsters = db.GetMonsters(zoneId);
+        List<Monster> monsters = db.GetAllMonsters(zoneId);
         foreach (Monster monster in monsters)
         {
             Console.WriteLine($"Monster: {monster.Name} ({monster.Hp}/{monster.MonsterClass!.MaxHp})");
