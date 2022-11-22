@@ -15,13 +15,14 @@ namespace ZoneRpg.Models
             Entity.Y = Constants.StartPositionY;
             Entity.EntityType = EntityType.Player;
             CharacterClass = characterClass;
+            Hp = characterClass.MaxHp;
         }
 
         public void Respawn()
         {
             Entity.X = Constants.StartPositionX;
             Entity.Y = Constants.StartPositionY;
-            Hp = MaxHp;
+            Hp = CharacterClass.MaxHp;
         }
 
         // Implementation av "IFighter" interface.
