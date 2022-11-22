@@ -186,6 +186,11 @@ namespace ZoneRpg.UserInterface
                     {
                         Inventory();
                     }
+                     
+                     if (cki.Key == ConsoleKey.Q)
+                     {
+                        Environment.Exit(0);
+                     }
 
                     break;
 
