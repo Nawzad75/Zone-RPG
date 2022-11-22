@@ -14,7 +14,7 @@ namespace ZoneRpg.Models
             Entity.X = Constants.StartPositionX;
             Entity.Y = Constants.StartPositionY;
             Entity.Symbol = name.Substring(0, 1).ToUpper();
-            Entity.EntityType = EntityType.Player;            
+            Entity.EntityType = EntityType.Player;
         }
 
         public void Respawn()
@@ -28,7 +28,7 @@ namespace ZoneRpg.Models
         // ---------------------------------------
         public int GetAttack()
         {
-            if (Weapon != null && Weapon.ItemInfo != null) 
+            if (Weapon != null && Weapon.ItemInfo != null)
             {
                 return CharacterClass.BaseAttack + Weapon.ItemInfo.Attack;
             }
@@ -63,6 +63,22 @@ namespace ZoneRpg.Models
         public int GetMaxHp()
         {
             return CharacterClass.MaxHp;
+        }
+
+        public void EquipItem(Item item)
+        {
+            if (item.ItemInfo.ItemType == ItemType.Weapon)
+            {
+                Weapon = item;
+            }
+            else if (item.ItemInfo.ItemType == ItemType.Boots)
+            {
+                Boots = item;
+            }
+            else if (item.ItemInfo.ItemType == ItemType.Helmet)
+            {
+                Helm = item;
+            }
         }
     }
 }

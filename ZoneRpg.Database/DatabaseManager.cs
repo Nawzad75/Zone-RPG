@@ -37,7 +37,14 @@ namespace ZoneRpg.Database
         public List<ItemInfo> GetAllItemInfos()
         {
             string sql = "SELECT * FROM item_info";
-            return _connection.Query<ItemInfo>(sql).ToList();
+            var results = _connection.Query<ItemInfo>(sql).ToList();
+
+            foreach (var item in results)
+            {
+                Console.WriteLine(item);
+            }
+
+            return results;
         }
 
         // Gets a zone from the database
@@ -123,7 +130,6 @@ namespace ZoneRpg.Database
             // Vi VILL ha null om item inte finns, därför använder vi "FirstOrDefault".
             return results.FirstOrDefault();
         }
-
 
 
         // Hämtar ett specifikt monster utifrån dess entity-id
@@ -229,26 +235,36 @@ namespace ZoneRpg.Database
             ).First();
         }
 
-        //Lägg till vapen i databasen
-        public int InsertWeapon(Item weapon)
+        // Lägg till vapen i databasen
+        public int InsertItem(Item item)
         {
             string sql = @"
                 INSERT INTO `item`(`character_id`, `item_info_id`) VALUES (NULL, @ItemInfoId);
                 SELECT LAST_INSERT_ID()";
 
-            return _connection.QuerySingle<int>(sql, weapon);
+            return _connection.QuerySingle<int>(sql, item);
         }
 
         // Uppdatera en spelare's vapen
-        public void UpdatePlayerWeapon(Player player)
+        public void UpdatePlayerEquipment(Player player)
         {
+            Console.WriteLine("Weapon id: " + player.Weapon?.Id);
+            Console.WriteLine("Helm id: " + player.Helm?.Id);
+            Console.WriteLine("Boots id: " + player.Boots?.Id);
 
-            string sql = @"UPDATE `character` SET weapon_id = @WeaponId WHERE id = @id";
+            string sql = @"
+                UPDATE `character` SET 
+                    weapon_id = @WeaponId, 
+                    boots_id = @BootsId, 
+                    helm_id = @HelmId 
+                WHERE id = @Id";
 
-            // Vi VILL spara null om spelaren har förlorat sitt vapen.
+            // Vi VILL spara null om spelaren t.ex. har förlorat sitt vapen.
             var parameters = new
             {
                 WeaponId = player.Weapon?.Id,
+                BootsId = player.Boots?.Id,
+                HelmId = player.Helm?.Id,
                 id = player.Id
             };
 

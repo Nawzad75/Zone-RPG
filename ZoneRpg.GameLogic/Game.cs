@@ -34,7 +34,7 @@ namespace ZoneRpg.GameLogic
             ChatBox.Messages = _db.GetAllMessages();
             OpenChest();
             BattleManager.LookForMonsters(Zone.Entities);
-            BattleManager.ProgressBattle(); 
+            BattleManager.ProgressBattle();
             PropagateBattleState();
             _db.UpdateCharacterHp(Player);
             if (BattleManager.Monster != null)
@@ -121,9 +121,9 @@ namespace ZoneRpg.GameLogic
                 {
                     Item item = new Item();
                     item.ItemInfo = sword;
-                    Player.Weapon = item;
-                    Player.Weapon.Id = _db.InsertWeapon(Player.Weapon);
-                    _db.UpdatePlayerWeapon(Player);
+                    item.Id = _db.InsertItem(item);
+                    Player.EquipItem(item);
+                    _db.UpdatePlayerEquipment(Player);
                     Message message = new Message("Du har hittat " + item.ItemInfo.Name, Player, ConsoleColor.Yellow);
                     ChatBox.LootMessages.Add(message);
                 }
