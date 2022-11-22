@@ -82,11 +82,10 @@ namespace ZoneRpg.UserInterface
 
                 case GameState.Loot:
                     Console.Clear();
-                    Console.WriteLine("You found loot! Press <Enter> to continue!");
-                    foreach (var item in _game.CurrentLoot)
-                    {
-                        Console.WriteLine("* " + item.ItemInfo!.Name);
-                    }
+                    Console.WriteLine("You found loot!");
+                    string[] menuOptions = _game.CurrentLoot.Select(x => x.ItemInfo!.Name).ToArray();
+                    menuOptions.Append("Leave");
+                    new Menu("Choose to equip loot", menuOptions);
                     break;
 
                 case GameState.Battle:
@@ -208,6 +207,12 @@ namespace ZoneRpg.UserInterface
                     {
                         Inventory();
                     }
+                     
+                     if (cki.Key == ConsoleKey.Q)
+                     {
+                        Environment.Exit(0);
+                     }
+
                     break;
 
                 case GameState.Loot:
