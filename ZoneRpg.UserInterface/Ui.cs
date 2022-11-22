@@ -223,7 +223,7 @@ namespace ZoneRpg.UserInterface
 
                     if (cki.Key == ConsoleKey.I)
                     {
-                        Inventory();
+                        ShowInventory();
                     }
 
                     if (cki.Key == ConsoleKey.Q)
@@ -263,7 +263,7 @@ namespace ZoneRpg.UserInterface
         }
 
         // Visar inventory
-        public void Inventory()
+        public void ShowInventory()
         {
             Console.Clear();
             Console.WriteLine("Weapon: " + _game.Player.Weapon);
